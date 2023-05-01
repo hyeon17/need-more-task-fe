@@ -17,7 +17,7 @@ function Join() {
 
   return (
     <A.Container>
-      <TitleLabel title="로그인" />
+      <TitleLabel title="회원가입" />
       <A.BodyWrapper>
         {/* 이름 */}
         <AuthInput label="이름" placeholder="이름을 입력하세요" inputProps={inputProps} />
