@@ -9,6 +9,10 @@ const theme: Theme = {
   errorColor: '#FF5C5C',
   successColor: '#5FDCB3',
   borderColor: '#212437',
+  white: '#FFF',
+  outlineColor: '#E4E6E8D9',
+  labelColor: '#8083A3',
+  inputWarningColor: '#FBB0BF',
 };
 
 export default theme;

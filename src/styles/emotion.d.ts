@@ -9,5 +9,9 @@ declare module '@emotion/react' {
     errorColor: string;
     successColor: string;
     borderColor: string;
+    white: string;
+    outlineColor: string;
+    labelColor: string;
+    inputWarningColor: string;
   }
 }
