@@ -1,15 +1,14 @@
-import "@/styles/globals.css";
-import "@/styles/reset.css";
-import type { AppProps } from "next/app";
-import { ChakraProvider } from "@chakra-ui/react";
-import theme from "@/styles/theme";
-import { ThemeProvider } from "@emotion/react";
+import '@/styles/globals.css';
+import '@/styles/reset.css';
+import type { AppProps } from 'next/app';
+import { ChakraProvider } from '@chakra-ui/react';
+import theme from '@/styles/theme';
+import { ThemeProvider } from '@emotion/react';
 import {
   Hydrate,
   QueryClient,
   QueryClientProvider,
-} from "@tanstack/react-query";
-import { injectGlobal } from "@emotion/css";
+} from '@tanstack/react-query';
 
 const queryClient = new QueryClient({
   defaultOptions: {
