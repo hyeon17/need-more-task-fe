@@ -1,9 +1,14 @@
-import { Theme } from "@emotion/react";
+import { Theme } from '@emotion/react';
 
 const theme: Theme = {
-  primary: "#FF6D3A",
-  positive: "#00C48C",
-  negative: "#FF3D71",
+  mainBg: '#FBFBFF',
+  secondaryBg: '#F5F5F5',
+  textColor: '#171721',
+  pointColor: '#3E7EFF',
+  warningColor: '#EF8354',
+  errorColor: '#FF5C5C',
+  successColor: '#5FDCB3',
+  borderColor: '#212437',
 };
 
 export default theme;
