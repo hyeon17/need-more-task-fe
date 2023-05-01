@@ -38,7 +38,7 @@ export const TitleDivider = styled(Divider)`
   color: ${({ theme }) => theme.outlineColor};
 `;
 
-export const BodyWrapper = styled.div`
+export const BodyWrapper = styled.form`
   /* border: 1px solid; */
   padding: 70px 26px;
 `;
