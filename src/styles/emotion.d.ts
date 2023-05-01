@@ -1,8 +1,13 @@
-import "@emotion/react";
-declare module "@emotion/react" {
+import '@emotion/react';
+declare module '@emotion/react' {
   export interface Theme {
-    primary: string;
-    positive: string;
-    negative: string;
+    mainBg: string;
+    secondaryBg: string;
+    textColor: string;
+    pointColor: string;
+    warningColor: string;
+    errorColor: string;
+    successColor: string;
+    borderColor: string;
   }
 }
