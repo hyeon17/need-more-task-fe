@@ -1,0 +1,8 @@
+/.git
+/.svg
+**/.hg
+node_modules
+dist
+.next
+package.json
+
