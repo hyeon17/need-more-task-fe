@@ -15,6 +15,10 @@ const customTheme = extendTheme({
     labelColor: '#8083A3',
     inputFocusColor: '#FBB0BF',
   },
+  fonts: {
+    heading: `'Pretendard-Regular', sans-serif`,
+    body: `'Pretendard-Regular', sans-serif`,
+  },
   styles: {
     global: (props: StyleFunctionProps) => ({
       body: {
