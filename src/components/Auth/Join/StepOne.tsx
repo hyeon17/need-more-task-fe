@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import * as A from '@/styles/auth.styles';
 
 import { FormControl } from '@chakra-ui/react';
@@ -31,6 +31,14 @@ function StepOne() {
     router.push('/join/2');
   };
 
+  const findSelectedDepartment = (dept: string) => {
+    return teamOptions.find((option) => option.value === dept);
+  };
+
+  // useEffect(() => {
+  //   setDepartment(findSelectedDepartment(me?.department) || '');
+  // }, [me?.department]);
+
   return (
     <>
       {/* 소속팀 선택 */}
@@ -42,6 +50,9 @@ function StepOne() {
             aria-live="polite"
             name="teams"
             options={teamOptions}
+            // value={me?.department ? me?.department : department}
+            // value={me?.department || department}
+            value={findSelectedDepartment(me?.department || department)}
             placeholder="팀 선택"
             closeMenuOnSelect={true}
             size="sm"
