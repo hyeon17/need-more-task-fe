@@ -52,13 +52,13 @@ function StepOne() {
       {/* 입사연도 선택 */}
       <A.InputContainer>
         <FormControl isRequired>
-          <label>입사년도는 언제인가요?</label>
+          <label>입사 연도는 언제인가요?</label>
           <A.StyledSelect
             instanceId="join-year-select"
             aria-live="polite"
             name="join year"
             options={joinCompanyYearOptions}
-            placeholder="입사년도 선택"
+            placeholder="입사 연도 선택"
             closeMenuOnSelect={true}
             size="sm"
             onChange={handleJoinCompanyYearChange}

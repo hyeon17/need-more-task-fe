@@ -41,13 +41,20 @@ export const TitleDivider = styled(Divider)`
 
 export const BodyWrapper = styled.div`
   /* border: 1px solid; */
-  padding: 30px 26px;
+  padding: 10px 26px;
+
+  & h2 {
+    margin-bottom: 20px;
+    font-weight: 700;
+    font-size: 20px;
+  }
 `;
 export const InputContainer = styled.div`
   margin-bottom: 30px;
   /* border: 1px solid; */
 `;
 export const ConfirmButton = styled(Button)`
+  margin-top: 100px;
   width: 100%;
   background-color: ${({ theme }) => theme.primary};
 
@@ -91,5 +98,5 @@ export const StyledSelect = styled(Select)`
 export const JoinStepWrapper = styled.div`
   /* border: 1px solid; */
   display: flex;
-  margin: 10px 20px;
+  margin: 10px 20px 0;
 `;
