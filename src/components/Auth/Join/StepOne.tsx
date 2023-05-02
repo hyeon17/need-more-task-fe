@@ -27,12 +27,12 @@ function StepOne() {
   const isDisabled = useMemo(() => Boolean(!department || !joinCompanyYear), [department, joinCompanyYear]);
 
   const onClickNext = () => {
-    onSaveSignup({ department, joinCompanyYear: +(joinCompanyYear as string) });
+    onSaveSignup({ ...me, department, joinCompanyYear: +(joinCompanyYear as string) });
     router.push('/join/2');
   };
 
   return (
-    <div>
+    <>
       {/* 소속팀 선택 */}
       <A.InputContainer>
         <FormControl isRequired>
@@ -68,7 +68,7 @@ function StepOne() {
       <A.ConfirmButton colorScheme="teal" size="md" isDisabled={isDisabled} onClick={onClickNext}>
         다음
       </A.ConfirmButton>
-    </div>
+    </>
   );
 }
 

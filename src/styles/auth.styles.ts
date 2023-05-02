@@ -10,6 +10,7 @@ export const Container = styled.div`
 
   min-height: 650px;
   margin-top: 100px;
+  padding-bottom: 100px;
   background-color: #fff;
 
   overflow: hidden;

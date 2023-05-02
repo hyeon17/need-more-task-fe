@@ -6,7 +6,6 @@ export interface IJoinData {
   joinCompanyYear?: number;
   fullname?: string;
   email?: string;
-  nickname?: string;
   password?: string;
   confirmPassword?: string;
   imagePath?: string;
