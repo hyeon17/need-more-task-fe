@@ -1,13 +1,13 @@
 import React from 'react';
+import Login from '@/components/Auth/Login';
 import Layout from '@/components/Layout';
-import Join from '@/components/Auth/Join';
 
-function JoinPage() {
+function LoginPage() {
   return (
     <Layout>
-      <Join />
+      <Login />
     </Layout>
   );
 }
 
-export default JoinPage;
+export default LoginPage;

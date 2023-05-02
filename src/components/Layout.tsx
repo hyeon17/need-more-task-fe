@@ -9,13 +9,7 @@ const LayoutComponent = styled.div`
   max-width: 1200px;
 `;
 
-function Layout({
-  children,
-  hasHeader,
-}: {
-  children: React.ReactNode;
-  hasHeader?: boolean;
-}) {
+function Layout({ children, hasHeader }: { children: React.ReactNode; hasHeader?: boolean }) {
   return (
     <LayoutComponent>
       {hasHeader && <header>Header</header>}
