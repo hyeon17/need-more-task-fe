@@ -9,26 +9,26 @@ export const taskTitle = (title: string) => {
 };
 
 export const teamOptions = [
-  { value: '개발', label: '개발' },
-  { value: '인사', label: '인사' },
-  { value: '경영', label: '경영' },
-  { value: '무역', label: '무역' },
-  { value: '영업', label: '영업' },
-  { value: '서비스', label: '서비스' },
-  { value: '생산', label: '생산' },
-  { value: '교육', label: '교육' },
-  { value: '마케팅', label: '마케팅' },
-  { value: '기타', label: '기타' },
+  { label: '개발', value: 'DEV' },
+  { label: '인사', value: 'HR' },
+  { label: '경영', value: 'MANAGEMENT' },
+  { label: '무역', value: 'TRADE' },
+  { label: '영업', value: 'SALES' },
+  { label: '서비스', value: 'SERVICE' },
+  { label: '생산', value: 'PRODUCTION' },
+  { label: '교육', value: 'EDUCATION' },
+  { label: '마케팅', value: 'MARKETING' },
+  { label: '기타', value: 'OTHER' },
 ];
 
 export const getJoinCompanyYear = () => {
   const thisYear = dayjs().year();
-  return [...Array(thisYear - 1899)].map((_v, i) => {
-    if (i === 0)
-      return {
-        label: '연 선택',
-        value: '',
-      };
+  return [...Array(thisYear - 1979)].map((_v, i) => {
+    // if (i === 0)
+    //   return {
+    //     // label: '연 선택',
+    //     // value: '',
+    //   };
     return {
       label: thisYear - i,
       value: thisYear - i,
