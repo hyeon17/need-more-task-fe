@@ -9,6 +9,7 @@ interface IAuthInput {
   inputProps: any;
   props?: any;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  type?: string;
 }
 
 function AuthInput({ label, inputProps, ...props }: IAuthInput) {
