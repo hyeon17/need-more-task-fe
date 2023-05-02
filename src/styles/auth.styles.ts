@@ -101,3 +101,8 @@ export const JoinStepWrapper = styled.div`
   display: flex;
   margin: 10px 20px 0;
 `;
+
+export const PhoneNumWrapper = styled.div`
+  display: flex;
+  align-items: flex-end;
+`;
