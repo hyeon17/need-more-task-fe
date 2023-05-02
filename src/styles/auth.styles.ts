@@ -48,7 +48,7 @@ export const InputContainer = styled.div`
 `;
 export const ConfirmButton = styled(Button)`
   width: 100%;
-  background-color: ${({ theme }) => theme.pointColor};
+  background-color: ${({ theme }) => theme.primary};
 
   &:hover {
     background-color: ${({ theme }) => theme.outlineColor} !important;
