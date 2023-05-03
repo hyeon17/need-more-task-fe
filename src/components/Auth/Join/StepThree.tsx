@@ -48,7 +48,11 @@ function StepThree() {
     });
   };
 
-  const { mutate: joinMutate } = joinAPI({ onError });
+  const onSuccess = () => {
+    router.push('/join/complete');
+  };
+
+  const { mutate: joinMutate, isLoading } = joinAPI({ onSuccess, onError });
 
   useEffect(() => {
     const combinedPhone = `${firstNum}-${secondNum}-${thirdNum}`;
@@ -191,7 +195,7 @@ function StepThree() {
       </A.InputContainer>
 
       {/* isLoading 추가 */}
-      <A.ConfirmButton colorScheme="teal" size="md" type="submit">
+      <A.ConfirmButton colorScheme="teal" size="md" type="submit" isLoading={isLoading}>
         다음
       </A.ConfirmButton>
     </form>
