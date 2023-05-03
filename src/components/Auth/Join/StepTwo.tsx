@@ -29,7 +29,7 @@ function StepTwo() {
   const [fullname, onChangeFullname] = useInput(me?.fullname ?? '');
   const [email, onChangeEmail] = useInput(me?.email ?? '');
   const [password, onChangePassword] = useInput(me?.password ?? '');
-  const [confirmPassword, onChangeConfirmPassword] = useInput(me?.confirmPassword ?? '');
+  const [confirmPassword, onChangeConfirmPassword] = useInput(me?.password_check ?? '');
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -58,9 +58,9 @@ function StepTwo() {
 
   const onClickNext = (data: IFormInput) => {
     if (Object.keys(errors).length === 0) {
-      const { confirmPassword, ...rest } = data;
+      const { confirmPassword: password_check, ...rest } = data;
 
-      onSaveSignup({ ...me, ...rest });
+      onSaveSignup({ ...me, ...rest, password_check });
       router.push('/join/3');
     }
   };
