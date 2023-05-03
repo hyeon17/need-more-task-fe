@@ -5,8 +5,11 @@ import { Input } from '@chakra-ui/react';
 interface IAuthInput {
   label: string;
   placeholder: string;
+  value: string;
   inputProps: any;
   props?: any;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  type?: string;
 }
 
 function AuthInput({ label, inputProps, ...props }: IAuthInput) {
