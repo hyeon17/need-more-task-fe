@@ -130,3 +130,47 @@ export const ProfileFigure = styled.figure`
 export const SelectButton = styled.input`
   color: #d7a1b5;
 `;
+
+// complete
+export const CompleteBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  min-height: 500px;
+
+  & h1,
+  p {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 700;
+  }
+`;
+
+// export const ButtonWrapper = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// `;
+
+export const CompleteButton = styled(ConfirmButton)`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 60px;
+  left: 0;
+  /* width: 90%; */
+`;
+export const LottieWrapper = styled.div``;
+
+// export const ConfirmButton = styled(Button)`
+//   margin-top: 100px;
+//   width: 100%;
+//   background-color: ${({ theme }) => theme.primary};
+
+//   &:hover {
+//     background-color: ${({ theme }) => theme.outlineColor} !important;
+//   }
