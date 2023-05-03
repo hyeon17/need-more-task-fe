@@ -163,7 +163,8 @@ export const CompleteBody = styled.div`
 // `;
 
 export const CompleteButton = styled(ConfirmButton)`
-  position: absolute;
+  /* position: absolute; */
+  /* margin-top: 200px; */
   display: flex;
   justify-content: center;
   align-items: center;
