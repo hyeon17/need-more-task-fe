@@ -131,6 +131,7 @@ function StepTwo() {
         </FormControl>
       </A.InputContainer>
 
+      {/* 비밀번호 */}
       <A.InputContainer>
         <FormControl isInvalid={Boolean(errors.password)}>
           <FormLabel htmlFor="password">비밀번호</FormLabel>
@@ -161,6 +162,7 @@ function StepTwo() {
         </FormControl>
       </A.InputContainer>
 
+      {/* 비밀번호 확인 */}
       <A.InputContainer>
         <FormControl isInvalid={Boolean(errors.confirmPassword)}>
           <FormLabel htmlFor="confirmPassword">비밀번호 확인</FormLabel>

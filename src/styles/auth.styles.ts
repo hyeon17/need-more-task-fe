@@ -106,3 +106,27 @@ export const PhoneNumWrapper = styled.div`
   display: flex;
   align-items: flex-end;
 `;
+
+// step3
+export const ProfileWrapper = styled.div`
+  /* display: flex; */
+  margin-top: 20px;
+`;
+
+export const ProfileIMGWrapper = styled.div`
+  margin-bottom: 30px;
+`;
+
+export const ProfileFigure = styled.figure`
+  margin: 10px auto 10px;
+  width: 150px;
+  height: 150px;
+  border: 1px solid ${({ theme }) => theme.outlineColor};
+  border-radius: 6px;
+  img {
+    object-fit: contain;
+  }
+`;
+export const SelectButton = styled.input`
+  color: #d7a1b5;
+`;
