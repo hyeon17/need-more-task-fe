@@ -25,7 +25,8 @@ function complete() {
           <A.LottieWrapper>
             <LottieAni aniName={welcome} />
           </A.LottieWrapper>
-          <h1>안녕하세요 {me?.fullname}님 Task 받을 준비 되셨나요?</h1>
+          <h1>안녕하세요 {me?.fullname}님 </h1>
+          <h1>Task 받을 준비 되셨나요?</h1>
           <p>지금 바로 Task 받으러 갑시다.</p>
 
           <A.CompleteButton colorScheme="teal" size="md" onClick={onClickRoute}>

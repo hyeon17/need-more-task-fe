@@ -139,13 +139,20 @@ export const CompleteBody = styled.div`
   padding: 20px;
   min-height: 500px;
 
+  & > h1:nth-of-type(1) {
+    margin-top: 50px;
+  }
+  & > p:nth-of-type(1) {
+    margin-top: 50px;
+  }
   & h1,
   p {
-    margin-top: 50px;
+    /* margin-top: 50px; */
     display: flex;
     justify-content: center;
     font-size: 22px;
     font-weight: 700;
+    text-align: center;
   }
 `;
 
