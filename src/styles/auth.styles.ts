@@ -1,4 +1,4 @@
-import { Button, Divider } from '@chakra-ui/react';
+import { Button, Divider, Input } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { Select } from 'chakra-react-select';
 

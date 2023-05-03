@@ -24,7 +24,7 @@ function StepThree() {
   const [secondNum, onChangeSecondNum] = useInput('');
   const [thirdNum, onChangeThirdNum] = useInput('');
 
-  console.log('me', me);
+  // console.log('me', me);
 
   useEffect(() => {
     const combinedPhone = `${firstNum}-${secondNum}-${thirdNum}`;
@@ -40,15 +40,6 @@ function StepThree() {
 
   return (
     <>
-      {/* <UploadImage
-        name="avatar"
-        acceptedFileTypes="image/*"
-        isRequired={true}
-        placeholder="Your avatar"
-        control={control}
-      >
-        New avatar
-      </UploadImage> */}
       <label>휴대폰 번호</label>
       <A.PhoneNumWrapper>
         <AuthInput
@@ -58,6 +49,10 @@ function StepThree() {
           type="number"
           placeholder="010"
           inputProps={inputProps}
+          maxLength={3}
+          minLength={3}
+          // ref={register('firstNum', { maxLength: 3, minLength: 3 })}
+          // {...register('number', { maxLength: 3, minLength: 3 })}
         />
         <AuthInput
           value={secondNum}

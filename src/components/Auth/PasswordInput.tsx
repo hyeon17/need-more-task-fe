@@ -1,11 +1,11 @@
 import React from 'react';
 import * as A from '@/styles/auth.styles';
-import { Button, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
+import { Button, FormLabel, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
 
 function PasswordInput({ label, inputProps, handleClick, show, props, onChange }: any) {
   return (
     <A.InputContainer>
-      <label>{label}</label>
+      <FormLabel>{label}</FormLabel>
       <InputGroup size="md" variant="flushed">
         <Input
           pr="4.5rem"
