@@ -6,8 +6,12 @@ import { useForm } from 'react-hook-form';
 import * as A from '@/styles/auth.styles';
 import useInput from '@/hooks/useInput';
 import AuthInput from '../AuthInput';
-import { FormControl, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
+import { FormControl, FormErrorMessage, FormLabel, Input, useToast } from '@chakra-ui/react';
 import Image from 'next/image';
+
+import { joinAPI } from '@/apis/user';
+import { AxiosError } from 'axios';
+import { IJoin } from '@/type/authTypes';
 
 export const inputProps = {
   variant: 'flushed',
@@ -18,7 +22,7 @@ export const inputProps = {
 function StepThree() {
   const router = useRouter();
   const { me, onSaveSignup } = useUserJoinStore();
-  // const [phone, onChangePhone] = useInput(me?.phone ?? '');
+  // const {} = me
   const [phone, setPhone] = useState(me?.phone ?? '');
 
   const [firstNum, onChangeFirstNum] = useInput('');
@@ -28,7 +32,23 @@ function StepThree() {
   const [values, setValues] = useState({ profileIMG: '' });
   const [profileUrl, setProfileUrl] = useState('');
 
-  // console.log('me', me);
+  const toast = useToast();
+
+  console.log('me', me);
+
+  const onError = (error: AxiosError) => {
+    console.error('error>>', error);
+
+    toast({
+      title: '회원가입 실패.',
+      description: '알 수 없는 오류가 발생했습니다.',
+      status: 'error',
+      duration: 9000,
+      isClosable: true,
+    });
+  };
+
+  const { mutate: joinMutate } = joinAPI({ onError });
 
   useEffect(() => {
     const combinedPhone = `${firstNum}-${secondNum}-${thirdNum}`;
@@ -50,7 +70,8 @@ function StepThree() {
 
     if (Object.keys(errors).length === 0) {
       onSaveSignup({ ...me, phone });
-      router.push('/join/complete');
+
+      joinMutate({ ...me } as IJoin);
     }
   };
 
@@ -169,6 +190,7 @@ function StepThree() {
         </FormControl>
       </A.InputContainer>
 
+      {/* isLoading 추가 */}
       <A.ConfirmButton colorScheme="teal" size="md" type="submit">
         다음
       </A.ConfirmButton>
