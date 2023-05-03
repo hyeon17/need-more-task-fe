@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 const LayoutComponent = styled.div`
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
