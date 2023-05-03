@@ -1,5 +1,6 @@
 import { Button, Divider } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { Select } from 'chakra-react-select';
 
 export const Container = styled.div`
   position: relative;
@@ -8,7 +9,8 @@ export const Container = styled.div`
   width: 417px;
 
   min-height: 650px;
-  margin-top: 160px;
+  margin-top: 100px;
+  padding-bottom: 100px;
   background-color: #fff;
 
   overflow: hidden;
@@ -38,15 +40,22 @@ export const TitleDivider = styled(Divider)`
   color: ${({ theme }) => theme.outlineColor};
 `;
 
-export const BodyWrapper = styled.form`
+export const BodyWrapper = styled.div`
   /* border: 1px solid; */
-  padding: 70px 26px;
+  padding: 10px 26px;
+
+  & h2 {
+    margin-bottom: 20px;
+    font-weight: 700;
+    font-size: 20px;
+  }
 `;
 export const InputContainer = styled.div`
   margin-bottom: 30px;
   /* border: 1px solid; */
 `;
 export const ConfirmButton = styled(Button)`
+  margin-top: 100px;
   width: 100%;
   background-color: ${({ theme }) => theme.primary};
 
@@ -78,4 +87,22 @@ export const FooterWrapper = styled.div`
     font-weight: 700;
     font-size: 12px;
   }
+`;
+
+export const StyledSelect = styled(Select)`
+  /* color: ${({ theme }) => theme.gray50}; */
+  & #react-select-3-placeholder {
+    color: ${({ theme }) => theme.labelColor};
+  }
+`;
+
+export const JoinStepWrapper = styled.div`
+  /* border: 1px solid; */
+  display: flex;
+  margin: 10px 20px 0;
+`;
+
+export const PhoneNumWrapper = styled.div`
+  display: flex;
+  align-items: flex-end;
 `;
