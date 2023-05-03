@@ -11,10 +11,13 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  useToast,
 } from '@chakra-ui/react';
 import useInput from '@/hooks/useInput';
 import PasswordInput from '../PasswordInput';
 import { useForm } from 'react-hook-form';
+import { AxiosError } from 'axios';
+import { isDuplicatedEmailAPI } from '@/apis/user';
 
 export const inputProps = {
   variant: 'flushed',
@@ -37,9 +40,31 @@ function StepTwo() {
   const handleShowPassword = () => setShowPassword(!showPassword);
   const handleShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
 
-  const handleIsDuplicated = () => {
-    console.log('중복확인');
+  const toast = useToast();
+
+  const onError = (error: AxiosError) => {
+    console.error('error>>', error);
+
+    toast({
+      title: '이미 가입한 이메일 입니다.',
+      // description: '알 수 없는 오류가 발생했습니다.',
+      status: 'error',
+      duration: 9000,
+      isClosable: true,
+    });
   };
+
+  const onSuccess = () => {
+    toast({
+      title: '사용 가능한 이메일 입니다.',
+      // description: '알 수 없는 오류가 발생했습니다.',
+      status: 'success',
+      duration: 9000,
+      isClosable: true,
+    });
+  };
+
+  const { mutate: isDuplicatedEmailMutate, isLoading } = isDuplicatedEmailAPI({ onSuccess, onError });
 
   console.log(fullname, email);
   console.log(password, confirmPassword);
@@ -72,6 +97,13 @@ function StepTwo() {
     formState: { errors },
   } = useForm<any>();
   console.log('errors>>', errors);
+
+  const emailValue = watch('email');
+
+  const handleIsDuplicated = () => {
+    console.log('중복확인');
+    isDuplicatedEmailMutate(emailValue);
+  };
 
   return (
     <form onSubmit={handleSubmit(onClickNext)}>
@@ -122,7 +154,7 @@ function StepTwo() {
               })}
             />
             <InputRightElement width="4.5rem">
-              <Button h="1.75rem" size="sm" onClick={handleIsDuplicated}>
+              <Button h="1.75rem" size="sm" onClick={handleIsDuplicated} isLoading={isLoading}>
                 중복 확인
               </Button>
             </InputRightElement>
