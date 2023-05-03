@@ -10,6 +10,17 @@ export const joinAPI = (options?: UseMutationOptions<AxiosResponse<string>, Axio
   const queryFn = (data: IJoin) => axiosInstance.post(queryKey, data).then((res) => res.data);
 
   // const onSuccess = () => router.push('/join/complete');
-  const onSuccess = (data: any) => console.log('response>>>', data);
-  return useMutation([queryKey], queryFn, { onSuccess, ...options });
+
+  return useMutation([queryKey], queryFn, { ...options });
+};
+
+export const isDuplicatedEmailAPI = (options?: UseMutationOptions<AxiosResponse<string>, AxiosError, IJoin>) => {
+  const queryKey = `/validate/email`;
+  const queryFn = (data: IJoin) => axiosInstance.post(queryKey, data).then((res) => res.data);
+
+  // const onSuccess = () => router.push('/join/complete');
+  // const onSuccess = (data: any) => {
+  //   console.log('response>>>', data);
+  // };
+  return useMutation([queryKey], queryFn, { ...options });
 };
