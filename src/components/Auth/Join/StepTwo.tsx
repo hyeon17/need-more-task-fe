@@ -202,17 +202,3 @@ function StepTwo() {
 }
 
 export default StepTwo;
-
-{
-  /* 비밀번호 확인 */
-}
-{
-  /* <PasswordInput
-        label="비밀번호 확인"
-        value={confirmPassword}
-        show={showConfirmPassword}
-        handleClick={handleShowConfirmPassword}
-        inputProps={inputProps}
-        onChange={onChangeConfirmPassword}
-      /> */
-}
