@@ -15,7 +15,7 @@ export interface ILogin {
 
 export interface IUser {
   userId: string;
-  department: string;
+  department?: string;
   email: string;
   fullName: string;
   joinCompanyYear: string;
