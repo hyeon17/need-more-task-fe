@@ -42,9 +42,11 @@ function CommonHeader() {
           <MenuDivider />
           <MenuGroup title="프로필">
             <MenuItem>
-              <Link href={`/edit`}>프로필 편집</Link>
+              <Link href={`/profile`}>프로필 편집</Link>
             </MenuItem>
-            <MenuItem>권한 변경 신청</MenuItem>
+            <MenuItem>
+              <Link href={`/profile`}>권한 신청 변경</Link>
+            </MenuItem>
           </MenuGroup>
         </MenuList>
       </Menu>
