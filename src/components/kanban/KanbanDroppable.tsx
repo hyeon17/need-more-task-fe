@@ -3,6 +3,7 @@ import { Button, Card, CardBody, CardFooter, Stack, Text } from '@chakra-ui/reac
 import { Draggable } from 'react-beautiful-dnd';
 import KanbanDraggable from '@/components/kanban/KanbanDraggable';
 import { KanbanDroppableItemProps } from '@/type/componentProps';
+import { motion } from 'framer-motion';
 
 function KanbanDroppable({ provided, status }: KanbanDroppableItemProps) {
   return (

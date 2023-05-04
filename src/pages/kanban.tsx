@@ -9,7 +9,7 @@ function Kanban() {
   return (
     <Layout>
       <Heading size="xl">Kanban Board</Heading>
-      <Stack direction="row" alignItems="center" spacing="6" minHeight="80vh">
+      <Stack direction="row" alignItems="start" spacing="6" minHeight="80vh">
         <DragDropContext onDragEnd={onDragEnd}>
           {['todo', 'in-progress', 'done'].map((status) => (
             <Droppable droppableId={status} key={status}>
