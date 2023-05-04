@@ -1,71 +1,136 @@
-import React, { useRef, useState } from 'react';
-import Calendar from '@toast-ui/react-calendar';
-import 'tui-date-picker/dist/tui-date-picker.css';
-import 'tui-time-picker/dist/tui-time-picker.css';
-import '@toast-ui/calendar/dist/toastui-calendar.min.css';
-import 'tui-calendar/dist/tui-calendar.css';
+import React, { useState, useRef } from 'react';
+import { EventApi, DateSelectArg, EventContentArg, EventInput } from '@fullcalendar/core';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import dayjs from 'dayjs';
+import * as S from '@/styles/month.styles';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 
 function Month() {
-  const calendars = [{ id: 'cal1', name: 'Personal' }];
-  const initialEvents = [
+  const [currentEvents, setCurrentEvents] = useState<EventApi[]>([]);
+  const calendarRef = useRef<FullCalendar>(null);
+
+  const headerToolbar = {
+    left: 'prev,next today',
+    center: 'title',
+    right: 'dayGridMonth,timeGridWeek,timeGridDay',
+    // right: '',
+  };
+  const plugins=[dayGridPlugin, timeGridPlugin, interactionPlugin, bootstrap5Plugin]
+
+  let eventGuid:number = 0;
+  const todayStr: string = dayjs().format('YYYY-MM-DD');
+
+  const INITIAL_EVENTS: EventInput[] = [
     {
-      id: '1',
-      calendarId: 'cal1',
-      title: 'Lunch',
-      category: 'time',
-      start: '2023-05-28T12:00:00',
-      end: '2023-05-28T13:30:00',
+      id: createEventId(),
+      title: '일정',
+      start: todayStr,
     },
     {
-      id: '2',
-      calendarId: 'cal1',
-      title: 'Coffee Break',
-      category: 'time',
-      start: '2022-06-28T15:00:00',
-      end: '2022-06-28T15:30:00',
+      id: createEventId(),
+      title: '테스트1',
+      date: todayStr + 'T12:30:00',
+      start: todayStr + 'T12:00:00',
+      end: todayStr + 'T13:00:00',
+    },
+    {
+      id: createEventId(),
+      title: '테스트2',
+      start: todayStr + 'T09:00:00',
+      end: todayStr + 'T10:00:00',
+    },
+    {
+      id: createEventId(),
+      title: '테스트3',
+      start: todayStr + 'T20:00:00',
+    },
+    {
+      id: createEventId(),
+      title: '테스트4',
+      start: todayStr + 'T18:00:00',
+    },
+    {
+      id: createEventId(),
+      title: '테스트5',
+      start: todayStr + 'T17:00:00',
+    },
+    {
+      id: createEventId(),
+      title: '테스트6',
+      start: todayStr + 'T16:00:00',
     },
   ];
 
-  const calendarRef = useRef(null);
-  const [currentMonth, setCurrentMonth] = useState(new Date());
+  function createEventId() {
+    return String(eventGuid++);
+  }
+  
+  const handleDateSelect = (selectInfo: DateSelectArg) => {
+    // const title = prompt('Please enter a new title for your event');
 
-  const onAfterRenderEvent = (event: { title: string }) => {
-    console.log(event.title);
+    // if (calendarRef.current && title) {
+    //   calendarRef.current.getApi().addEvent({
+    //     id: createEventId(),
+    //     title,
+    //     start: selectInfo.startStr,
+    //     end: selectInfo.endStr,
+    //     allDay: selectInfo.allDay,
+    //   });
+    // }
+    // Todo: 일정 상세 페이지 이동
   };
 
-  const onClickNext = () => {
-    const calendarInstance = calendarRef.current.getInstance();
-    calendarInstance.next();
-    setCurrentMonth(calendarInstance.getDate());
+  // const handleEventClick = (clickInfo: EventClickArg) => {
+  //   if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+  //     clickInfo.event.remove();
+  //   }
+  // };
+
+  const handleEvents = (events: EventApi[]) => {
+    setCurrentEvents(events);
   };
 
-  const onClickPrev = () => {
-    const calendarInstance = calendarRef.current.getInstance();
-    calendarInstance.prev();
-    setCurrentMonth(calendarInstance.getDate());
+  const renderEventContent = (eventContent: EventContentArg) => {
+    return (
+      <S.EventWrapper>
+        <S.EventTitle>{eventContent.event.title}</S.EventTitle>
+        <S.EventTime>{eventContent.timeText}</S.EventTime>
+      </S.EventWrapper>
+    );
   };
 
   return (
-    <div>
-      <div>{`${currentMonth.getFullYear()}년 ${currentMonth.getMonth() + 1}월`}</div>
-      <button onClick={onClickNext}>다음달</button>
-      <button onClick={onClickPrev}>이전달</button>
-      <Calendar
-        ref={calendarRef}
-        view="month"
-        month={{
-          dayNames: ['일', '월', '화', '수', '목', '금', '토'],
-          visibleWeeksCount: 5,
-        }}
-        calendars={calendars}
-        scheduleView
-        schedule={initialEvents}
-        onAfterRenderEvent={onAfterRenderEvent}
-        useCreationPopup={true}
-        useDetailPopup={true}
-       
-      />
-    </div>
+    <>
+      <S.CalendarWrapper>
+        <FullCalendar
+          ref={calendarRef}
+          plugins={plugins}
+          themeSystem="bootstrap5"
+          headerToolbar={headerToolbar}
+          initialView="dayGridMonth"
+          editable={true}
+          selectable={true}
+          selectMirror={true}
+          dayMaxEvents={1}
+          initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
+          select={handleDateSelect}
+          eventContent={renderEventContent} // custom render function
+          // eventClick={handleEventClick}
+          eventsSet={handleEvents} // called after events are initialized/added/changed/removed
+
+          /* you can update a remote database when these fire:
+          eventAdd={function(){}}
+          eventChange={function(){}}
+          eventRemove={function(){}}
+          */
+        />
+      </S.CalendarWrapper>
+    </>
   );
 }
 
