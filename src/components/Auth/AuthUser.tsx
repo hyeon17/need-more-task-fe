@@ -13,7 +13,6 @@ const AuthUser = ({ children }: AuthUserProps) => {
   const accessToken = getAccessToken();
 
   const { data: authMeData } = accessToken ? authMeAPI(accessToken) : { data: null };
-  // console.log('authMeData>>>', authMeData);
 
   useEffect(() => {
     if (accessToken && authMeData) {

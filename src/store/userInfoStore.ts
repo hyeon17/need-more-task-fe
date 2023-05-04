@@ -1,17 +1,9 @@
 import { create } from 'zustand';
-
-interface User {
-  department: string;
-  email: string;
-  fullName: string;
-  joinCompanyYear: string;
-  phone: string;
-  profileImageUrl: string;
-}
+import { IUser } from '@/type/authTypes';
 
 interface UserState {
-  userInfo: User | null;
-  setUserInfo: (userInfo: User) => void;
+  userInfo: IUser | null;
+  setUserInfo: (userInfo: IUser) => void;
   clearUserInfo: () => void;
 }
 

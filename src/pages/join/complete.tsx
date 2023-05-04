@@ -14,7 +14,7 @@ function complete() {
   console.log('me>>>', me);
 
   const onClickRoute = () => {
-    router.push('/calendar');
+    router.push('/login');
   };
 
   return (
@@ -27,10 +27,10 @@ function complete() {
           </A.LottieWrapper>
           <h1>안녕하세요 {me?.fullName}님 </h1>
           <h1>Task 받을 준비 되셨나요?</h1>
-          <p>지금 바로 Task 받으러 갑시다.</p>
+          <p>우선 로그인 하러 갑시다.</p>
 
           <A.CompleteButton colorScheme="teal" size="md" onClick={onClickRoute}>
-            Task 받으러 가기
+            로그인 하러 가기
           </A.CompleteButton>
         </A.CompleteBody>
       </A.Container>

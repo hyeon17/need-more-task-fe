@@ -8,7 +8,7 @@ export interface IJoinData {
   email?: string;
   password?: string;
   passwordCheck?: string;
-  imagePath?: string;
+  profileImageUrl?: string;
   phone?: string;
 }
 
