@@ -7,7 +7,7 @@ export interface IJoinData {
   fullname?: string;
   email?: string;
   password?: string;
-  confirmPassword?: string;
+  password_check?: string;
   imagePath?: string;
   phone?: string;
 }

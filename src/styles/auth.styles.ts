@@ -1,4 +1,4 @@
-import { Button, Divider } from '@chakra-ui/react';
+import { Button, Divider, Input } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { Select } from 'chakra-react-select';
 
@@ -106,3 +106,79 @@ export const PhoneNumWrapper = styled.div`
   display: flex;
   align-items: flex-end;
 `;
+
+// step3
+export const ProfileWrapper = styled.div`
+  /* display: flex; */
+  margin-top: 20px;
+`;
+
+export const ProfileIMGWrapper = styled.div`
+  margin-bottom: 30px;
+`;
+
+export const ProfileFigure = styled.figure`
+  margin: 10px auto 10px;
+  width: 150px;
+  height: 150px;
+  border: 1px solid ${({ theme }) => theme.outlineColor};
+  border-radius: 6px;
+  img {
+    object-fit: contain;
+  }
+`;
+export const SelectButton = styled.input`
+  color: #d7a1b5;
+`;
+
+// complete
+export const CompleteBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  min-height: 500px;
+
+  & > h1:nth-of-type(1) {
+    margin-top: 50px;
+  }
+  & > p:nth-of-type(1) {
+    margin-top: 50px;
+  }
+  & h1,
+  p {
+    /* margin-top: 50px; */
+    display: flex;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+  }
+`;
+
+// export const ButtonWrapper = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// `;
+
+export const CompleteButton = styled(ConfirmButton)`
+  /* position: absolute; */
+  /* margin-top: 200px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 60px;
+  left: 0;
+  /* width: 90%; */
+`;
+export const LottieWrapper = styled.div``;
+
+// export const ConfirmButton = styled(Button)`
+//   margin-top: 100px;
+//   width: 100%;
+//   background-color: ${({ theme }) => theme.primary};
+
+//   &:hover {
+//     background-color: ${({ theme }) => theme.outlineColor} !important;
+//   }
