@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    domains: ['localhost'],
+    domains: ['localhost', 'www.gravatar.com'],
   },
   experimental: {
     esmExternals: false,
