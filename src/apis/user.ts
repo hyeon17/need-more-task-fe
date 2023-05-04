@@ -3,6 +3,7 @@ import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from '@tan
 import { AxiosError, AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
 import { axiosInstance } from '@/apis/configs';
+import { useToast } from '@chakra-ui/react';
 
 export const joinAPI = (options?: UseMutationOptions<AxiosResponse<string>, AxiosError, IJoin>) => {
   const router = useRouter();
@@ -34,4 +35,38 @@ export const loginAPI = (options?: UseMutationOptions<AxiosResponse<string>, Axi
   //   console.log('response>>>', data);
   // };
   return useMutation([queryKey], queryFn, { ...options });
+};
+
+export const authMeAPI = (
+  accessToken: string,
+  options?: UseQueryOptions<AxiosResponse<any[]>, AxiosError, any, string[]>,
+) => {
+  const queryKey = `/auth/me`;
+  const queryFn = () =>
+    axiosInstance
+      .get(queryKey, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((res) => res.data);
+
+  const toast = useToast();
+
+  const onError = () => {
+    toast({
+      title: '유저정보 가져오기 실패.',
+      status: 'error',
+      duration: 9000,
+      isClosable: true,
+    });
+  };
+  // const onSuccess = (data: any) => useSetUserInfo()(data);
+  // onSuccess,
+  return useQuery([queryKey], queryFn, {
+    staleTime: 1000 * 60 * 5, // 5분
+    cacheTime: 1000 * 60 * 30, // 30분
+    onError,
+    ...options,
+  });
 };
