@@ -1,7 +1,7 @@
 import React from 'react';
-import { Avatar, Heading, Modal, ModalBody, ModalHeader, ModalOverlay, Stack, Tag, Text } from '@chakra-ui/react';
+import { Avatar, Heading, ModalBody, ModalHeader, Stack, Tag, Text } from '@chakra-ui/react';
 import { useModalState } from '@/store/modalStore';
-import { motion, Variants } from 'framer-motion';
+import { Variants } from 'framer-motion';
 import * as S from '@/styles/modal.styles';
 import { actionConstants, PriorityType, StatusType } from '@/constant/TaskOverview';
 
@@ -12,7 +12,7 @@ const overlayVariants: Variants = {
 };
 
 function TaskOverview() {
-  const { modal, id, onCloseModal } = useModalState();
+  const {} = useModalState();
   const setTagColor = (value: string) => {
     switch (value) {
       case StatusType.TODO:

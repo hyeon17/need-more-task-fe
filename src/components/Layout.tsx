@@ -2,7 +2,6 @@ import React from 'react';
 import styled from '@emotion/styled';
 import CommonHeader from './CommonHeader/CommonHeader';
 import { useModalState } from '@/store/modalStore';
-import TaskOverview from '@/components/modal/TaskOverview';
 import { AnimatePresence } from 'framer-motion';
 import ModalLayout from '@/components/modal/ModalLayout';
 

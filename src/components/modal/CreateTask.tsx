@@ -10,7 +10,6 @@ import {
   ModalBody,
   ModalHeader,
   Stack,
-  Text,
   Textarea,
 } from '@chakra-ui/react';
 import * as S from '@/styles/modal.styles';
@@ -39,7 +38,7 @@ const createActionConstant: CreateTaskProps = {
 };
 
 function CreateTask() {
-  const { modal, id, onCloseModal } = useModalState();
+  const {} = useModalState();
   const [title, setTitle] = useState('');
 
   const {
