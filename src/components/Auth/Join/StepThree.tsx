@@ -30,6 +30,8 @@ function StepThree() {
   const [thirdNum, onChangeThirdNum] = useInput('');
 
   const [values, setValues] = useState({ profileIMG: '' });
+  const [profileImageUrl, setProfileImageUrl] = useState('');
+
   const [profileUrl, setProfileUrl] = useState('');
 
   const toast = useToast();
@@ -73,7 +75,7 @@ function StepThree() {
     const phone = `${phone1}-${phone2}-${phone3}`;
 
     if (Object.keys(errors).length === 0) {
-      onSaveSignup({ ...me, phone });
+      onSaveSignup({ ...me, phone, profileImageUrl });
 
       joinMutate({ ...me } as IJoin);
     }
@@ -99,7 +101,7 @@ function StepThree() {
     console.log('e', e.target.value);
     if (e.target.files) {
       const file = e.target.files[0];
-      setProfileUrl(file.name);
+      setProfileImageUrl(file.name);
 
       if (!isProfileOversize(file.size)) return;
 
@@ -113,7 +115,7 @@ function StepThree() {
       };
     }
   };
-  console.log('profileUrl>>>', profileUrl);
+  console.log('profileImageUrl>>>', profileImageUrl);
 
   return (
     <form onSubmit={handleSubmit(onClickNext)}>
