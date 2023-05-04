@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import CommonHeader from './CommonHeader/CommonHeader';
 
 const LayoutComponent = styled.div`
   margin: 0 auto;
@@ -14,7 +15,7 @@ const LayoutComponent = styled.div`
 function Layout({ children, hasHeader }: { children: React.ReactNode; hasHeader?: boolean }) {
   return (
     <LayoutComponent>
-      {hasHeader && <header>Header</header>}
+      {hasHeader && <CommonHeader />}
       <main>{children}</main>
     </LayoutComponent>
   );
