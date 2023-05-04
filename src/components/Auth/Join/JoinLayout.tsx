@@ -21,7 +21,7 @@ interface IJoinLayout {
 }
 
 const StepContents = {
-  '1': { disabled: Step1Disabled, active: Step1Active, title: '소속 팀과 입사 연도 선택해 주세요.' },
+  '1': { disabled: Step1Disabled, active: Step1Active, title: '소속 팀과 입사 연도를 선택해 주세요.' },
   '2': { disabled: Step2Disabled, active: Step2Active, title: '로그인을 위한 정보를 알려주세요.' },
   '3': { disabled: Step3Disabled, active: Step3Active, title: '거의 다 됐습니다!' },
 };
