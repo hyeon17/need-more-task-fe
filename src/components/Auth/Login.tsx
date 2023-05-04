@@ -17,7 +17,7 @@ import { AxiosError } from 'axios';
 import { loginAPI } from '@/apis/user';
 import { useAccessTokenStore } from '@/store/acceessTokenStore';
 
-function Join() {
+function Login() {
   const router = useRouter();
   const { getAccessToken, onSaveAccessToken } = useAccessTokenStore();
   console.log('getAccessToken>>', getAccessToken());
@@ -60,6 +60,8 @@ function Join() {
       duration: 9000,
       isClosable: true,
     });
+
+    router.push('/profile/1');
   };
 
   const { mutate, isLoading } = loginAPI({ onSuccess, onError });
@@ -70,7 +72,6 @@ function Join() {
     if (Object.keys(errors).length === 0) {
       console.log('로그인 성공');
       mutate({ email: emailValue, password: passwordValue });
-      router.push('/');
     }
   };
 
@@ -142,4 +143,4 @@ function Join() {
   );
 }
 
-export default Join;
+export default Login;
