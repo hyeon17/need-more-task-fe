@@ -54,7 +54,7 @@ function Join() {
 
     onSaveAccessToken(data);
     toast({
-      title: '로그인 성공! 메인페이지로 이동합니다.',
+      title: '로그인 성공!',
       // description: '알 수 없는 오류가 발생했습니다.',
       status: 'success',
       duration: 9000,
@@ -70,7 +70,7 @@ function Join() {
     if (Object.keys(errors).length === 0) {
       console.log('로그인 성공');
       mutate({ email: emailValue, password: passwordValue });
-      // router.push('/');
+      router.push('/');
     }
   };
 
