@@ -7,3 +7,8 @@ export interface IJoin {
   department?: string;
   joinCompanyYear?: string;
 }
+
+export interface ILogin {
+  email: string;
+  password: string;
+}
