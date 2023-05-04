@@ -7,7 +7,6 @@ import { AnimatePresence } from 'framer-motion';
 
 
 const LayoutComponent = styled.div`
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
