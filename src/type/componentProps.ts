@@ -1,13 +1,14 @@
 import { DraggableProvided, DroppableProvided } from 'react-beautiful-dnd';
-import { TaskType } from '@/pages/kanban';
+import { TaskData } from '@/apis/kanban';
 
 export interface KanbanDroppableItemProps {
   status: string;
   provided: DroppableProvided;
-  data: TaskType[];
+  data: TaskData[];
 }
 
 export interface KanbanDraggableItemProps {
-  task: TaskType;
+  task: TaskData;
   provided: DraggableProvided;
+  index: number;
 }

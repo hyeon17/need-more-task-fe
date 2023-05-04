@@ -5,17 +5,16 @@ import { KanbanDraggableItemProps } from '@/type/componentProps';
 import { useModalState } from '@/store/modalStore';
 import { motion } from 'framer-motion';
 
-function KanbanDraggable({ task, provided }: KanbanDraggableItemProps) {
+function KanbanDraggable({ task, provided, index }: KanbanDraggableItemProps) {
   const { onOpenOverView, onSetModalId } = useModalState();
 
   const handleModal = () => {
     onSetModalId(String(task));
     onOpenOverView();
   };
-  console.log(task);
   return (
     <S.KanbanTaskItem
-      key={Number(task.id)}
+      key={index}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
       ref={provided.innerRef}
@@ -32,7 +31,7 @@ function KanbanDraggable({ task, provided }: KanbanDraggableItemProps) {
         </S.KanbanTaskItemCardBody>
         <S.KanbanTaskItemCardBody p="0" fontWeight="bold"></S.KanbanTaskItemCardBody>
         <CardFooter p="0">
-          <S.KanbanTaskDueDate isDue={false}>{task.date}</S.KanbanTaskDueDate>
+          <S.KanbanTaskDueDate isDue={false}>{String(task.endAt)}</S.KanbanTaskDueDate>
         </CardFooter>
       </Stack>
     </S.KanbanTaskItem>
