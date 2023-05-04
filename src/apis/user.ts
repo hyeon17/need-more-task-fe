@@ -70,3 +70,30 @@ export const authMeAPI = (
     ...options,
   });
 };
+
+export const getUserInfoAPI = (
+  accessToken?: string,
+  id?: string,
+  options?: UseQueryOptions<AxiosResponse<any[]>, AxiosError, any, string[]>,
+) => {
+  const queryKey = `/user/${id}`;
+  const queryFn = () =>
+    axiosInstance
+      .get(queryKey, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((res) => res.data);
+
+  // const onSuccess = (data: any) => {
+  //   if (data.error) {
+  //     return message.error(`${data.error} 다른 유저를 찾아보세요`);
+  //   }
+  // };
+
+  return useQuery([queryKey], queryFn, {
+    staleTime: 600000,
+    ...options,
+  });
+};
