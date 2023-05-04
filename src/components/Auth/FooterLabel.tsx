@@ -14,7 +14,7 @@ function FooterLabel({ isJoined }: IFooterLabel) {
       {isJoined ? (
         <>
           <span>처음이신가요?</span>
-          <button onClick={() => router.push('/join')}>회원가입 하기</button>
+          <button onClick={() => router.push('/join/1')}>회원가입 하기</button>
         </>
       ) : (
         <>
