@@ -29,10 +29,10 @@ function StepTwo() {
   const router = useRouter();
   const { me, onSaveSignup } = useUserJoinStore();
 
-  const [fullname, onChangeFullname] = useInput(me?.fullname ?? '');
+  const [fullname, onChangeFullname] = useInput(me?.fullName ?? '');
   const [email, onChangeEmail] = useInput(me?.email ?? '');
   const [password, onChangePassword] = useInput(me?.password ?? '');
-  const [confirmPassword, onChangeConfirmPassword] = useInput(me?.password_check ?? '');
+  const [confirmPassword, onChangeConfirmPassword] = useInput(me?.passwordCheck ?? '');
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -83,9 +83,9 @@ function StepTwo() {
 
   const onClickNext = (data: IFormInput) => {
     if (Object.keys(errors).length === 0) {
-      const { confirmPassword: password_check, ...rest } = data;
+      const { confirmPassword: passwordCheck, ...rest } = data;
 
-      onSaveSignup({ ...me, ...rest, password_check });
+      onSaveSignup({ ...me, ...rest, passwordCheck });
       router.push('/join/3');
     }
   };
@@ -109,15 +109,15 @@ function StepTwo() {
     <form onSubmit={handleSubmit(onClickNext)}>
       {/* 이름 */}
       <A.InputContainer>
-        <FormControl isInvalid={Boolean(errors.fullname)}>
-          <FormLabel htmlFor="fullname">이름</FormLabel>
+        <FormControl isInvalid={Boolean(errors.fullName)}>
+          <FormLabel htmlFor="fullName">이름</FormLabel>
           <Input
-            id="fullname"
+            id="fullName"
             placeholder="이름을 입력하세요"
             variant="flushed"
             borderColor="outlineColor"
             focusBorderColor="inputFocusColor"
-            {...register('fullname', {
+            {...register('fullName', {
               required: '이름은 필수 입력사항 입니다.',
               maxLength: {
                 value: 20,
@@ -125,7 +125,7 @@ function StepTwo() {
               },
             })}
           />
-          <FormErrorMessage>{errors.fullname && errors.fullname?.message?.toString()}</FormErrorMessage>
+          <FormErrorMessage>{errors.fullName && errors.fullName?.message?.toString()}</FormErrorMessage>
         </FormControl>
       </A.InputContainer>
 

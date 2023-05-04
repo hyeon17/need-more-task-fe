@@ -4,10 +4,10 @@ import { devtools } from 'zustand/middleware';
 export interface IJoinData {
   department?: string;
   joinCompanyYear?: number;
-  fullname?: string;
+  fullName?: string;
   email?: string;
   password?: string;
-  password_check?: string;
+  passwordCheck?: string;
   imagePath?: string;
   phone?: string;
 }
