@@ -38,6 +38,11 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
   const [fullNameValue, setFullNameValue] = useState<string | null>(null);
   const [emailValue, setEmailValue] = useState<string | null>(null);
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const handleShowPassword = () => setShowPassword(!showPassword);
+  const handleShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
+
   const { isOpen: isOpenCheckPassword, onOpen: onOpenCheckPassword, onClose: onCloseCheckPassword } = useDisclosure();
 
   // const [department, setDepartment] = useState('');
@@ -263,6 +268,71 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
           </FormControl>
         </A.InputContainer>
       </P.AccountWrapper>
+
+      {/* 새 비밀번호 */}
+      <A.InputContainer>
+        <FormControl isInvalid={Boolean(errors.password)}>
+          <FormLabel htmlFor="password">새 비밀번호</FormLabel>
+          <InputGroup size="md" variant="flushed">
+            <Input
+              isDisabled={!edit}
+              id="password"
+              placeholder="영어 소문자 6자~16자, (특수문자 . - 만 허용)"
+              pr="4.5rem"
+              variant="flushed"
+              borderColor="outlineColor"
+              focusBorderColor="inputFocusColor"
+              type={showPassword ? 'text' : 'password'}
+              {...register('password', {
+                required: '필수 입력사항 입니다.',
+                pattern: {
+                  value: /^[a-zA-Z0-9.\-]{6,16}$/,
+                  message: '영어 소문자 6자~16자, (특수문자 . - 만 허용)',
+                },
+              })}
+            />
+            <InputRightElement width="4.5rem">
+              <Button h="1.75rem" size="sm" onClick={handleShowPassword}>
+                {showPassword ? '보기' : '숨기기'}
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+          <FormErrorMessage>{errors.password && errors.password?.message?.toString()}</FormErrorMessage>
+        </FormControl>
+      </A.InputContainer>
+
+      {/* 새 비밀번호 확인 */}
+      <A.InputContainer>
+        <FormControl isInvalid={Boolean(errors.confirmPassword)}>
+          <FormLabel htmlFor="confirmPassword">새 비밀번호 확인</FormLabel>
+          <InputGroup size="md" variant="flushed">
+            <Input
+              isDisabled={!edit}
+              id="confirmPassword"
+              placeholder="영어 소문자 6자~16자, (특수문자 . - 만 허용)"
+              pr="4.5rem"
+              variant="flushed"
+              borderColor="outlineColor"
+              focusBorderColor="inputFocusColor"
+              type={showConfirmPassword ? 'text' : 'password'}
+              {...register('confirmPassword', {
+                required: '필수 입력사항 입니다.',
+                validate: (val: string) => {
+                  if (watch('password') !== val) {
+                    return '입력하신 비밀번호/비밀번호 확인이 일치하지 않습니다.';
+                  }
+                },
+              })}
+            />
+            <InputRightElement width="4.5rem">
+              <Button h="1.75rem" size="sm" onClick={handleShowConfirmPassword}>
+                {showConfirmPassword ? '보기' : '숨기기'}
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+          <FormErrorMessage>{errors.confirmPassword && errors.confirmPassword?.message?.toString()}</FormErrorMessage>
+        </FormControl>
+      </A.InputContainer>
 
       {/* Edit 버튼 */}
       {userInfo?.userId === currentLoginUserInfo?.userId && (
