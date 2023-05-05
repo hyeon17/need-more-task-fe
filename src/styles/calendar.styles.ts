@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import theme from './theme';
 
 export const Container = styled.div`
   width: 1000px;
@@ -15,23 +16,15 @@ export const CalendarWrapper = styled.div`
     color: blue;
     text-decoration: none;
   }
-  /* 버튼  */
-  /* .fc-button {
-    background-color: ${({ theme }) => theme.primary};
-    &:active,
-    &:hover {
-      background-color: ${({ theme }) => theme.successColor};
-      box-shadow: none;
-    }
-    &:focus {
-      box-shadow:none;
-    }
-  } */
-  .btn{
+  .btn {
     background-color: ${({ theme }) => theme.primary};
   }
-  .fc .fc-daygrid-day-frame{
-    height:100px;
+  .fc .fc-daygrid-day-frame {
+    height: 100px;
+  }
+  .fc {
+    --fc-event-bg-color: none;
+    --fc-event-border-color: none;
   }
 `;
 
@@ -49,6 +42,20 @@ export const EventWrapper = styled.div`
   overflow: hidden;
   padding: 5px;
   border-radius: 7px;
-  background-color: ${({ theme }) => theme.primary};
+  background-color: ${({ color }) => {
+    switch (color) {
+      case 'URGENT':
+        return theme.errorColor;
+      case 'HIGH':
+        return theme.warningColor;
+      case 'MEDIUM':
+        return theme.inputWarningColor;
+      case 'LOW':
+        return theme.successColor;
+      default:
+        return theme.primary;
+    }
+  }};
   color: ${({ theme }) => theme.white};
+  cursor: pointer;
 `;
