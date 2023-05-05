@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { AccountInfoProps, IUser } from '@/type/authTypes';
 import StepOne from '../Auth/Join/StepOne';
-import { FormControl } from '@chakra-ui/react';
+import { FormControl, Skeleton } from '@chakra-ui/react';
 import { teamOptions, getJoinCompanyYear } from '@/utils';
 import * as A from '@/styles/auth.styles';
 import * as P from '@/styles/profile.styles';
@@ -12,7 +12,7 @@ interface IAccountInfo {
 }
 
 function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
-  console.log('userInfo>>>', userInfo);
+  // console.log('userInfo>>>', userInfo);
   // const { department, fullName, joinCompanyYear, email, phone, profileImageUrl } = userInfo;
   const [edit, setEdit] = useState(false);
   const [department, setDepartment] = useState('');
@@ -26,6 +26,9 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
   };
   const findSelectedDepartment = (dept?: string) => {
     return teamOptions.find((option) => option.value === dept);
+  };
+  const findSelectedJoinCompanyYear = (year?: number) => {
+    return getJoinCompanyYear().find((option) => option.value === year);
   };
 
   const joinCompanyYearOptions = useMemo(() => getJoinCompanyYear(), []);
@@ -44,23 +47,26 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
       <P.AccountWrapper>
         <h1>계정 정보</h1>
         {/* department */}
-        <FormControl isRequired>
-          <label>현재 소속 팀은 어디인가요?</label>
-          <A.StyledSelect
-            instanceId="team-select"
-            aria-live="polite"
-            name="teams"
-            options={teamOptions}
-            placeholder="팀 선택"
-            closeMenuOnSelect={true}
-            size="sm"
-            value={findSelectedDepartment(department || userInfo?.department)}
-            onChange={handleDepartmentChange}
-            isReadOnly={!edit}
-            isInvalid={!edit}
-            isRequired
-          />
-        </FormControl>
+
+        <A.InputContainer>
+          <FormControl isRequired>
+            <label>현재 소속 팀은 어디인가요?</label>
+            <A.StyledSelect
+              instanceId="team-select"
+              aria-live="polite"
+              name="teams"
+              options={teamOptions}
+              placeholder="팀 선택"
+              closeMenuOnSelect={true}
+              size="sm"
+              value={findSelectedDepartment(department || userInfo?.department)}
+              onChange={handleDepartmentChange}
+              isReadOnly={!edit}
+              isInvalid={!edit}
+              isRequired
+            />
+          </FormControl>
+        </A.InputContainer>
 
         {/* 입사연도 선택 */}
         <A.InputContainer>
@@ -74,8 +80,7 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
               placeholder="입사 연도 선택"
               closeMenuOnSelect={true}
               size="sm"
-              // value={joinCompanyYear || userInfo?.joinCompanyYear}
-              value={userInfo?.joinCompanyYear}
+              value={findSelectedJoinCompanyYear(parseInt(joinCompanyYear || userInfo?.joinCompanyYear))}
               onChange={handleJoinCompanyYearChange}
               isReadOnly={!edit}
               isInvalid={!edit}
@@ -83,6 +88,7 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
             />
           </FormControl>
         </A.InputContainer>
+        {/*  */}
       </P.AccountWrapper>
       {/* Edit 버튼 */}
       {userInfo?.userId === currentLoginUserInfo?.userId && (
