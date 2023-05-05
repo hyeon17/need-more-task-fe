@@ -18,11 +18,11 @@ function ProfilePage({ id }: { id: string }) {
   const { userInfo: currentLoginUserInfo } = useUserInfo();
   const { getAccessToken } = useAccessTokenStore();
   const accessToken = getAccessToken();
-  console.log('accessToken>>', accessToken);
+  // console.log('accessToken>>', accessToken);
 
-  console.log('query', router.query?.id);
-  const userId = router.query?.id;
-  console.log('id>>', id);
+  // console.log('query', router.query?.id);
+  // const userId = router.query?.id;
+  // console.log('id>>', id);
   // console.log('currentLoginUserInfo>>>', currentLoginUserInfo);
 
   const { data: userInfo } = accessToken && id ? getUserInfoAPI(accessToken, id) : { data: null };
