@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as S from '@/styles/kanban.styles';
 import { Avatar, CardFooter, Flex, Stack } from '@chakra-ui/react';
 import { KanbanDraggableItemProps } from '@/type/componentProps';

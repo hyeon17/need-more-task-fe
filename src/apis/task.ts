@@ -1,4 +1,4 @@
-import { KanbanBoardDataInterface, TaskData } from '@/apis/kanban';
+import { KanbanBoardDataInterface } from '@/apis/kanban';
 import { axiosInstance } from '@/apis/configs';
 
 export type TaskDetailData = KanbanBoardDataInterface;
