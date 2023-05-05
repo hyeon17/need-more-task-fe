@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { FormEventHandler, useMemo, useState } from 'react';
 import { AccountInfoProps, IJoin, IUser } from '@/type/authTypes';
 import StepOne from '../Auth/Join/StepOne';
 import {
@@ -51,9 +51,9 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     setEdit(true);
   };
 
-  const handleSaveProfile = () => {
-    setEdit(false);
-  };
+  // const handleSaveProfile = () => {
+  //   setEdit(false);
+  // };
 
   const toast = useToast();
 
@@ -94,17 +94,29 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
   } = useForm<any>();
 
   const onClickSave = (data: IJoin) => {
-    console.log('업데이트 data>>>', data);
+    console.log('업데이트 data>>>', { ...data, department, joinCompanyYear });
 
     if (Object.keys(errors).length === 0) {
       // 저장 api
-      setEdit(false);
       console.log('저장');
+      setEdit(false);
     }
   };
 
+  const onSubmit = (e: any) => {
+    e.preventDefault();
+    handleSubmit(onClickSave)();
+  };
+
   return (
-    <form onSubmit={handleSubmit(onClickSave)}>
+    // <form onSubmit={handleSubmit(onClickSave)}>
+    <form
+      // onSubmit={(e) => {
+      //   e.preventDefault();
+      //   handleSubmit(onClickSave)();
+      // }}
+      onSubmit={onSubmit}
+    >
       <P.AccountWrapper>
         <h1>계정 정보</h1>
         {/* department */}
@@ -224,7 +236,13 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
       {userInfo?.userId === currentLoginUserInfo?.userId && (
         <P.ButtonWrapper>
           {edit ? (
-            <P.UpdateButton colorScheme="teal" size="md" color="white" onClick={handleSaveProfile} type="submit">
+            <P.UpdateButton
+              colorScheme="teal"
+              size="md"
+              color="white"
+              type="button"
+              onClick={handleSubmit(onClickSave)}
+            >
               저장
             </P.UpdateButton>
           ) : (
