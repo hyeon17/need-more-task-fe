@@ -18,6 +18,7 @@ import * as P from '@/styles/profile.styles';
 import { useForm } from 'react-hook-form';
 import { isDuplicatedEmailAPI } from '@/apis/user';
 import { AxiosError } from 'axios';
+import CheckPasswordModal from './CheckPasswordModal';
 
 interface IAccountInfo {
   userInfo: IUser;
@@ -48,7 +49,7 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
 
   // 버튼
   const handleEditProfile = () => {
-    setEdit(true);
+    // setEdit(true);
   };
 
   // const handleSaveProfile = () => {
@@ -246,9 +247,11 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
               저장
             </P.UpdateButton>
           ) : (
-            <P.UpdateButton colorScheme="teal" size="md" color="white" onClick={handleEditProfile}>
-              프로필 업데이트
-            </P.UpdateButton>
+            <CheckPasswordModal>
+              <P.UpdateButton colorScheme="teal" size="md" color="white" onClick={handleEditProfile}>
+                프로필 업데이트
+              </P.UpdateButton>
+            </CheckPasswordModal>
           )}
 
           <P.CancelButton color="labelColor">취소</P.CancelButton>
