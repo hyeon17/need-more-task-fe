@@ -1,4 +1,4 @@
-import { Button } from '@chakra-ui/react';
+import { Button, ModalFooter, ModalHeader } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
@@ -114,4 +114,16 @@ export const CancelButton = styled(Button)`
   width: 140px;
   height: 50px;
   font-size: 12px;
+`;
+
+// 비밀번호 확인 모달
+export const StyledModalHeader = styled(ModalHeader)`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  text-align: center;
+`;
+export const StyledModalFooter = styled(ModalFooter)`
+  display: flex;
+  justify-content: space-between;
 `;
