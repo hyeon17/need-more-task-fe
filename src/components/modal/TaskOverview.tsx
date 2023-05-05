@@ -1,60 +1,61 @@
 import React from 'react';
 import { Avatar, Heading, ModalBody, ModalHeader, Stack, Tag, Text } from '@chakra-ui/react';
 import { useModalState } from '@/store/modalStore';
-import { Variants } from 'framer-motion';
 import * as S from '@/styles/modal.styles';
-import { actionConstants, PriorityType, StatusType } from '@/constant/TaskOverview';
-
-const overlayVariants: Variants = {
-  initial: { opacity: 0, backgroundColor: 'rgba(0, 0, 0, 0)' },
-  animate: { backgroundColor: 'rgba(0, 0, 0, 0.7)', opacity: 1 },
-  exit: { opacity: 0, backgroundColor: 'rgba(0, 0, 0, 0)' },
-};
+import { actionConstantsType } from '@/constant/TaskOverview';
+import { setTagColor } from '@/utils';
+import { useQuery } from '@tanstack/react-query';
+import { getTaskDetail } from '@/apis/task';
 
 function TaskOverview() {
-  const {} = useModalState();
-  const setTagColor = (value: string) => {
-    switch (value) {
-      case StatusType.TODO:
-        return 'errorColor';
-      case StatusType.IN_PROGRESS:
-        return 'warningColor';
-      case StatusType.DONE:
-        return 'successColor';
-      case PriorityType.URGENT:
-        return 'errorColor';
-      case PriorityType.HIGH:
-        return 'warningColor';
-      case PriorityType.MEDIUM:
-        return 'successColor';
-      case PriorityType.LOW:
-        return 'primary';
-      default:
-        return 'labelColor';
-    }
+  const { id } = useModalState();
+  const { data } = useQuery(['task', id], () => getTaskDetail(Number(id)));
+  if (!data) return null;
+  const { title, desc, assignee, endAt, progress, priority } = data.data[0];
+
+  const actionConstants: actionConstantsType = {
+    DUE_DATE: {
+      key: 'Due Date',
+      date: endAt,
+      value: 'Due Date',
+    },
+    ASSIGNEE: {
+      key: 'Assignee',
+    },
+    SET_STATUS: {
+      key: 'Set Status',
+      value: progress,
+    },
+    SET_PRIORITY: {
+      key: 'Set Priority',
+      value: priority,
+    },
+    DELETE_TASK: {
+      key: 'Delete Task',
+    },
+    EDIT_TASK: {
+      key: 'Edit Task',
+    },
   };
+
   return (
     <S.ModalContentBox>
       <Stack>
-        <ModalHeader textAlign="center">Task OverView</ModalHeader>
+        <ModalHeader textAlign="center">{title}</ModalHeader>
         <ModalBody display="flex" width="100%" minHeight="63vh" p="0" borderTop="1px solid" borderColor="outlineColor">
           <S.ModalTaskContentBox>
             <div className="title">
               <Heading fontSize="1.4rem">Title</Heading>
               <Text fontSize="1rem">Assigned to</Text>
               <div className="avatar">
-                {[1, 2, 3].map((item) => (
-                  <Avatar size="xs" key={item} />
+                {assignee.map((item) => (
+                  <Avatar size="xs" key={item.userId} />
                 ))}
               </div>
             </div>
             <div className="desc">
               <Heading fontSize="1.4rem">Description</Heading>
-              <Text>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aspernatur aut culpa delectus
-                distinctio eum eveniet, illum impedit in inventore nihil qui quibusdam, reiciendis saepe sit velit
-                voluptatem. Soluta, tempore?
-              </Text>
+              <Text>{desc}</Text>
             </div>
           </S.ModalTaskContentBox>
           <S.ModalTaskActionBox>
@@ -62,7 +63,7 @@ function TaskOverview() {
               <div className="action" key={item.key}>
                 <Heading fontSize="1rem">{item.key}</Heading>
                 {item.value && (
-                  <Tag size="lg" backgroundColor={setTagColor(item.value)} color="white">
+                  <Tag size="lg" backgroundColor={setTagColor(item.value} color="white">
                     {item.value}
                   </Tag>
                 )}

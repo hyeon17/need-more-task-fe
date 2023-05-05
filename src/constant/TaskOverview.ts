@@ -14,6 +14,7 @@ export enum PriorityType {
 export type actionConstantsType = {
   DUE_DATE: {
     key: string;
+    date?: Date;
     value?: string;
   };
   ASSIGNEE: {
@@ -36,28 +37,4 @@ export type actionConstantsType = {
     key: string;
     value?: string;
   };
-};
-
-export const actionConstants: actionConstantsType = {
-  DUE_DATE: {
-    key: 'Due Date',
-    value: '2021-08-20',
-  },
-  ASSIGNEE: {
-    key: 'Assignee',
-  },
-  SET_STATUS: {
-    key: 'Set Status',
-    value: StatusType.TODO,
-  },
-  SET_PRIORITY: {
-    key: 'Set Priority',
-    value: PriorityType.LOW,
-  },
-  DELETE_TASK: {
-    key: 'Delete Task',
-  },
-  EDIT_TASK: {
-    key: 'Edit Task',
-  },
 };
