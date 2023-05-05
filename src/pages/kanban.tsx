@@ -7,7 +7,7 @@ import KanbanDroppable from '@/components/kanban/KanbanDroppable';
 function Kanban() {
   const onDragEnd = () => {};
   return (
-    <Layout>
+    <Layout hasHeader>
       <Heading size="xl">Kanban Board</Heading>
       <Stack direction="row" alignItems="start" spacing="6" minHeight="80vh">
         <DragDropContext onDragEnd={onDragEnd}>

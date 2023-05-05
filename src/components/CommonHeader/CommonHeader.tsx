@@ -10,6 +10,7 @@ import Link from 'next/link';
 
 function CommonHeader() {
   const { userInfo } = useUserInfo();
+  console.log('userInfo>>', userInfo);
 
   return (
     <C.Container>
@@ -18,7 +19,9 @@ function CommonHeader() {
         <C.Nav>
           <ul>
             <li>Dashboard</li>
-            <li>Kanban</li>
+            <li>
+              <Link href={`/kanban`}>Kanban</Link>
+            </li>
             <li>Calendar</li>
           </ul>
           <C.CreateTaskButton>New Task</C.CreateTaskButton>
@@ -42,10 +45,10 @@ function CommonHeader() {
           <MenuDivider />
           <MenuGroup title="프로필">
             <MenuItem>
-              <Link href={`/profile`}>프로필 편집</Link>
+              <Link href={`/profile/${userInfo?.userId}`}>프로필 편집</Link>
             </MenuItem>
             <MenuItem>
-              <Link href={`/profile`}>권한 신청 변경</Link>
+              <Link href={`/profile/${userInfo?.userId}`}>권한 변경 신청</Link>
             </MenuItem>
           </MenuGroup>
         </MenuList>
