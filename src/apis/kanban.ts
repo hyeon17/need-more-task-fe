@@ -1,6 +1,7 @@
 import { axiosInstance } from '@/apis/configs';
+import { PriorityType, StatusType } from '@/constant/TaskOverview';
 
-export interface PostInterface {
+export interface KanbanBoardDataInterface {
   status: number;
   msg: string;
   data: TaskData[];
@@ -9,7 +10,7 @@ export interface PostInterface {
 export type TaskProgress = 'TODO' | 'IN_PROGRESS' | 'DONE';
 
 export interface TaskData {
-  taskID: number;
+  taskId: number;
   taskOwner: TaskOwner;
   createdAt: string;
   updatedAt: string;
@@ -18,22 +19,22 @@ export interface TaskData {
   title: string;
   desc: string;
   assignee: Assignee[];
-  priority: string;
-  progress: TaskProgress;
+  priority: PriorityType;
+  progress: StatusType;
 }
 
 export interface Assignee {
-  userID: number;
+  userId: number;
   profileImageURL: string;
 }
 
 export interface TaskOwner {
-  userID: number;
+  userId: number;
   fullName: string;
   profileImageURL: string;
 }
 
 export const getKanbanBoard = async () => {
-  const res = await axiosInstance.get<PostInterface>(`/kanban`);
+  const res = await axiosInstance.get<KanbanBoardDataInterface>(`/kanban`);
   return res.data;
 };
