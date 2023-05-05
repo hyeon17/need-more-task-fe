@@ -1,4 +1,4 @@
-import React, { FormEventHandler, useMemo, useState } from 'react';
+import React, { FormEventHandler, useEffect, useMemo, useState } from 'react';
 import { AccountInfoProps, IJoin, IUser } from '@/type/authTypes';
 import StepOne from '../Auth/Join/StepOne';
 import {
@@ -27,11 +27,19 @@ interface IAccountInfo {
 }
 
 function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
-  // console.log('userInfo>>>', userInfo);
   // const { department, fullName, joinCompanyYear, email, phone, profileImageUrl } = userInfo;
+  const {
+    watch,
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<any>();
+  const [edit, setEdit] = useState(false);
+  const [fullNameValue, setFullNameValue] = useState<string | null>(null);
+  const [emailValue, setEmailValue] = useState<string | null>(null);
+
   const { isOpen: isOpenCheckPassword, onOpen: onOpenCheckPassword, onClose: onCloseCheckPassword } = useDisclosure();
 
-  const [edit, setEdit] = useState(false);
   // const [department, setDepartment] = useState('');
   // const [joinCompanyYear, setJoinCompanyYear] = useState('');
   const [department, setDepartment] = useState(userInfo?.department || '');
@@ -58,9 +66,9 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
   };
 
   const handleCancelProfileSave = () => {
+    setFullNameValue(null);
+    setEmailValue(null);
     setEdit(false);
-    setDepartment(userInfo?.department || '');
-    setJoinCompanyYear(userInfo?.joinCompanyYear?.toString() || '');
   };
 
   const toast = useToast();
@@ -122,19 +130,12 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     isDuplicatedEmailMutate(watch('email'));
   };
 
-  const {
-    watch,
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm<any>();
-
   const onClickSave = (data: IJoin) => {
     console.log('업데이트 data>>>', { ...data, department, joinCompanyYear });
 
     if (Object.keys(errors).length === 0) {
-      // 저장 api
-      console.log('저장');
+      setFullNameValue(watch('fullName'));
+      setEmailValue(watch('email'));
       setEdit(false);
     }
   };
@@ -201,9 +202,9 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
             <FormLabel htmlFor="fullName">이름</FormLabel>
             <Input
               isDisabled={!edit}
-              value={watch('fullName') || userInfo?.fullName}
+              // value={fullNameValue === null ? userInfo?.fullName || '' : fullNameValue}
               // value={watch('fullName')}
-              // defaultValue={userInfo?.fullName || watch('fullName')}
+              defaultValue={userInfo?.fullName || watch('fullName')}
               id="fullName"
               placeholder="이름을 입력하세요"
               variant="flushed"
@@ -234,7 +235,8 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
                 variant="flushed"
                 borderColor="outlineColor"
                 focusBorderColor="inputFocusColor"
-                defaultValue={userInfo?.email || ''}
+                // value={watch('email')}
+                defaultValue={userInfo?.email || watch('email')}
                 {...register('email', {
                   required: '이메일은 필수 입력사항입니다.',
                   pattern: {
