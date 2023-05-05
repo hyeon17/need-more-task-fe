@@ -140,7 +140,7 @@ function StepThree() {
       {/* 연락처 */}
       <A.InputContainer>
         <FormControl isInvalid={Boolean(errors.phone)}>
-          <FormLabel htmlFor="phone1">얀락처</FormLabel>
+          <FormLabel htmlFor="phone1">연락처</FormLabel>
           <A.PhoneNumWrapper>
             <Input
               id="phone1"

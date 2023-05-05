@@ -1,5 +1,5 @@
 import React, { FormEventHandler, useEffect, useMemo, useState } from 'react';
-import { AccountInfoProps, IJoin, IUser } from '@/type/authTypes';
+import { AccountInfoProps, IJoin, IUpdateProfile, IUser } from '@/type/authTypes';
 import StepOne from '../Auth/Join/StepOne';
 import {
   Button,
@@ -17,7 +17,7 @@ import { teamOptions, getJoinCompanyYear } from '@/utils';
 import * as A from '@/styles/auth.styles';
 import * as P from '@/styles/profile.styles';
 import { useForm } from 'react-hook-form';
-import { isDuplicatedEmailAPI, validatePasswordAPI } from '@/apis/user';
+import { isDuplicatedEmailAPI, updateUserInfoAPI, validatePasswordAPI } from '@/apis/user';
 import { AxiosError } from 'axios';
 import CheckPasswordModal from './CheckPasswordModal';
 
@@ -130,18 +130,35 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     onError: onErrorCheckPassword,
   });
 
-  const handleIsDuplicated = () => {
-    console.log('중복확인');
-    isDuplicatedEmailMutate(watch('email'));
+  // const handleIsDuplicated = () => {
+  //   console.log('중복확인');
+  //   isDuplicatedEmailMutate(watch('email'));
+  // };
+  const onSuccessUpdateProfile = (data: any) => {
+    console.log('data', data);
   };
+  const onErrorUpdateProfile = (error: AxiosError) => {
+    toast({
+      title: '프로필 업데이트 실패.',
+      status: 'error',
+      duration: 9000,
+      isClosable: true,
+    });
+  };
+  const { mutate: updateProfileMutate, isLoading: isLoadingUpdateProfile } = updateUserInfoAPI(userInfo?.userId, {
+    onSuccess: onSuccessUpdateProfile,
+    onError: onErrorUpdateProfile,
+  });
 
-  const onClickSave = (data: IJoin) => {
-    console.log('업데이트 data>>>', { ...data, department, joinCompanyYear });
+  const onClickSave = (data: IUpdateProfile) => {
+    // console.log('업데이트 data>>>', { ...data, department, joinCompanyYear });
+    console.log('data>>', data);
 
     if (Object.keys(errors).length === 0) {
       setFullNameValue(watch('fullName'));
       setEmailValue(watch('email'));
       setEdit(false);
+      updateProfileMutate(data);
     }
   };
 
@@ -343,6 +360,70 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
         {/*  */}
       </P.AccountWrapper>
 
+      {/* 연락처 */}
+      <A.InputContainer>
+        <FormControl isInvalid={Boolean(errors.phone)}>
+          <FormLabel htmlFor="phone1">연락처</FormLabel>
+          <A.PhoneNumWrapper>
+            <Input
+              isDisabled={!edit}
+              id="phone1"
+              placeholder="010"
+              variant="flushed"
+              borderColor="outlineColor"
+              focusBorderColor="inputFocusColor"
+              type="number"
+              maxLength={3}
+              defaultValue={userInfo?.phone.slice(0, 3) || watch('phon1')}
+              {...register('phone1', {
+                required: '필수 입력사항 입니다.',
+                pattern: {
+                  value: /^\d{3}$/,
+                  message: '3자리 숫자만 입력 가능합니다.',
+                },
+              })}
+            />
+            <Input
+              isDisabled={!edit}
+              id="phone2"
+              placeholder="xxxx"
+              variant="flushed"
+              borderColor="outlineColor"
+              focusBorderColor="inputFocusColor"
+              type="number"
+              maxLength={4}
+              defaultValue={userInfo?.phone.slice(4, 8) || watch('phon2')}
+              {...register('phone2', {
+                required: '필수 입력사항 입니다.',
+                pattern: {
+                  value: /^\d{4}$/,
+                  message: '4자리 숫자만 입력 가능합니다.',
+                },
+              })}
+            />
+            <Input
+              isDisabled={!edit}
+              id="phone3"
+              placeholder="xxxx"
+              variant="flushed"
+              borderColor="outlineColor"
+              focusBorderColor="inputFocusColor"
+              type="number"
+              maxLength={4}
+              defaultValue={userInfo?.phone.slice(9, 13) || watch('phon3')}
+              {...register('phone3', {
+                required: '필수 입력사항 입니다.',
+                pattern: {
+                  value: /^\d{4}$/,
+                  message: '4자리 숫자만 입력 가능합니다.',
+                },
+              })}
+            />
+          </A.PhoneNumWrapper>
+          <FormErrorMessage>{errors.phone && errors.phone?.message?.toString()}</FormErrorMessage>
+        </FormControl>
+      </A.InputContainer>
+
       {/* Edit 버튼 */}
       {userInfo?.userId === currentLoginUserInfo?.userId && (
         <P.ButtonWrapper>
@@ -353,6 +434,7 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
               color="white"
               type="button"
               onClick={handleSubmit(onClickSave)}
+              isLoading={isLoadingUpdateProfile}
             >
               저장
             </P.UpdateButton>
