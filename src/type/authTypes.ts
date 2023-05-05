@@ -31,3 +31,14 @@ export interface IValidatePassword {
   password: string;
   passwordCheck: string;
 }
+
+export interface IUpdateProfile {
+  profileId?: string;
+  department?: string;
+  fullName: string;
+  joinCompanyYear: string;
+  phone?: string;
+  profileImageUrl: string;
+  password?: string;
+  passwordCheck?: string;
+}
