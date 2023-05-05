@@ -20,6 +20,7 @@ export const inputProps = {
 };
 
 function StepThree() {
+  const toast = useToast();
   const router = useRouter();
   const { me, onSaveSignup } = useUserJoinStore();
   // const {} = me
@@ -33,8 +34,6 @@ function StepThree() {
   const [profileImageUrl, setProfileImageUrl] = useState('');
 
   const [profileUrl, setProfileUrl] = useState('');
-
-  const toast = useToast();
 
   console.log('me', me);
 
@@ -68,14 +67,14 @@ function StepThree() {
     phone2: string;
     phone3: string;
   }
-
+  let profileId = '1';
   const onClickNext = (data: IFormInput) => {
     console.log('data', data);
     const { phone1, phone2, phone3 } = data;
     const phone = `${phone1}-${phone2}-${phone3}`;
 
     if (Object.keys(errors).length === 0) {
-      onSaveSignup({ ...me, phone, profileImageUrl });
+      onSaveSignup({ ...me, phone, profileId });
 
       joinMutate({ ...me } as IJoin);
     }
