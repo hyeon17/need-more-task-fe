@@ -16,7 +16,7 @@ export const joinAPI = (options?: UseMutationOptions<AxiosResponse<string>, Axio
 };
 
 export const isDuplicatedEmailAPI = (options?: UseMutationOptions<AxiosResponse<string>, AxiosError, IJoin>) => {
-  const queryKey = `/validate/email`;
+  const queryKey = `/email/validate`;
   const queryFn = (data: IJoin) => axiosInstance.post(queryKey, data).then((res) => res.data);
 
   // const onSuccess = () => router.push('/join/complete');
