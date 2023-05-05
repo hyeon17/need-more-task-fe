@@ -2,7 +2,7 @@ import { IJoin, ILogin, IValidatePassword } from '@/type/authTypes';
 import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { AxiosError, AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
-import { axiosInstance } from '@/apis/configs';
+import { axiosInstance, axiosWithToken } from '@/apis/configs';
 import { useToast } from '@chakra-ui/react';
 
 export const joinAPI = (options?: UseMutationOptions<AxiosResponse<string>, AxiosError, IJoin>) => {
@@ -19,10 +19,6 @@ export const isDuplicatedEmailAPI = (options?: UseMutationOptions<AxiosResponse<
   const queryKey = `/email/validate`;
   const queryFn = (data: IJoin) => axiosInstance.post(queryKey, data).then((res) => res.data);
 
-  // const onSuccess = () => router.push('/join/complete');
-  // const onSuccess = (data: any) => {
-  //   console.log('response>>>', data);
-  // };
   return useMutation([queryKey], queryFn, { ...options });
 };
 
@@ -30,10 +26,6 @@ export const loginAPI = (options?: UseMutationOptions<AxiosResponse<string>, Axi
   const queryKey = `/login`;
   const queryFn = (data: ILogin) => axiosInstance.post(queryKey, data).then((res) => res.data);
 
-  // const onSuccess = () => router.push('/join/complete');
-  // const onSuccess = (data: any) => {
-  //   console.log('response>>>', data);
-  // };
   return useMutation([queryKey], queryFn, { ...options });
 };
 
@@ -74,7 +66,7 @@ export const authMeAPI = (
 export const getUserInfoAPI = (
   accessToken?: string,
   id?: string,
-  options?: UseQueryOptions<AxiosResponse<any[]>, AxiosError, any, string[]>,
+  options?: UseQueryOptions<AxiosResponse<any>, AxiosError, any, string[]>,
 ) => {
   const queryKey = `/user/${id}`;
   const queryFn = () =>
@@ -86,12 +78,6 @@ export const getUserInfoAPI = (
       })
       .then((res) => res.data);
 
-  // const onSuccess = (data: any) => {
-  //   if (data.error) {
-  //     return message.error(`${data.error} 다른 유저를 찾아보세요`);
-  //   }
-  // };
-
   return useQuery([queryKey], queryFn, {
     staleTime: 600000,
     ...options,
@@ -102,11 +88,7 @@ export const validatePasswordAPI = (
   options?: UseMutationOptions<AxiosResponse<string>, AxiosError, IValidatePassword>,
 ) => {
   const queryKey = `/validate/password`;
-  const queryFn = (data: IValidatePassword) => axiosInstance.post(queryKey, data).then((res) => res.data);
+  const queryFn = (data: IValidatePassword) => axiosWithToken.post(queryKey, data).then((res) => res.data);
 
-  // const onSuccess = () => router.push('/join/complete');
-  // const onSuccess = (data: any) => {
-  //   console.log('response>>>', data);
-  // };
   return useMutation([queryKey], queryFn, { ...options });
 };
