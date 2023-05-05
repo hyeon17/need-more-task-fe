@@ -9,7 +9,7 @@ function KanbanDraggable({ task, provided, index }: KanbanDraggableItemProps) {
   const { onOpenOverView, onSetModalId } = useModalState();
 
   const handleModal = () => {
-    onSetModalId(String(task));
+    onSetModalId(String(task.taskId));
     onOpenOverView();
   };
   return (
