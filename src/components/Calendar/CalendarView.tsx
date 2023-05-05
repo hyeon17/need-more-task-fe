@@ -40,6 +40,7 @@ function CalendarView() {
     setYearStore(year);
     setMonth(month);
     setMonthStore(month);
+    router.push(`/calendar?year=${year}&month=${month}`);
   };
 
   useEffect(() => {
