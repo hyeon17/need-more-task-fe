@@ -63,7 +63,7 @@ function TaskOverview() {
               <div className="action" key={item.key}>
                 <Heading fontSize="1rem">{item.key}</Heading>
                 {item.value && (
-                  <Tag size="lg" backgroundColor={setTagColor(item.value} color="white">
+                  <Tag size="lg" backgroundColor={setTagColor(item.value)} color="white">
                     {item.value}
                   </Tag>
                 )}
