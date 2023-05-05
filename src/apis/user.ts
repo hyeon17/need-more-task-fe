@@ -1,4 +1,4 @@
-import { IJoin, ILogin, IValidatePassword } from '@/type/authTypes';
+import { IJoin, ILogin, IUpdateProfile, IValidatePassword } from '@/type/authTypes';
 import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { AxiosError, AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
@@ -89,6 +89,16 @@ export const validatePasswordAPI = (
 ) => {
   const queryKey = `/validate/password`;
   const queryFn = (data: IValidatePassword) => axiosWithToken.post(queryKey, data).then((res) => res.data);
+
+  return useMutation([queryKey], queryFn, { ...options });
+};
+
+export const updateUserInfoAPI = (
+  userId: string,
+  options?: UseMutationOptions<AxiosResponse<string>, AxiosError, IUpdateProfile>,
+) => {
+  const queryKey = `/user/${userId}`;
+  const queryFn = (data: IUpdateProfile) => axiosWithToken.put(queryKey, data).then((res) => res.data);
 
   return useMutation([queryKey], queryFn, { ...options });
 };
