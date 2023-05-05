@@ -1,4 +1,4 @@
-import { Button } from '@chakra-ui/react';
+import { Button, Menu, MenuGroup, MenuList } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 export const Container = styled.header`
@@ -11,26 +11,27 @@ export const Container = styled.header`
   align-items: center;
   padding: 0 24px;
   margin-bottom: 30px;
-  background-color: 1px solid ${({ theme }) => theme.white};
+  background-color: ${({ theme }) => theme.white};
 `;
 
 export const Nav = styled.nav`
   width: 100%;
   display: flex;
+  /* flex-direction: column; */
   align-items: center;
   justify-content: space-between;
-  cursor: pointer;
 
   & ul {
     display: flex;
+    align-items: center;
     margin-left: 100px;
     gap: 28px;
 
     font-weight: 700;
     font-size: 12px;
-    line-height: 18px;
 
     & > li {
+      cursor: pointer;
       &:hover,
       &:active {
         color: ${({ theme }) => theme.primary};
@@ -46,4 +47,33 @@ export const CreateTaskButton = styled(Button)`
   color: ${({ theme }) => theme.labelColor};
   font-weight: 700;
   font-size: 12px;
+`;
+
+//
+export const ProfileWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  svg {
+    color: ${({ theme }) => theme.labelColor};
+  }
+`;
+export const StyledMenu = styled(Menu)`
+  /* z-index: 3 !important; */
+`;
+export const StyledMenuList = styled(MenuList)`
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center; */
+`;
+export const UserInfoWrapper = styled.div`
+  /* border: 1px solid; */
+
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;

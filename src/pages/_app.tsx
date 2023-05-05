@@ -4,6 +4,7 @@ import type { AppProps } from 'next/app';
 import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import ChakraProviders from '@/components/ChakraProviders';
+import AuthUser from '@/components/Auth/AuthUser';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,7 +20,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <Hydrate state={pageProps?.dehydratedState}>
         {process.env.NODE_ENV !== 'production' ? <ReactQueryDevtools initialIsOpen={false} /> : null}
         <ChakraProviders>
-          <Component {...pageProps} />
+          <AuthUser>
+            <Component {...pageProps} />
+          </AuthUser>
         </ChakraProviders>
       </Hydrate>
     </QueryClientProvider>

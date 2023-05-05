@@ -4,11 +4,11 @@ import { devtools } from 'zustand/middleware';
 export interface IJoinData {
   department?: string;
   joinCompanyYear?: number;
-  fullname?: string;
+  fullName?: string;
   email?: string;
   password?: string;
-  password_check?: string;
-  imagePath?: string;
+  passwordCheck?: string;
+  profileImageUrl?: string;
   phone?: string;
 }
 

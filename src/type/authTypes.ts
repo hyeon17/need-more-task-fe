@@ -7,3 +7,22 @@ export interface IJoin {
   department?: string;
   joinCompanyYear?: string;
 }
+
+export interface ILogin {
+  email: string;
+  password: string;
+}
+
+export interface IUser {
+  userId: string;
+  department?: string;
+  email: string;
+  fullName: string;
+  joinCompanyYear: string;
+  phone: string;
+  profileImageUrl: string;
+}
+
+export interface AccountInfoProps {
+  userInfo: IUser;
+}
