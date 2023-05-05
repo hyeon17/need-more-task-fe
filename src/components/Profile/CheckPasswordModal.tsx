@@ -22,11 +22,23 @@ import * as A from '@/styles/auth.styles';
 import * as P from '@/styles/profile.styles';
 import { validatePasswordAPI } from '@/apis/user';
 
-interface IProps {
+interface ICheckPasswordModal {
+  isOpenCheckPassword: boolean;
+  onOpenCheckPassword: () => void;
+  onCloseCheckPassword: () => void;
+  validatePasswordMutate: any;
+  isLoadingValidatePassword: boolean;
   children: React.ReactNode;
 }
 
-function CheckPasswordModal({ children }: IProps) {
+function CheckPasswordModal({
+  children,
+  isOpenCheckPassword,
+  onOpenCheckPassword,
+  onCloseCheckPassword,
+  validatePasswordMutate,
+  isLoadingValidatePassword,
+}: ICheckPasswordModal) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -34,7 +46,7 @@ function CheckPasswordModal({ children }: IProps) {
   const handleShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
   const OverlayOne = () => <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) hue-rotate(90deg)" />;
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  // const { isOpen, onOpen, onClose } = useDisclosure();
   const [overlay, setOverlay] = useState(<OverlayOne />);
 
   const {
@@ -44,13 +56,13 @@ function CheckPasswordModal({ children }: IProps) {
     formState: { errors },
   } = useForm<any>();
 
-  const { mutate, isLoading } = validatePasswordAPI();
+  // const { mutate, isLoading } = validatePasswordAPI();
 
   const onClickSave = (data: any) => {
     if (Object.keys(errors).length === 0) {
       // 저장 api
       console.log('비밀번호 검증 api');
-      mutate({ password: watch('password'), passwordCheck: watch('passwordCheck') });
+      validatePasswordMutate({ password: watch('password'), passwordCheck: watch('passwordCheck') });
     }
   };
 
@@ -64,13 +76,13 @@ function CheckPasswordModal({ children }: IProps) {
       <div
         onClick={() => {
           setOverlay(<OverlayOne />);
-          onOpen();
+          onOpenCheckPassword();
         }}
       >
         {children}
       </div>
 
-      <Modal isCentered isOpen={isOpen} onClose={onClose}>
+      <Modal isCentered isOpen={isOpenCheckPassword} onClose={onCloseCheckPassword}>
         {overlay}
         <ModalContent>
           <form onSubmit={onSubmit}>
@@ -146,10 +158,10 @@ function CheckPasswordModal({ children }: IProps) {
               </A.InputContainer>
             </ModalBody>
             <P.StyledModalFooter>
-              <Button bgColor="primary" color="white" type="submit" isLoading={isLoading}>
+              <Button bgColor="primary" color="white" type="submit" isLoading={isLoadingValidatePassword}>
                 제출
               </Button>
-              <Button onClick={onClose}>닫기</Button>
+              <Button onClick={onCloseCheckPassword}>닫기</Button>
             </P.StyledModalFooter>
           </form>
         </ModalContent>

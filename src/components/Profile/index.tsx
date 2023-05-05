@@ -10,13 +10,14 @@ import {
   InputGroup,
   InputRightElement,
   Skeleton,
+  useDisclosure,
   useToast,
 } from '@chakra-ui/react';
 import { teamOptions, getJoinCompanyYear } from '@/utils';
 import * as A from '@/styles/auth.styles';
 import * as P from '@/styles/profile.styles';
 import { useForm } from 'react-hook-form';
-import { isDuplicatedEmailAPI } from '@/apis/user';
+import { isDuplicatedEmailAPI, validatePasswordAPI } from '@/apis/user';
 import { AxiosError } from 'axios';
 import CheckPasswordModal from './CheckPasswordModal';
 
@@ -28,9 +29,13 @@ interface IAccountInfo {
 function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
   // console.log('userInfo>>>', userInfo);
   // const { department, fullName, joinCompanyYear, email, phone, profileImageUrl } = userInfo;
+  const { isOpen: isOpenCheckPassword, onOpen: onOpenCheckPassword, onClose: onCloseCheckPassword } = useDisclosure();
+
   const [edit, setEdit] = useState(false);
-  const [department, setDepartment] = useState('');
-  const [joinCompanyYear, setJoinCompanyYear] = useState('');
+  // const [department, setDepartment] = useState('');
+  // const [joinCompanyYear, setJoinCompanyYear] = useState('');
+  const [department, setDepartment] = useState(userInfo?.department || '');
+  const [joinCompanyYear, setJoinCompanyYear] = useState(userInfo?.joinCompanyYear?.toString() || '');
 
   const handleDepartmentChange = (selectedOption: unknown) => {
     setDepartment((selectedOption as { value: string }).value);
@@ -52,9 +57,11 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     // setEdit(true);
   };
 
-  // const handleSaveProfile = () => {
-  //   setEdit(false);
-  // };
+  const handleCancelProfileSave = () => {
+    setEdit(false);
+    setDepartment(userInfo?.department || '');
+    setJoinCompanyYear(userInfo?.joinCompanyYear?.toString() || '');
+  };
 
   const toast = useToast();
 
@@ -82,6 +89,34 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
 
   const { mutate: isDuplicatedEmailMutate, isLoading } = isDuplicatedEmailAPI({ onSuccess, onError });
 
+  const onSuccessCheckPassword = (data: any) => {
+    console.log('checkpassword', data);
+
+    onCloseCheckPassword();
+    setEdit(true);
+
+    toast({
+      title: '비밀번호 확인 성공.',
+      status: 'success',
+      duration: 9000,
+      isClosable: true,
+    });
+  };
+
+  const onErrorCheckPassword = () => {
+    toast({
+      title: '비밀번호 확인 실패.',
+      status: 'error',
+      duration: 9000,
+      isClosable: true,
+    });
+  };
+
+  const { mutate: validatePasswordMutate, isLoading: isLoadingValidatePassword } = validatePasswordAPI({
+    onSuccess: onSuccessCheckPassword,
+    onError: onErrorCheckPassword,
+  });
+
   const handleIsDuplicated = () => {
     console.log('중복확인');
     isDuplicatedEmailMutate(watch('email'));
@@ -106,18 +141,12 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
 
   const onSubmit = (e: any) => {
     e.preventDefault();
+    // handleSubmit(onClickSave)();
     handleSubmit(onClickSave)();
   };
 
   return (
-    // <form onSubmit={handleSubmit(onClickSave)}>
-    <form
-      // onSubmit={(e) => {
-      //   e.preventDefault();
-      //   handleSubmit(onClickSave)();
-      // }}
-      onSubmit={onSubmit}
-    >
+    <form onSubmit={onSubmit}>
       <P.AccountWrapper>
         <h1>계정 정보</h1>
         {/* department */}
@@ -172,9 +201,9 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
             <FormLabel htmlFor="fullName">이름</FormLabel>
             <Input
               isDisabled={!edit}
-              // defaultValue={userInfo?.fullName || ''}
-              // value={watch('fullName') || userInfo?.fullName}
-              defaultValue={userInfo?.fullName || ''}
+              value={watch('fullName') || userInfo?.fullName}
+              // value={watch('fullName')}
+              // defaultValue={userInfo?.fullName || watch('fullName')}
               id="fullName"
               placeholder="이름을 입력하세요"
               variant="flushed"
@@ -247,14 +276,22 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
               저장
             </P.UpdateButton>
           ) : (
-            <CheckPasswordModal>
+            <CheckPasswordModal
+              isOpenCheckPassword={isOpenCheckPassword}
+              onOpenCheckPassword={onOpenCheckPassword}
+              onCloseCheckPassword={onCloseCheckPassword}
+              validatePasswordMutate={validatePasswordMutate}
+              isLoadingValidatePassword={isLoadingValidatePassword}
+            >
               <P.UpdateButton colorScheme="teal" size="md" color="white" onClick={handleEditProfile}>
                 프로필 업데이트
               </P.UpdateButton>
             </CheckPasswordModal>
           )}
 
-          <P.CancelButton color="labelColor">취소</P.CancelButton>
+          <P.CancelButton color="labelColor" onClick={handleCancelProfileSave}>
+            취소
+          </P.CancelButton>
         </P.ButtonWrapper>
       )}
     </form>
