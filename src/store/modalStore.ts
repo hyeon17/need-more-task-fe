@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { StatusType } from '@/pages/kanban';
+import { StatusType } from '@/constant/TaskOverview';
 
 type ModalState = {
   modal: 'create' | 'overview' | null;
