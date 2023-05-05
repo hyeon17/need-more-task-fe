@@ -137,10 +137,10 @@ function StepThree() {
         </A.ProfileIMGWrapper>
       </A.ProfileWrapper>
 
-      {/* 이름 */}
+      {/* 연락처 */}
       <A.InputContainer>
         <FormControl isInvalid={Boolean(errors.phone)}>
-          <FormLabel htmlFor="phone1">휴대폰 번호</FormLabel>
+          <FormLabel htmlFor="phone1">얀락처</FormLabel>
           <A.PhoneNumWrapper>
             <Input
               id="phone1"
@@ -151,7 +151,7 @@ function StepThree() {
               type="number"
               maxLength={3}
               {...register('phone1', {
-                required: '이름은 필수 입력사항 입니다.',
+                required: '필수 입력사항 입니다.',
                 pattern: {
                   value: /^\d{3}$/,
                   message: '3자리 숫자만 입력 가능합니다.',
@@ -167,10 +167,10 @@ function StepThree() {
               type="number"
               maxLength={4}
               {...register('phone2', {
-                required: '이름은 필수 입력사항 입니다.',
+                required: '필수 입력사항 입니다.',
                 pattern: {
                   value: /^\d{4}$/,
-                  message: '3자리 숫자만 입력 가능합니다.',
+                  message: '4자리 숫자만 입력 가능합니다.',
                 },
               })}
             />
@@ -183,10 +183,10 @@ function StepThree() {
               type="number"
               maxLength={4}
               {...register('phone3', {
-                required: '이름은 필수 입력사항 입니다.',
+                required: '필수 입력사항 입니다.',
                 pattern: {
                   value: /^\d{4}$/,
-                  message: '3자리 숫자만 입력 가능합니다.',
+                  message: '4자리 숫자만 입력 가능합니다.',
                 },
               })}
             />
