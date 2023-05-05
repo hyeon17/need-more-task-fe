@@ -26,3 +26,8 @@ export interface IUser {
 export interface AccountInfoProps {
   userInfo: IUser;
 }
+
+export interface IValidatePassword {
+  password: string;
+  passwordCheck: string;
+}
