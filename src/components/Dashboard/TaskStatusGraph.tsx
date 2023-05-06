@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
+import { ITaskStatusGraph, taskDoneData } from '@/type/dashBoardTypes';
 
 interface Data {
   x: number;
@@ -16,25 +17,11 @@ interface Data {
 //   { x: 6, y: 10 },
 // ];
 
-interface GraphData {
-  date: string;
-  count: number;
-}
-
-interface ITaskStatusGraph {
-  data: GraphData[];
-}
-
-interface taskDoneData {
-  x: number;
-  y: number;
-}
-
 const TaskStatusGraph = ({ data }: ITaskStatusGraph) => {
-  console.log('data>>>', data);
+  // console.log('data>>>', data);
 
   const taskDoneData: taskDoneData[] = [];
-  console.log(taskDoneData);
+  // console.log(taskDoneData);
 
   for (let i = 0; i < 7; i++) {
     taskDoneData.push({
@@ -42,7 +29,7 @@ const TaskStatusGraph = ({ data }: ITaskStatusGraph) => {
       y: data[i].count,
     });
   }
-  console.log('taskDoneData>>', taskDoneData);
+  // console.log('taskDoneData>>', taskDoneData);
 
   const svgRefA = useRef<SVGSVGElement>(null);
 
