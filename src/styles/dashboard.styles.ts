@@ -121,3 +121,40 @@ export const LatestProjectContainer = styled.div`
   width: 100%;
   height: 316px;
 `;
+export const DashboardH5 = styled.div`
+  padding: 16px 24px;
+  border-bottom: 1px solid ${({ theme }) => theme.outlineColor};
+
+  h5 {
+    font-weight: 700;
+    line-height: 24px;
+  }
+`;
+export const PerformanceBodyWrapper = styled.div`
+  padding: 22px 24px;
+`;
+
+export const PerformanceBodyHeader = styled.div`
+  display: flex;
+  gap: 24px;
+`;
+export const FlagWrapper = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+`;
+export const Flag = styled.div`
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+`;
+export const AssignedFlag = styled(Flag)`
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), #3e7eff;
+`;
+export const DoneFlag = styled(Flag)`
+  background-color: ${({ theme }) => theme.primary};
+`;
+export const FlagTitle = styled.span`
+  color: ${({ theme }) => theme.textColor};
+  font-size: 14px;
+`;
