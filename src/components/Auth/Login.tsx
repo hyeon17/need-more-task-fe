@@ -52,7 +52,6 @@ function Login() {
     // console.log('success data>>', data);
     // console.log('data>>', data.accessToken);
 
-    onSaveAccessToken(data);
     toast({
       title: '로그인 성공!',
       // description: '알 수 없는 오류가 발생했습니다.',
@@ -60,8 +59,9 @@ function Login() {
       duration: 9000,
       isClosable: true,
     });
-
-    router.push('/profile/1');
+    onSaveAccessToken(data);
+    // router.replace('/kanban');
+    window.location.href = '/kanban';
   };
 
   const { mutate, isLoading } = loginAPI({ onSuccess, onError });
