@@ -3,7 +3,7 @@ import { IUser } from '@/type/authTypes';
 
 interface UserState {
   userInfo: IUser | null;
-  setUserInfo: (userInfo: IUser) => void;
+  setUserInfo: (userInfo: IUser | null) => void;
   clearUserInfo: () => void;
 }
 
