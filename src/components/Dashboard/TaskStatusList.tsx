@@ -1,9 +1,6 @@
 import React from 'react';
 import * as D from '@/styles/dashboard.styles';
-import ProfileImage from '@/components/CommonHeader/ProfileImage';
-import TaskStatusGraph from '@/components/Dashboard/TaskStatusGraph';
 import { getTaskProgressAPI } from '@/apis/dashboard';
-import { Spinner } from '@chakra-ui/react';
 import CommonSpinner from '@/components/common/CommonSpinner';
 import TaskStatus from '@/components/Dashboard/TaskStatus';
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import * as D from '@/styles/dashboard.styles';
 import ProfileImage from '@/components/CommonHeader/ProfileImage';
-import CommonSpinner from '@/components/common/CommonSpinner';
 import TaskStatusGraph from '@/components/Dashboard/TaskStatusGraph';
+import { ITaskStatus } from '@/type/dashBoardTypes';
 
-function TaskStatus({ title, graph, totalCount }: any) {
+function TaskStatus({ title, graph, totalCount }: ITaskStatus) {
   return (
     <D.TaskDoneContainer>
       <D.StatusLeft>
