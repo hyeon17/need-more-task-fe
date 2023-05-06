@@ -14,12 +14,12 @@ function TaskStatusList() {
           <TaskStatus title="Task Done" graph={taskData.data.DONE.graph} totalCount={taskData.data.DONE.totalCount} />
 
           <TaskStatus
-            title="Task Done"
+            title="Avg. Progress"
             graph={taskData.data.IN_PROGRESS.graph}
             totalCount={taskData.data.IN_PROGRESS.totalCount}
           />
 
-          <TaskStatus title="Task Done" graph={taskData.data.TODO.graph} totalCount={taskData.data.TODO.totalCount} />
+          <TaskStatus title="Todo" graph={taskData.data.TODO.graph} totalCount={taskData.data.TODO.totalCount} />
         </>
       )}
 

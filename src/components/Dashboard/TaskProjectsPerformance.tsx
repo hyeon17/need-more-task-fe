@@ -1,5 +1,6 @@
 import React from 'react';
 import * as D from '@/styles/dashboard.styles';
+import PerformanceGraph from '@/components/Dashboard/PerformanceGraph';
 
 function TaskProjectsPerformance() {
   return (
@@ -18,6 +19,11 @@ function TaskProjectsPerformance() {
             <D.FlagTitle>Done</D.FlagTitle>
           </D.FlagWrapper>
         </D.PerformanceBodyHeader>
+
+        {/* graph */}
+        <D.PerformanceGraphWrapper>
+          <PerformanceGraph />
+        </D.PerformanceGraphWrapper>
       </D.PerformanceBodyWrapper>
     </D.PerformanceContainer>
   );

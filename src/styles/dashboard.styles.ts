@@ -158,3 +158,9 @@ export const FlagTitle = styled.span`
   color: ${({ theme }) => theme.textColor};
   font-size: 14px;
 `;
+
+// PerformanceGraph
+export const PerformanceGraphWrapper = styled.div`
+  border: 1px solid;
+  margin-top: 20px;
+`;
