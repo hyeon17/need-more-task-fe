@@ -89,4 +89,13 @@ export const StatusRight = styled.div`
   }
 `;
 export const StatusNumber = styled.div``;
-export const StatusGraph = styled.div``;
+export const StatusGraphWrapper = styled.div`
+  /* border: 1px solid; */
+
+  width: 100px;
+  height: 100px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
