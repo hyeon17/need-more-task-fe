@@ -11,7 +11,7 @@ import LogoutModal from './LogoutModal';
 
 function CommonHeader() {
   const { userInfo } = useUserInfo();
-  console.log('userInfo>>', userInfo);
+  // console.log('userInfo>>', userInfo);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
