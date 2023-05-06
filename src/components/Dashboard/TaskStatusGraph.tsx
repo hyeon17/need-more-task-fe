@@ -6,17 +6,44 @@ interface Data {
   y: number;
 }
 
-const data: Data[] = [
-  { x: 0, y: 10 },
-  { x: 1, y: 3 },
-  { x: 2, y: 12 },
-  { x: 3, y: 8 },
-  { x: 4, y: 17 },
-  { x: 5, y: 15 },
-  { x: 6, y: 10 },
-];
+// const data: Data[] = [
+//   { x: 0, y: 10 },
+//   { x: 1, y: 3 },
+//   { x: 2, y: 12 },
+//   { x: 3, y: 8 },
+//   { x: 4, y: 17 },
+//   { x: 5, y: 15 },
+//   { x: 6, y: 10 },
+// ];
 
-const TaskStatusGraph = () => {
+interface GraphData {
+  date: string;
+  count: number;
+}
+
+interface ITaskStatusGraph {
+  data: GraphData[];
+}
+
+interface taskDoneData {
+  x: number;
+  y: number;
+}
+
+const TaskStatusGraph = ({ data }: ITaskStatusGraph) => {
+  console.log('data>>>', data);
+
+  const taskDoneData: taskDoneData[] = [];
+  console.log(taskDoneData);
+
+  for (let i = 0; i < 7; i++) {
+    taskDoneData.push({
+      x: i + 1,
+      y: data[i].count,
+    });
+  }
+  console.log('taskDoneData>>', taskDoneData);
+
   const svgRefA = useRef<SVGSVGElement>(null);
 
   const w = 100;
@@ -25,17 +52,14 @@ const TaskStatusGraph = () => {
   useEffect(() => {
     const svgA = d3.select(svgRefA.current).attr('width', w).attr('height', h);
 
-    // const svgWidth = svgA.attr('width');
-    // const svgHeight = svgA.attr('height');
-
     const xScale = d3
       .scaleLinear()
-      .domain(d3.extent(data, (d) => d.x) as [number, number]) // data 배열에서 x츅의 최소값과 최대값
+      .domain(d3.extent(taskDoneData, (d) => d.x) as [number, number]) // data 배열에서 x츅의 최소값과 최대값
       .range([0, w]);
 
     const yScale = d3
       .scaleLinear()
-      .domain(d3.extent(data, (d) => d.y) as [number, number])
+      .domain(d3.extent(taskDoneData, (d) => d.y) as [number, number])
       .range([h, 0]);
 
     const line = d3
@@ -43,7 +67,7 @@ const TaskStatusGraph = () => {
       .x((d) => xScale(d.x))
       .y((d) => yScale(d.y));
 
-    svgA.select('path').datum(data).attr('d', line.curve(d3.curveBasis));
+    svgA.select('path').datum(taskDoneData).attr('d', line.curve(d3.curveBasis));
   }, [data]);
 
   return (

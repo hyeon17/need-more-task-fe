@@ -99,3 +99,6 @@ export const StatusGraphWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
+export const SpinnerWrapper = styled.div`
+  margin-left: 100px;
+`;
