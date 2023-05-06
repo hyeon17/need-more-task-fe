@@ -2,15 +2,18 @@ import React from 'react';
 import * as C from '@/styles/commonHeader.styles';
 import Image from 'next/image';
 import Logo from 'public/Logo.png';
-import { Button, Menu, MenuButton, MenuDivider, MenuGroup, MenuItem, MenuList } from '@chakra-ui/react';
+import { Button, Menu, MenuButton, MenuDivider, MenuGroup, MenuItem, MenuList, useDisclosure } from '@chakra-ui/react';
 import ProfileImage from '@/components/CommonHeader/ProfileImage';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import { useUserInfo } from '@/store/userInfoStore';
 import Link from 'next/link';
+import LogoutModal from './LogoutModal';
 
 function CommonHeader() {
   const { userInfo } = useUserInfo();
   console.log('userInfo>>', userInfo);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <C.Container>
@@ -18,11 +21,15 @@ function CommonHeader() {
         <Image src={Logo} alt="Logo" width={50} height={50} />
         <C.Nav>
           <ul>
-            <li>Dashboard</li>
+            <li>
+              <Link href={`/dashboard`}>Dashboard</Link>
+            </li>
             <li>
               <Link href={`/kanban`}>Kanban</Link>
             </li>
-            <li>Calendar</li>
+            <li>
+              <Link href={`/calendar`}>Calendar</Link>
+            </li>
           </ul>
           <C.CreateTaskButton>New Task</C.CreateTaskButton>
           <MenuButton>
@@ -50,6 +57,9 @@ function CommonHeader() {
             <MenuItem>
               <Link href={`/profile/${userInfo?.userId}`}>권한 변경 신청</Link>
             </MenuItem>
+            <LogoutModal isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
+              <MenuItem>로그아웃</MenuItem>
+            </LogoutModal>
           </MenuGroup>
         </MenuList>
       </Menu>
