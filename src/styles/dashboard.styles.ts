@@ -17,11 +17,10 @@ export const BodyContainer = styled.main`
 `;
 
 export const FooterContainer = styled.footer`
+  margin-top: 36px;
   background-color: ${({ theme }) => theme.gray50};
   padding: 24px 28px;
-
   display: flex;
-
   justify-content: space-between;
 `;
 export const FooterLeft = styled.div`
@@ -101,4 +100,24 @@ export const StatusGraphWrapper = styled.div`
 `;
 export const SpinnerWrapper = styled.div`
   margin-left: 100px;
+`;
+
+// Projects performance
+export const PerformanceContainer = styled.div`
+  margin-top: 24px;
+  border: 1px solid ${({ theme }) => theme.outlineColor};
+  border-radius: 16px;
+
+  width: 100%;
+  height: 424px;
+`;
+
+// Latest projects
+export const LatestProjectContainer = styled.div`
+  margin-top: 24px;
+  border: 1px solid ${({ theme }) => theme.outlineColor};
+  border-radius: 16px;
+
+  width: 100%;
+  height: 316px;
 `;
