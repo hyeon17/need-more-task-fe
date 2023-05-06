@@ -29,6 +29,13 @@ export const loginAPI = (options?: UseMutationOptions<AxiosResponse<string>, Axi
   return useMutation([queryKey], queryFn, { ...options });
 };
 
+export const logoutAPI = (options?: UseMutationOptions<AxiosResponse<string>, AxiosError, any>) => {
+  const queryKey = `/logout`;
+  const queryFn = () => axiosWithToken.post(queryKey).then((res) => res.data);
+
+  return useMutation([queryKey], queryFn, { ...options });
+};
+
 export const authMeAPI = (
   accessToken: string,
   options?: UseQueryOptions<AxiosResponse<any[]>, AxiosError, any, string[]>,
@@ -43,18 +50,10 @@ export const authMeAPI = (
       })
       .then((res) => res.data);
 
-  const toast = useToast();
-
-  const onError = () => {
-    toast({
-      title: '유저정보 가져오기 실패.',
-      status: 'error',
-      duration: 9000,
-      isClosable: true,
-    });
+  const onError = (error: AxiosError) => {
+    console.error(error);
   };
-  // const onSuccess = (data: any) => useSetUserInfo()(data);
-  // onSuccess,
+
   return useQuery([queryKey], queryFn, {
     staleTime: 1000 * 60 * 5, // 5분
     cacheTime: 1000 * 60 * 30, // 30분
