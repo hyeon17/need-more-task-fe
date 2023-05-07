@@ -16,8 +16,11 @@ function DashboardBody({ userInfo }: IDashboardBody) {
         <h1>어서오세요, {userInfo?.fullName} 님</h1>
         <p>최근 Task를 확인해보세요</p>
       </header>
+      {/* task status list */}
       <TaskStatusList />
+      {/* projects performance */}
       <TaskProjectsPerformance />
+      {/* latest projects */}
       <LatestProjects />
     </D.BodyContainer>
   );
