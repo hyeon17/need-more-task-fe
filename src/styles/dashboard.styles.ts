@@ -18,7 +18,7 @@ export const BodyContainer = styled.main`
 `;
 
 export const FooterContainer = styled.footer`
-  margin-top: 36px;
+  margin-top: 50px;
   background-color: ${({ theme }) => theme.gray50};
   padding: 24px 28px;
   display: flex;
@@ -131,17 +131,21 @@ export const DashboardH5 = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    & > button {
-      font-weight: 700;
-      font-size: 12px;
-      line-height: 21px;
-    }
   }
 
   h5 {
     font-weight: 700;
     line-height: 24px;
+  }
+`;
+export const LatestProjectButtonWrapper = styled.div`
+  display: flex;
+  gap: 10px;
+
+  & > button {
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 21px;
   }
 `;
 export const PerformanceBodyWrapper = styled.div`

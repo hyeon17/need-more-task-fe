@@ -10,9 +10,14 @@ function LatestProjects() {
       <D.DashboardH5>
         <div>
           <h5>Latest Projects</h5>
-          <Button color="primary" variant="outline">
-            모든 Tasks
-          </Button>
+          <D.LatestProjectButtonWrapper>
+            <Button color="successColor" variant="outline">
+              모든 Tasks
+            </Button>
+            <Button color="primary" variant="outline">
+              Task 생성
+            </Button>
+          </D.LatestProjectButtonWrapper>
         </div>
       </D.DashboardH5>
 
