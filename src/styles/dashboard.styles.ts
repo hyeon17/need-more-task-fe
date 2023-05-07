@@ -1,4 +1,4 @@
-import { Popover, PopoverBody, PopoverContent, PopoverTrigger } from '@chakra-ui/react';
+import { Button, Popover, PopoverBody, PopoverContent, PopoverTrigger } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 export const BodyContainer = styled.main`
@@ -115,16 +115,29 @@ export const PerformanceContainer = styled.div`
 
 // Latest projects
 export const LatestProjectContainer = styled.div`
+  width: 1100px;
   margin-top: 24px;
   border: 1px solid ${({ theme }) => theme.outlineColor};
   border-radius: 16px;
 
-  width: 100%;
+  /* width: 100%; */
   height: 316px;
 `;
 export const DashboardH5 = styled.div`
   padding: 16px 24px;
   border-bottom: 1px solid ${({ theme }) => theme.outlineColor};
+
+  & > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & > button {
+      font-weight: 700;
+      font-size: 12px;
+      line-height: 21px;
+    }
+  }
 
   h5 {
     font-weight: 700;
@@ -218,5 +231,93 @@ export const StyledPopoverBody = styled(PopoverBody)`
       font-weight: 700;
       font-size: 14px;
     }
+  }
+`;
+
+// latest projects empty
+export const EmptyProjects = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+export const LottieWrapper = styled.div`
+  width: 200px;
+  height: 100px;
+`;
+export const CreateTaskButton = styled(Button)`
+  margin-top: 100px;
+`;
+
+export const LatestProjectsListContainer = styled.div`
+  display: flex;
+  gap: 24px;
+  padding: 20px 24px;
+
+  /* scroll-snap-type: x mandatory; */
+  -webkit-overflow-scrolling: touch;
+  overflow-x: scroll;
+
+  ::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) => theme.outlineColor};
+    border-radius: 6px;
+  }
+`;
+export const LatestProjectsListWrapper = styled.div`
+  scroll-snap-align: start;
+
+  border: 1px solid ${({ theme }) => theme.outlineColor};
+  border-radius: 10px;
+`;
+export const ProjectsListBodyWrapper = styled.div`
+  padding: 16px 16px 32px;
+  width: 348px;
+`;
+export const ProjectsListBodyHeader = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+export const ProjectsListBody = styled.div`
+  margin-top: 25px;
+
+  display: flex;
+`;
+export const ProjectsImageDiv = styled.div`
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background-color: ${({ theme }) => theme.gray50};
+`;
+export const ProjectTitleWrapper = styled.div`
+  margin-left: 14px;
+  & > h5 {
+    font-weight: 700;
+    line-height: 24px;
+    color: ${({ theme }) => theme.textColor};
+  }
+
+  & > span {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 18px;
+    color: ${({ theme }) => theme.labelColor};
+  }
+`;
+export const ProjectListFooterWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 18px 20px;
+  background-color: ${({ theme }) => theme.gray50};
+
+  & > footer {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+    line-height: 21px;
+    color: ${({ theme }) => theme.labelColor};
   }
 `;
