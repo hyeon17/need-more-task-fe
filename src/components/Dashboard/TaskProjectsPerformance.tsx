@@ -2,7 +2,7 @@ import React from 'react';
 import * as D from '@/styles/dashboard.styles';
 import PerformanceGraph from '@/components/Dashboard/PerformanceGraph';
 import { getPerformanceAPI } from '@/apis/dashboard';
-import CommonSpinner from '../common/CommonSpinner';
+import CommonSpinner from '@/components/common/CommonSpinner';
 
 function TaskProjectsPerformance() {
   const { data: performanceData, isLoading } = getPerformanceAPI();
