@@ -22,7 +22,7 @@ function LatestProjectsList() {
               <D.LatestProjectsListWrapper key={`latestProject${taskId}`}>
                 <D.ProjectsListBodyWrapper>
                   <D.ProjectsListBodyHeader>
-                    <CommonAvatar />
+                    <CommonAvatar assignee={assignee} />
                   </D.ProjectsListBodyHeader>
                   {/* body */}
                   <D.ProjectsListBody>
