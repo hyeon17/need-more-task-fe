@@ -18,7 +18,6 @@ interface BarChartProps {
 function PerformanceGraph({ data }: BarChartProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [tooltipData, setTooltipData] = useState<BarChartData | null>(null);
-  console.log('tooltipData>>', tooltipData);
 
   const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number } | null>(null);
 
@@ -164,47 +163,45 @@ function PerformanceGraph({ data }: BarChartProps) {
       animate="visible"
       transition={{ duration: 0.6 }}
     >
-      <D.PerformanceGraphWrapper>
-        <svg ref={svgRef} />
-        {tooltipData && tooltipPosition && (
-          <D.StyledPopover isOpen={true} closeOnBlur={false}>
-            <PopoverTrigger>
-              <span style={{ position: 'absolute', left: tooltipPosition.x, top: tooltipPosition.y - 200 }} />
-            </PopoverTrigger>
-            <PopoverContent
-              // zIndex="tooltip"
-              // maxW="none"
-              width="180px"
-              height="100px"
-              border="none"
-              bgColor="white"
-              // borderColor="white"
-              // borderRadius="md"
-              // display="flex"
-              // alignItems="center"
-              // justifyContent="center"
-            >
-              {/* <PopoverArrow /> */}
-              <D.StyledPopoverBody color="black">
-                <div>
-                  <header>{tooltipData.date}</header>
-                  {/* <span>Assigned: {tooltipData.taskCount}</span>
+      <svg ref={svgRef} />
+      {tooltipData && tooltipPosition && (
+        <D.StyledPopover isOpen={true} closeOnBlur={false}>
+          <PopoverTrigger>
+            <span style={{ position: 'absolute', left: tooltipPosition.x, top: tooltipPosition.y - 200 }} />
+          </PopoverTrigger>
+          <PopoverContent
+            // zIndex="tooltip"
+            // maxW="none"
+            width="180px"
+            height="100px"
+            border="none"
+            bgColor="white"
+            // borderColor="white"
+            // borderRadius="md"
+            // display="flex"
+            // alignItems="center"
+            // justifyContent="center"
+          >
+            {/* <PopoverArrow /> */}
+            <D.StyledPopoverBody color="black">
+              <div>
+                <header>{tooltipData.date}</header>
+                {/* <span>Assigned: {tooltipData.taskCount}</span>
                   <span>Done: {tooltipData.doneCount}</span> */}
-                  <D.FlagWrapper>
-                    <D.DoneFlag></D.DoneFlag>
-                    <D.FlagTitle>Done {tooltipData.taskCount}</D.FlagTitle>
-                  </D.FlagWrapper>
-                  <D.FlagWrapper>
-                    <D.AssignedFlag></D.AssignedFlag>
-                    <D.FlagTitle>Assigned {tooltipData.doneCount}</D.FlagTitle>
-                  </D.FlagWrapper>
-                </div>
-              </D.StyledPopoverBody>
-              {/* <PopoverArrow /> */}
-            </PopoverContent>
-          </D.StyledPopover>
-        )}
-      </D.PerformanceGraphWrapper>
+                <D.FlagWrapper>
+                  <D.DoneFlag></D.DoneFlag>
+                  <D.FlagTitle>Done {tooltipData.taskCount}</D.FlagTitle>
+                </D.FlagWrapper>
+                <D.FlagWrapper>
+                  <D.AssignedFlag></D.AssignedFlag>
+                  <D.FlagTitle>Assigned {tooltipData.doneCount}</D.FlagTitle>
+                </D.FlagWrapper>
+              </div>
+            </D.StyledPopoverBody>
+            {/* <PopoverArrow /> */}
+          </PopoverContent>
+        </D.StyledPopover>
+      )}
     </motion.div>
   );
 }
