@@ -27,3 +27,10 @@ export const getPerformanceAPI = (options?: UseQueryOptions<AxiosResponse<any>, 
 
   return useQuery([queryKey], queryFn, { ...options });
 };
+
+export const getLatestProjectsAPI = (options?: UseQueryOptions<AxiosResponse<any>, AxiosError, any, string[]>) => {
+  const queryKey = `/tasks/latest`;
+  const queryFn = () => axiosWithToken.get(queryKey).then((res) => res.data);
+
+  return useQuery([queryKey], queryFn, { ...options });
+};
