@@ -1,7 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { motion } from 'framer-motion';
 import * as D from '@/styles/dashboard.styles';
+import { PopoverHeader, Tooltip } from '@chakra-ui/react';
+import { Popover, PopoverTrigger, PopoverContent, PopoverArrow, PopoverBody } from '@chakra-ui/react';
 
 interface BarChartData {
   date: string;
@@ -15,6 +17,10 @@ interface BarChartProps {
 
 function PerformanceGraph({ data }: BarChartProps) {
   const svgRef = useRef<SVGSVGElement>(null);
+  const [tooltipData, setTooltipData] = useState<BarChartData | null>(null);
+  console.log('tooltipData>>', tooltipData);
+
+  const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
     if (!svgRef.current) return;
@@ -37,10 +43,6 @@ function PerformanceGraph({ data }: BarChartProps) {
       .padding(0.1)
       .domain(data.map((d) => d.date));
 
-    // const y = d3
-    //   .scaleLinear()
-    //   .range([height, 0])
-    //   .domain(d3.extent(d3.merge(data.map((d) => [d.taskCount, d.doneCount]))) as unknown as [number, number]);
     const y = d3
       .scaleLinear()
       .range([height, 0])
@@ -66,6 +68,33 @@ function PerformanceGraph({ data }: BarChartProps) {
     // const barWidth = x.bandwidth() / 3;
     const barWidth = 5;
 
+    // svg
+    //   .selectAll('.taskBar')
+    //   .data(data)
+    //   .enter()
+    //   .append('rect')
+    //   .attr('class', 'taskBar')
+    //   .attr('x', (d) => x(d.date)!)
+    //   .attr('y', (d) => y(d.taskCount))
+    //   .attr('width', barWidth)
+    //   .attr('height', (d) => height - y(d.taskCount))
+    //   .attr('fill', '#3E7EFF')
+    //   .attr('rx', 3)
+    //   .attr('ry', 3);
+
+    // svg
+    //   .selectAll('.doneBar')
+    //   .data(data)
+    //   .enter()
+    //   .append('rect')
+    //   .attr('class', 'doneBar')
+    //   .attr('x', (d) => x(d.date)! + barWidth)
+    //   .attr('y', (d) => y(d.doneCount))
+    //   .attr('width', barWidth)
+    //   .attr('height', (d) => height - y(d.doneCount))
+    //   .attr('fill', '#E4E6E8D9')
+    //   .attr('rx', 3)
+    //   .attr('ry', 3);
     svg
       .selectAll('.taskBar')
       .data(data)
@@ -78,7 +107,15 @@ function PerformanceGraph({ data }: BarChartProps) {
       .attr('height', (d) => height - y(d.taskCount))
       .attr('fill', '#3E7EFF')
       .attr('rx', 3)
-      .attr('ry', 3);
+      .attr('ry', 3)
+      .on('mouseover', (event, d) => {
+        setTooltipData(d);
+        setTooltipPosition({ x: event.clientX, y: event.clientY - 20 }); // 상대적인 위치 조정이 필요한 경우 숫자를 조정해주세요.
+      })
+      .on('mouseout', () => {
+        setTooltipData(null);
+        setTooltipPosition(null);
+      });
 
     svg
       .selectAll('.doneBar')
@@ -92,7 +129,15 @@ function PerformanceGraph({ data }: BarChartProps) {
       .attr('height', (d) => height - y(d.doneCount))
       .attr('fill', '#E4E6E8D9')
       .attr('rx', 3)
-      .attr('ry', 3);
+      .attr('ry', 3)
+      .on('mouseover', (event, d) => {
+        setTooltipData(d);
+        setTooltipPosition({ x: event.clientX, y: event.clientY - 20 }); // 상대적인 위치 조정이 필요한 경우 숫자를 조정해주세요.
+      })
+      .on('mouseout', () => {
+        setTooltipData(null);
+        setTooltipPosition(null);
+      });
 
     const defs = svg.append('defs');
 
@@ -121,6 +166,44 @@ function PerformanceGraph({ data }: BarChartProps) {
     >
       <D.PerformanceGraphWrapper>
         <svg ref={svgRef} />
+        {tooltipData && tooltipPosition && (
+          <D.StyledPopover isOpen={true} closeOnBlur={false}>
+            <PopoverTrigger>
+              <span style={{ position: 'absolute', left: tooltipPosition.x, top: tooltipPosition.y - 200 }} />
+            </PopoverTrigger>
+            <PopoverContent
+              // zIndex="tooltip"
+              // maxW="none"
+              width="180px"
+              height="100px"
+              border="none"
+              bgColor="white"
+              // borderColor="white"
+              // borderRadius="md"
+              // display="flex"
+              // alignItems="center"
+              // justifyContent="center"
+            >
+              {/* <PopoverArrow /> */}
+              <D.StyledPopoverBody color="black">
+                <div>
+                  <header>{tooltipData.date}</header>
+                  {/* <span>Assigned: {tooltipData.taskCount}</span>
+                  <span>Done: {tooltipData.doneCount}</span> */}
+                  <D.FlagWrapper>
+                    <D.DoneFlag></D.DoneFlag>
+                    <D.FlagTitle>Done {tooltipData.taskCount}</D.FlagTitle>
+                  </D.FlagWrapper>
+                  <D.FlagWrapper>
+                    <D.AssignedFlag></D.AssignedFlag>
+                    <D.FlagTitle>Assigned {tooltipData.doneCount}</D.FlagTitle>
+                  </D.FlagWrapper>
+                </div>
+              </D.StyledPopoverBody>
+              {/* <PopoverArrow /> */}
+            </PopoverContent>
+          </D.StyledPopover>
+        )}
       </D.PerformanceGraphWrapper>
     </motion.div>
   );

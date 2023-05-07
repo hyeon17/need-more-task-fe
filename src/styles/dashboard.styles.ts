@@ -1,3 +1,4 @@
+import { Popover, PopoverBody, PopoverContent, PopoverTrigger } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 export const BodyContainer = styled.main`
@@ -161,6 +162,60 @@ export const FlagTitle = styled.span`
 
 // PerformanceGraph
 export const PerformanceGraphWrapper = styled.div`
-  border: 1px solid;
+  /* border: 1px solid; */
   margin-top: 20px;
+  display: flex;
+  justify-content: center;
+`;
+
+// popover
+export const StyledPopover = styled(Popover)`
+  & .chakra-popover__popper {
+    width: 134px;
+  }
+
+  &.chakra-popover__body {
+    width: 134px;
+  }
+`;
+
+// export const StyledPopoverContent = styled(PopoverContent)`
+//   /* width: 134px;
+//   height: 60px; */
+//   background-color: ${({ theme }) => theme.white};
+//   border-color: ${({ theme }) => theme.white};
+//   border-radius: 2px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// `;
+// export const StyledPopoverBody = styled(PopoverBody)`
+//   padding: 8px 20px;
+//   display: flex;
+//   text-align: center;
+//   color: ${({ theme }) => theme.textColor};
+// `;
+export const StyledPopoverBody = styled(PopoverBody)`
+  display: flex;
+  justify-content: center;
+
+  /* padding: 8px; */
+  box-shadow: 0px 8px 15px rgba(152, 169, 188, 0.267182);
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px;
+
+    & > header {
+      color: ${({ theme }) => theme.labelColor};
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+
+    span {
+      font-weight: 700;
+      font-size: 14px;
+    }
+  }
 `;
