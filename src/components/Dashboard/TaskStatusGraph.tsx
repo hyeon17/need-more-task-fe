@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { ITaskStatusGraph, taskDoneData } from '@/type/dashBoardTypes';
+import * as D from '@/styles/dashboard.styles';
+import { motion } from 'framer-motion';
 
 interface Data {
   x: number;
@@ -58,9 +60,21 @@ const TaskStatusGraph = ({ data }: ITaskStatusGraph) => {
   }, [data]);
 
   return (
-    <svg ref={svgRefA} style={{ backgroundColor: '#fff' }}>
-      <path stroke="blue" strokeWidth="3" fill="none" />
-    </svg>
+    <motion.div
+      variants={{
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0 },
+      }}
+      initial="hidden"
+      animate="visible"
+      transition={{ duration: 0.6 }}
+    >
+      <D.StatusGraphWrapper>
+        <svg ref={svgRefA} style={{ backgroundColor: '#fff' }}>
+          <path stroke="blue" strokeWidth="3" fill="none" />
+        </svg>
+      </D.StatusGraphWrapper>
+    </motion.div>
   );
 };
 

@@ -15,9 +15,8 @@ function TaskStatus({ title, graph, totalCount }: ITaskStatus) {
           <h5>{totalCount}</h5>
           <span>{title}</span>
         </D.StatusNumber>
-        <D.StatusGraphWrapper>
-          <TaskStatusGraph data={graph} />
-        </D.StatusGraphWrapper>
+        {/* Task Status Graph */}
+        <TaskStatusGraph data={graph} />
       </D.StatusRight>
     </D.TaskDoneContainer>
   );
