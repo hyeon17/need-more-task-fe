@@ -20,3 +20,10 @@ export const getTaskProgressAPI = (options?: UseQueryOptions<AxiosResponse<any>,
 
   return useQuery([queryKey], queryFn, { ...options });
 };
+
+export const getPerformanceAPI = (options?: UseQueryOptions<AxiosResponse<any>, AxiosError, any, string[]>) => {
+  const queryKey = `/performance`;
+  const queryFn = () => axiosWithToken.get(queryKey).then((res) => res.data);
+
+  return useQuery([queryKey], queryFn, { ...options });
+};
