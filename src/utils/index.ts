@@ -30,6 +30,19 @@ export const setTagColor = (value: string) => {
   }
 };
 
+export const setStatusToKorean = (value: string) => {
+  switch (value) {
+    case StatusType.TODO:
+      return '할 일';
+    case StatusType.IN_PROGRESS:
+      return '진행 중';
+    case StatusType.DONE:
+      return '완료';
+    default:
+      return '상태';
+  }
+};
+
 export const teamOptions = [
   { label: '개발', value: 'DEV' },
   { label: '인사', value: 'HR' },
