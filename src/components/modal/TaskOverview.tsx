@@ -3,7 +3,7 @@ import { Avatar, Heading, ModalBody, ModalHeader, Stack, Tag, Text } from '@chak
 import { useModalState } from '@/store/modalStore';
 import * as S from '@/styles/modal.styles';
 import { actionConstantsType, actionType } from '@/constant/TaskOverview';
-import { getKeyByValue, setTagColor } from '@/utils';
+import { getKeyByValue, setActionTextToKorean, setTagColor } from '@/utils';
 import { useQuery } from '@tanstack/react-query';
 import { getTaskDetail } from '@/apis/task';
 
@@ -15,32 +15,30 @@ function TaskOverview() {
 
   const actionConstants: actionConstantsType = {
     DUE_DATE: {
-      key: 'Due Date',
+      key: 'DUE_DATE',
       date: endAt,
       value: 'Due Date',
     },
     ASSIGNEE: {
-      key: 'Assignee',
+      key: 'ASSIGNEE',
     },
     SET_STATUS: {
-      key: 'Set Status',
+      key: 'SET_STATUS',
       value: progress,
     },
     SET_PRIORITY: {
-      key: 'Set Priority',
+      key: 'SET_PRIORITY',
       value: priority,
     },
     DELETE_TASK: {
-      key: 'Delete Task',
+      key: 'DELETE_TASK',
     },
     EDIT_TASK: {
-      key: 'Edit Task',
+      key: 'EDIT_TASK',
     },
   };
 
-  const handleAction = (string: actionType) => {
-    console.log(string);
-  };
+  const handleAction = (string: actionType) => {};
 
   return (
     <S.ModalContentBox>
@@ -69,7 +67,7 @@ function TaskOverview() {
                 key={item.key}
                 onClick={() => handleAction(getKeyByValue(actionConstants, item) as actionType)}
               >
-                <Heading fontSize="1rem">{item.key}</Heading>
+                <Heading fontSize="1rem">{setActionTextToKorean(item.key)}</Heading>
                 {item.value && (
                   <Tag size="lg" backgroundColor={setTagColor(item.value)} color="white">
                     {item.value}

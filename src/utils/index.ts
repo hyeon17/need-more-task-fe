@@ -30,6 +30,25 @@ export const setTagColor = (value: string) => {
   }
 };
 
+export const setActionTextToKorean = (value: string) => {
+  switch (value) {
+    case 'DUE_DATE':
+      return '마감일 설정';
+    case 'ASSIGNEE':
+      return '담당자 지정';
+    case 'SET_STATUS':
+      return '상태 변경';
+    case 'SET_PRIORITY':
+      return '우선순위';
+    case 'DELETE_TASK':
+      return '삭제하기';
+    case 'EDIT_TASK':
+      return '수정하기';
+    default:
+      return '예기치 못한 에러 발생';
+  }
+};
+
 export const setStatusToKorean = (value: string) => {
   switch (value) {
     case StatusType.TODO:
@@ -40,6 +59,21 @@ export const setStatusToKorean = (value: string) => {
       return '완료';
     default:
       return '상태';
+  }
+};
+
+export const setPriorityToKorean = (value: string) => {
+  switch (value) {
+    case PriorityType.URGENT:
+      return '긴급';
+    case PriorityType.HIGH:
+      return '높음';
+    case PriorityType.MEDIUM:
+      return '중간';
+    case PriorityType.LOW:
+      return '낮음';
+    default:
+      return '우선순위';
   }
 };
 
