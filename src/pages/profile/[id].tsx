@@ -11,32 +11,42 @@ import { axiosInstance } from '@/apis/configs';
 import { useRouter } from 'next/router';
 import { getUserInfoAPI } from '@/apis/user';
 import { useAccessTokenStore } from '@/store/acceessTokenStore';
+import { Box, Skeleton, SkeletonCircle, SkeletonText, Stack } from '@chakra-ui/react';
 
 function ProfilePage({ id }: { id: string }) {
   const router = useRouter();
   const { userInfo: currentLoginUserInfo } = useUserInfo();
   const { getAccessToken } = useAccessTokenStore();
   const accessToken = getAccessToken();
+  // console.log('accessToken>>', accessToken);
 
-  console.log('query', router.query?.id);
-  console.log('id>>', id);
-  console.log('currentLoginUserInfo>>>', currentLoginUserInfo);
+  // console.log('query', router.query?.id);
+  // const userId = router.query?.id;
+  // console.log('id>>', id);
+  // console.log('currentLoginUserInfo>>>', currentLoginUserInfo);
 
-  // console.log('userInfo>>', userInfo);
-
-  const { data: userInfo } = accessToken ? getUserInfoAPI(accessToken, id) : { data: null };
-  // console.log('userInfo>>>', userInfo);
+  const { data: userInfo } = accessToken && id ? getUserInfoAPI(accessToken, id) : { data: null };
+  console.log('userInfo>>', userInfo);
 
   return (
     <Layout hasHeader>
       <P.Container>
         <P.LeftContainer>
           <P.AsideWrapper>
-            {/* 프로필 */}
-            <P.ProfileWrapper>
+            {/* <P.ProfileWrapper>
               <ProfileImage width={100} height={100} />
               <h3>{userInfo?.data?.fullName}</h3>
               <span>{userInfo?.data?.email}</span>
+            </P.ProfileWrapper> */}
+            <P.ProfileWrapper>
+              <SkeletonCircle size="100" isLoaded={Boolean(userInfo)} fadeDuration={1}>
+                {userInfo && <ProfileImage width={100} height={100} />}
+              </SkeletonCircle>
+
+              <SkeletonText mt="4" noOfLines={2} spacing="4" skeletonHeight="2" isLoaded={Boolean(userInfo)}>
+                <h3>{userInfo?.data?.fullName}</h3>
+                <span>{userInfo?.data?.email}</span>
+              </SkeletonText>
             </P.ProfileWrapper>
 
             {/* NavList */}
@@ -63,6 +73,7 @@ function ProfilePage({ id }: { id: string }) {
           </P.AsideWrapper>
         </P.LeftContainer>
         {/*  */}
+
         <P.RightContainer>
           {userInfo && currentLoginUserInfo && (
             <AccountInfo userInfo={userInfo.data} currentLoginUserInfo={currentLoginUserInfo} />

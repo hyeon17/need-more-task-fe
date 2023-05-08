@@ -20,6 +20,7 @@ export const inputProps = {
 };
 
 function StepThree() {
+  const toast = useToast();
   const router = useRouter();
   const { me, onSaveSignup } = useUserJoinStore();
   // const {} = me
@@ -33,8 +34,6 @@ function StepThree() {
   const [profileImageUrl, setProfileImageUrl] = useState('');
 
   const [profileUrl, setProfileUrl] = useState('');
-
-  const toast = useToast();
 
   console.log('me', me);
 
@@ -68,14 +67,14 @@ function StepThree() {
     phone2: string;
     phone3: string;
   }
-
+  let profileId = '1';
   const onClickNext = (data: IFormInput) => {
     console.log('data', data);
     const { phone1, phone2, phone3 } = data;
     const phone = `${phone1}-${phone2}-${phone3}`;
 
     if (Object.keys(errors).length === 0) {
-      onSaveSignup({ ...me, phone, profileImageUrl });
+      onSaveSignup({ ...me, phone, profileId });
 
       joinMutate({ ...me } as IJoin);
     }
@@ -138,10 +137,10 @@ function StepThree() {
         </A.ProfileIMGWrapper>
       </A.ProfileWrapper>
 
-      {/* 이름 */}
+      {/* 연락처 */}
       <A.InputContainer>
         <FormControl isInvalid={Boolean(errors.phone)}>
-          <FormLabel htmlFor="phone1">휴대폰 번호</FormLabel>
+          <FormLabel htmlFor="phone1">연락처</FormLabel>
           <A.PhoneNumWrapper>
             <Input
               id="phone1"
@@ -152,7 +151,7 @@ function StepThree() {
               type="number"
               maxLength={3}
               {...register('phone1', {
-                required: '이름은 필수 입력사항 입니다.',
+                required: '필수 입력사항 입니다.',
                 pattern: {
                   value: /^\d{3}$/,
                   message: '3자리 숫자만 입력 가능합니다.',
@@ -168,10 +167,10 @@ function StepThree() {
               type="number"
               maxLength={4}
               {...register('phone2', {
-                required: '이름은 필수 입력사항 입니다.',
+                required: '필수 입력사항 입니다.',
                 pattern: {
                   value: /^\d{4}$/,
-                  message: '3자리 숫자만 입력 가능합니다.',
+                  message: '4자리 숫자만 입력 가능합니다.',
                 },
               })}
             />
@@ -184,10 +183,10 @@ function StepThree() {
               type="number"
               maxLength={4}
               {...register('phone3', {
-                required: '이름은 필수 입력사항 입니다.',
+                required: '필수 입력사항 입니다.',
                 pattern: {
                   value: /^\d{4}$/,
-                  message: '3자리 숫자만 입력 가능합니다.',
+                  message: '4자리 숫자만 입력 가능합니다.',
                 },
               })}
             />

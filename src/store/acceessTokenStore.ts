@@ -9,6 +9,7 @@ export interface IAccessTokenStore {
   accessToken: IAccessToken | null;
   onSaveAccessToken: (data: IAccessToken) => void;
   onDeleteAccessToken: () => void;
+  onRemoveAccessToken: () => void;
   getAccessToken: () => string | null | undefined;
 }
 
@@ -22,6 +23,7 @@ const accessTokenStore = create<IAccessTokenStore>()(
       localStorage.setItem('needMoreTaskToken', JSON.stringify(data.accessToken));
     },
     onDeleteAccessToken: () => set(() => ({ accessToken: null })),
+    onRemoveAccessToken: () => localStorage.removeItem('needMoreTaskToken'),
     getAccessToken: () => {
       if (typeof window !== 'undefined') {
         const accessToken = localStorage.getItem('needMoreTaskToken');
