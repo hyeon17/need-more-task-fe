@@ -55,12 +55,29 @@ export const InputContainer = styled.div`
   /* border: 1px solid; */
 `;
 export const ConfirmButton = styled(Button)`
-  margin-top: 100px;
+  margin-top: 20px;
   width: 100%;
   background-color: ${({ theme }) => theme.primary};
 
   &:hover {
     background-color: ${({ theme }) => theme.outlineColor} !important;
+  }
+`;
+export const BackButtonWrapper = styled.div`
+  /* border: 1px solid; */
+  margin-top: 80px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  & > span {
+    color: ${({ theme }) => theme.labelColor};
+    margin-right: 10px;
+  }
+
+  & button {
+    font-size: 12px;
+    padding: 10px;
   }
 `;
 

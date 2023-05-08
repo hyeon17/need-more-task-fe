@@ -1,8 +1,9 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import * as A from '@/styles/auth.styles';
 import { useRouter } from 'next/router';
 import { useUserJoinStore } from '@/store/userJoinStore';
-import AuthInput from '../AuthInput';
+import JoinBackButton from '@/components/Auth/Join/JoinBackButton';
+
 import {
   Button,
   FormControl,
@@ -14,7 +15,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import useInput from '@/hooks/useInput';
-import PasswordInput from '../PasswordInput';
+
 import { useForm } from 'react-hook-form';
 import { AxiosError } from 'axios';
 import { isDuplicatedEmailAPI } from '@/apis/user';
@@ -103,6 +104,10 @@ function StepTwo() {
   const handleIsDuplicated = () => {
     console.log('중복확인');
     isDuplicatedEmailMutate(emailValue);
+  };
+
+  const handleBack = () => {
+    router.push('/join/1');
   };
 
   return (
@@ -228,6 +233,7 @@ function StepTwo() {
 
       {/* onClick={onClickNext} */}
       {/* isDisabled={isDisabled} */}
+      <JoinBackButton step={1} />
       <A.ConfirmButton colorScheme="teal" size="md" type="submit">
         다음
       </A.ConfirmButton>

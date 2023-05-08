@@ -30,7 +30,7 @@ function JoinLayout({ step, children }: IJoinLayout) {
   return (
     <A.Container>
       <TitleLabel title="회원가입" />
-      <Progress value={34 * parseInt(step)} size="sm" />
+      <Progress value={34 * parseInt(step)} size="xs" colorScheme="linkedin" hasStripe isAnimated />
       <A.JoinStepWrapper>
         {Array(3)
           .fill(null)

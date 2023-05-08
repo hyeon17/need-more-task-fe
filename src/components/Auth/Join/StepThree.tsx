@@ -8,6 +8,7 @@ import useInput from '@/hooks/useInput';
 import AuthInput from '../AuthInput';
 import { FormControl, FormErrorMessage, FormLabel, Input, useToast } from '@chakra-ui/react';
 import Image from 'next/image';
+import JoinBackButton from '@/components/Auth/Join/JoinBackButton';
 
 import { joinAPI } from '@/apis/user';
 import { AxiosError } from 'axios';
@@ -196,6 +197,7 @@ function StepThree() {
       </A.InputContainer>
 
       {/* isLoading 추가 */}
+      <JoinBackButton step={2} />
       <A.ConfirmButton colorScheme="teal" size="md" type="submit" isLoading={isLoading}>
         다음
       </A.ConfirmButton>
