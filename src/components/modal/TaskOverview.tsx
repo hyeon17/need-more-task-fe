@@ -2,8 +2,8 @@ import React from 'react';
 import { Avatar, Heading, ModalBody, ModalHeader, Stack, Tag, Text } from '@chakra-ui/react';
 import { useModalState } from '@/store/modalStore';
 import * as S from '@/styles/modal.styles';
-import { actionConstantsType } from '@/constant/TaskOverview';
-import { setTagColor } from '@/utils';
+import { actionConstantsType, actionType } from '@/constant/TaskOverview';
+import { getKeyByValue, setTagColor } from '@/utils';
 import { useQuery } from '@tanstack/react-query';
 import { getTaskDetail } from '@/apis/task';
 
@@ -38,6 +38,10 @@ function TaskOverview() {
     },
   };
 
+  const handleAction = (string: actionType) => {
+    console.log(string);
+  };
+
   return (
     <S.ModalContentBox>
       <Stack>
@@ -60,7 +64,11 @@ function TaskOverview() {
           </S.ModalTaskContentBox>
           <S.ModalTaskActionBox>
             {Object.values(actionConstants).map((item) => (
-              <div className="action" key={item.key}>
+              <div
+                className="action"
+                key={item.key}
+                onClick={() => handleAction(getKeyByValue(actionConstants, item) as actionType)}
+              >
                 <Heading fontSize="1rem">{item.key}</Heading>
                 {item.value && (
                   <Tag size="lg" backgroundColor={setTagColor(item.value)} color="white">

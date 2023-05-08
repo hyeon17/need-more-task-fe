@@ -39,10 +39,4 @@ export type actionConstantsType = {
   };
 };
 
-export type Type = {
-  [key: string]: string;
-};
-
-interface Interface {
-  [key: string]: string;
-}
+export type actionType = keyof actionConstantsType;
