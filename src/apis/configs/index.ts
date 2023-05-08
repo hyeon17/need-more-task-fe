@@ -14,7 +14,7 @@ export const axiosWithToken: AxiosInstance = axios.create({
 });
 
 axiosWithToken.interceptors.request.use((config: any) => {
-  const accessToken = localStorage.getItem('needMoreTaskToken') || '';
+  const accessToken = JSON.parse(localStorage.getItem('needMoreTaskToken')) || '';
 
   return { ...config, headers: { Authorization: `Bearer ${accessToken}` } };
 });
