@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { PriorityType, StatusType } from '@/constant/TaskOverview';
+import { RoleType } from '@/constant/UserRole';
 
 export function classnames(...args: string[]) {
   return args.join(' ');
@@ -56,4 +57,15 @@ export const getJoinCompanyYear = () => {
       value: thisYear - i,
     };
   });
+};
+
+export const UserRoleEnum = (role: string | undefined) => {
+  switch (role) {
+    case RoleType.ADMIN:
+      return '관리자';
+    case RoleType.USER:
+      return '일반 사용자';
+    default:
+      return '일반 사용자';
+  }
 };
