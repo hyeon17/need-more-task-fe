@@ -13,8 +13,18 @@ export const axiosWithToken: AxiosInstance = axios.create({
   withCredentials: false,
 });
 
+// axiosWithToken.interceptors.request.use((config: any) => {
+//   const accessToken = JSON.parse(localStorage.getItem('needMoreTaskToken')) || '';
+
+//   return { ...config, headers: { Authorization: `Bearer ${accessToken}` } };
+// });
+
 axiosWithToken.interceptors.request.use((config: any) => {
-  const accessToken = localStorage.getItem('needMoreTaskToken') || '';
+  const accessToken = JSON.parse(localStorage.getItem('needMoreTaskToken') || 'null');
+
+  if (accessToken === null) {
+    return config;
+  }
 
   return { ...config, headers: { Authorization: `Bearer ${accessToken}` } };
 });
