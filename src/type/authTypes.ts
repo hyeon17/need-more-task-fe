@@ -21,6 +21,7 @@ export interface IUser {
   joinCompanyYear: string;
   phone: string;
   profileImageUrl: string;
+  role?: string;
 }
 
 export interface AccountInfoProps {
