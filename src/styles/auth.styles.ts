@@ -64,7 +64,6 @@ export const ConfirmButton = styled(Button)`
   }
 `;
 export const BackButtonWrapper = styled.div`
-  /* border: 1px solid; */
   margin-top: 80px;
   display: flex;
   justify-content: flex-end;
@@ -180,14 +179,10 @@ export const CompleteBody = styled.div`
 // `;
 
 export const CompleteButton = styled(ConfirmButton)`
-  /* position: absolute; */
-  /* margin-top: 200px; */
   display: flex;
   justify-content: center;
   align-items: center;
-  bottom: 60px;
-  left: 0;
-  /* width: 90%; */
+  margin-top: 100px;
 `;
 export const LottieWrapper = styled.div``;
 

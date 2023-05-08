@@ -33,11 +33,7 @@ function ProfilePage({ id }: { id: string }) {
       <P.Container>
         <P.LeftContainer>
           <P.AsideWrapper>
-            {/* <P.ProfileWrapper>
-              <ProfileImage width={100} height={100} />
-              <h3>{userInfo?.data?.fullName}</h3>
-              <span>{userInfo?.data?.email}</span>
-            </P.ProfileWrapper> */}
+            {/* Profile info */}
             <P.ProfileWrapper>
               <SkeletonCircle size="100" isLoaded={Boolean(userInfo)} fadeDuration={1}>
                 {userInfo && <ProfileImage width={100} height={100} />}
@@ -72,8 +68,8 @@ function ProfilePage({ id }: { id: string }) {
             </P.NavWrapper>
           </P.AsideWrapper>
         </P.LeftContainer>
-        {/*  */}
 
+        {/* 개인정보 */}
         <P.RightContainer>
           {userInfo && currentLoginUserInfo && (
             <AccountInfo userInfo={userInfo.data} currentLoginUserInfo={currentLoginUserInfo} />

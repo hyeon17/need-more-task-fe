@@ -100,8 +100,6 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     });
   };
 
-  const { mutate: isDuplicatedEmailMutate, isLoading } = isDuplicatedEmailAPI({ onSuccess, onError });
-
   const onSuccessCheckPassword = (data: any) => {
     console.log('checkpassword', data);
 
@@ -231,6 +229,7 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
             />
           </FormControl>
         </A.InputContainer>
+
         {/* 이름 */}
         <A.InputContainer>
           <FormControl isInvalid={Boolean(errors.fullName)}>
