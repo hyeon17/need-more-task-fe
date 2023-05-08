@@ -43,6 +43,10 @@ export const setStatusToKorean = (value: string) => {
   }
 };
 
+export function getKeyByValue(object: { [key: string]: any }, value: any): string | undefined {
+  return Object.keys(object).find((key) => object[key] === value);
+}
+
 export const teamOptions = [
   { label: '개발', value: 'DEV' },
   { label: '인사', value: 'HR' },
