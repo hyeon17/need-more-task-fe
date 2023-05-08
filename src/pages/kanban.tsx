@@ -5,6 +5,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import KanbanDroppable from '@/components/kanban/KanbanDroppable';
 import { getKanbanBoard, TaskData, TaskProgress } from '@/apis/kanban';
 import { useQuery } from '@tanstack/react-query';
+import { StatusType } from '@/constant/TaskOverview';
 
 type KanbanDataType = {
   [key in TaskProgress as string]: TaskData[];
@@ -29,11 +30,11 @@ function Kanban() {
     if (!data) return result;
     data.forEach((item) => {
       switch (item.progress) {
-        case 'TODO':
+        case StatusType.TODO:
           return result.TODO.push(item);
-        case 'IN_PROGRESS':
+        case StatusType.IN_PROGRESS:
           return result.IN_PROGRESS.push(item);
-        case 'DONE':
+        case StatusType.DONE:
           return result.DONE.push(item);
         default:
           break;
