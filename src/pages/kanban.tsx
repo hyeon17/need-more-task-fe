@@ -23,9 +23,9 @@ function Kanban() {
 
   const reorderByStatus = (data: TaskData[]): KanbanDataType => {
     const result: KanbanDataType = {
-      DONE: [],
-      IN_PROGRESS: [],
       TODO: [],
+      IN_PROGRESS: [],
+      DONE: [],
     };
     if (!data) return result;
     data.forEach((item) => {
