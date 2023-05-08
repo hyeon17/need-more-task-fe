@@ -14,7 +14,7 @@ export interface ILogin {
 }
 
 export interface IUser {
-  userId: string;
+  userId: number;
   department?: string;
   email: string;
   fullName: string;
@@ -23,6 +23,8 @@ export interface IUser {
   profileImageUrl: string;
   role?: string;
 }
+
+export type IUserRole = Pick<IUser, 'userId' | 'email' | 'fullName' | 'role' | 'profileImageUrl'>;
 
 export interface AccountInfoProps {
   userInfo: IUser;
@@ -42,4 +44,9 @@ export interface IUpdateProfile {
   profileImageUrl: string;
   password?: string;
   passwordCheck?: string;
+}
+
+export interface IUpdateRole {
+  userId: number;
+  role: string;
 }
