@@ -14,9 +14,9 @@ import { CalendarResponse } from '@/type/componentProps';
 // };
 
 // 수정된 api
-// export const getCalendar = async (year:number,month:number) => {
+// export const getCalendar = async (year:number,month:number, accessToken: string) => {
 //   const response = await axiosInstance.get<CalendarResponse>(`/calendars?year=${year}&month=${month}`, {
-//     headers: { Authorization: 'Authorization' },
+//     headers: { AAuthorization: `Bearer ${accessToken}` },
 //   });
 //   console.log(response);
 //   return response;
