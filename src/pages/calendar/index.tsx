@@ -6,7 +6,7 @@ const ComponentsWithNoSSR = dynamic(() => import('@/components/Calendar/Calendar
 
 function CalendarPage() {
   return (
-    <Layout>
+    <Layout hasHeader>
       <ComponentsWithNoSSR />
     </Layout>
   );

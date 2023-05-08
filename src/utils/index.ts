@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { PriorityType, StatusType } from '@/constant/TaskOverview';
 
 export function classnames(...args: string[]) {
   return args.join(' ');
@@ -6,6 +7,27 @@ export function classnames(...args: string[]) {
 
 export const taskTitle = (title: string) => {
   return title.length > 30 ? title.substring(0, 30).concat(' ...' + '더보기') : title;
+};
+
+export const setTagColor = (value: string) => {
+  switch (value) {
+    case StatusType.TODO:
+      return 'errorColor';
+    case StatusType.IN_PROGRESS:
+      return 'warningColor';
+    case StatusType.DONE:
+      return 'successColor';
+    case PriorityType.URGENT:
+      return 'errorColor';
+    case PriorityType.HIGH:
+      return 'warningColor';
+    case PriorityType.MEDIUM:
+      return 'successColor';
+    case PriorityType.LOW:
+      return 'primary';
+    default:
+      return 'labelColor';
+  }
 };
 
 export const teamOptions = [

@@ -90,7 +90,7 @@ function CalendarView() {
           selectable={true}
           selectMirror={true}
           dayMaxEvents={1}
-          eventContent={renderEventContent} // custom render function
+          eventContent={renderEventContent}
           navLinks={true}
           events={allEvents}
           datesSet={handleDatesSet}
