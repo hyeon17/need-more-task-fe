@@ -1,4 +1,4 @@
-import { IJoin, ILogin, IUpdateProfile, IValidatePassword } from '@/type/authTypes';
+import { IJoin, ILogin, IUpdateProfile, IUpdateRole, IValidatePassword } from '@/type/authTypes';
 import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { AxiosError, AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
@@ -81,6 +81,14 @@ export const updateUserInfoAPI = (
 ) => {
   const queryKey = `/user/${userId}`;
   const queryFn = (data: IUpdateProfile) => axiosWithToken.put(queryKey, data).then((res) => res.data);
+
+  return useMutation([queryKey], queryFn, { ...options });
+};
+
+// role
+export const updateRoleAPI = (options?: UseMutationOptions<AxiosResponse<string>, AxiosError, IUpdateRole>) => {
+  const queryKey = `/admin/role`;
+  const queryFn = (data: IUpdateRole) => axiosWithToken.put(queryKey, data).then((res) => res.data);
 
   return useMutation([queryKey], queryFn, { ...options });
 };
