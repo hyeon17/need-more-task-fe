@@ -2,9 +2,8 @@ import React from 'react';
 import styled from '@emotion/styled';
 import CommonHeader from './CommonHeader/CommonHeader';
 import { useModalState } from '@/store/modalStore';
-import TaskOverview from '@/components/modal/TaskOverview';
 import { AnimatePresence } from 'framer-motion';
-
+import ModalLayout from '@/components/modal/ModalLayout';
 
 const LayoutComponent = styled.div`
   display: flex;
@@ -21,7 +20,7 @@ function Layout({ children, hasHeader }: { children: React.ReactNode; hasHeader?
     <LayoutComponent>
       {hasHeader && <CommonHeader />}
       <main>{children}</main>
-      <AnimatePresence>{modal && <TaskOverview />}</AnimatePresence>
+      <AnimatePresence>{modal && <ModalLayout />}</AnimatePresence>
     </LayoutComponent>
   );
 }

@@ -1,16 +1,18 @@
 import { create } from 'zustand';
+import { StatusType } from '@/constant/TaskOverview';
 
 type ModalState = {
-  modal: boolean;
+  modal: 'create' | 'overview' | null;
 };
 
 type ModalAction = {
   onCloseModal: () => void;
-  onOpenModal: () => void;
+  onOpenOverView: () => void;
+  onOpenCreate: () => void;
 };
 
 type ModalId = {
-  id: string;
+  id: string | StatusType;
 };
 
 type ModalIdAction = {
@@ -21,9 +23,10 @@ type ModalStore = ModalState & ModalAction & ModalId & ModalIdAction;
 
 const modalState = create<ModalStore>((set) => ({
   id: '',
-  modal: false,
-  onCloseModal: () => set(() => ({ modal: false })),
-  onOpenModal: () => set(() => ({ modal: true })),
+  modal: null,
+  onCloseModal: () => set(() => ({ modal: null })),
+  onOpenOverView: () => set(() => ({ modal: 'overview' })),
+  onOpenCreate: () => set(() => ({ modal: 'create' })),
   onSetModalId: (id) => set(() => ({ id })),
 }));
 

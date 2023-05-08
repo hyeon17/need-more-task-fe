@@ -9,12 +9,14 @@ export const ModalContentBox = styled(ModalContent)`
 `;
 
 export const ModalTaskContentBox = styled(Stack)`
+  min-width: 55%;
   padding: 5rem 1rem;
   justify-content: start;
   align-items: start;
   gap: 3rem;
   flex-direction: column;
   .title {
+    width: 100%;
     padding: 1rem;
     font-size: 1.5rem;
     display: flex;
@@ -27,6 +29,7 @@ export const ModalTaskContentBox = styled(Stack)`
     }
   }
   .desc {
+    width: 100%;
     padding: 1rem;
     display: flex;
     align-items: start;
@@ -42,8 +45,18 @@ export const ModalTaskContentBox = styled(Stack)`
 
 export const ModalTaskActionBox = styled.div`
   display: flex;
+  align-items: start;
+  flex-direction: column;
+  gap: 3rem;
   flex-grow: 2;
   width: 100%;
   background-color: ${({ theme }) => theme.gray50};
-  padding: 2rem 1rem;
+  padding: 2rem;
+  .action {
+    display: flex;
+    align-items: start;
+    gap: 0.5rem;
+    flex-direction: column;
+    cursor: pointer;
+  }
 `;
