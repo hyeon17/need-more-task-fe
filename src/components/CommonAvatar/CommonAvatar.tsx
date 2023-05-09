@@ -1,11 +1,17 @@
 import { Avatar, AvatarGroup } from '@chakra-ui/react';
+import Link from 'next/link';
 import React from 'react';
+
+interface IAssignee {
+  profileImageUrl: string;
+  userId: number;
+}
 
 interface ICommonAvatar {
   size?: string;
   max?: number;
   src?: string;
-  assignee: any;
+  assignee: IAssignee[];
 }
 
 function CommonAvatar({
@@ -16,9 +22,13 @@ function CommonAvatar({
 }: ICommonAvatar) {
   return (
     <AvatarGroup size={size} max={max}>
-      {assignee.map((user: any) => {
+      {assignee?.map((user: IAssignee) => {
         const { profileImageUrl, userId } = user;
-        return <Avatar src={src} key={`userId${userId}`} />;
+        return (
+          <Link href={`/profile/${userId}`} key={`userId${userId}`}>
+            <Avatar src={profileImageUrl ? profileImageUrl : src} />
+          </Link>
+        );
       })}
     </AvatarGroup>
   );
