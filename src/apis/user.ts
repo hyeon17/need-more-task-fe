@@ -15,9 +15,16 @@ export const joinAPI = (options?: UseMutationOptions<AxiosResponse<string>, Axio
   return useMutation([queryKey], queryFn, { ...options });
 };
 
-export const isDuplicatedEmailAPI = (options?: UseMutationOptions<AxiosResponse<string>, AxiosError, IJoin>) => {
+export const isDuplicatedEmailAPI = (options?: UseMutationOptions<AxiosResponse<string>, AxiosError, any>) => {
   const queryKey = `/email/validate`;
-  const queryFn = (data: IJoin) => axiosInstance.post(queryKey, data).then((res) => res.data);
+  const queryFn = (data: any) =>
+    axiosInstance
+      .post(queryKey, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => res.data);
 
   return useMutation([queryKey], queryFn, { ...options });
 };

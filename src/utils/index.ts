@@ -83,7 +83,7 @@ export function getKeyByValue(object: { [key: string]: any }, value: any): strin
 }
 
 export const teamOptions = [
-  { label: '개발', value: 'DEV' },
+  { label: '개발', value: 'DEVELOPMENT' },
   { label: '인사', value: 'HR' },
   { label: '경영', value: 'MANAGEMENT' },
   { label: '무역', value: 'TRADE' },
