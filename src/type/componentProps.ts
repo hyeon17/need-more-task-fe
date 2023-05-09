@@ -1,5 +1,6 @@
 import { DraggableProvided, DroppableProvided } from 'react-beautiful-dnd';
 import { TaskData } from '@/apis/kanban';
+import { actionType } from '@/constant/TaskOverview';
 
 export interface KanbanDroppableItemProps {
   status: string;
@@ -34,4 +35,8 @@ export interface CalendarResponse {
   }[];
   priority: string;
   progress: string;
+}
+
+export interface ModalActionComponentProps {
+  action: actionType;
 }
