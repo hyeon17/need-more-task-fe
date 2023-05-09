@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
-import { ModalContent, Stack } from '@chakra-ui/react';
+import { Button, ModalContent, Stack } from '@chakra-ui/react';
+import { Select } from 'chakra-react-select';
 
 export const ModalContentBox = styled(ModalContent)`
   min-width: 55%;
+  min-height: 65%;
   header {
     font-size: 1.5rem;
   }
@@ -51,12 +53,28 @@ export const ModalTaskActionBox = styled.div`
   flex-grow: 2;
   width: 100%;
   background-color: ${({ theme }) => theme.gray50};
-  padding: 2rem;
+  padding: 1rem 2rem;
   .action {
     display: flex;
     align-items: start;
+    width: 100%;
     gap: 0.5rem;
     flex-direction: column;
     cursor: pointer;
+  }
+`;
+
+export const ModalTaskActionSelectBox = styled(Select)`
+  width: 100%;
+  & #react-select-3-placeholder {
+    color: ${({ theme }) => theme.labelColor};
+  }
+`;
+
+export const ModalTaskDeleteButton = styled(Button)`
+  background-color: ${({ theme }) => theme.errorColor};
+  color: ${({ theme }) => theme.white};
+  &:hover {
+    color: ${({ theme }) => theme.textColor};
   }
 `;
