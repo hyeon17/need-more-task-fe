@@ -4,7 +4,7 @@ import * as P from '@/styles/profile.styles';
 import ProfileImage from '@/components/CommonHeader/ProfileImage';
 import { useUserInfo } from '@/store/userInfoStore';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import AccountInfo from '@/components/Profile';
+import ProfileAccountInfo from '@/components/Profile/ProfileAccountInfo';
 import { GetServerSideProps } from 'next';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { axiosInstance } from '@/apis/configs';
@@ -72,7 +72,7 @@ function ProfilePage({ id }: { id: string }) {
         {/* 개인정보 */}
         <P.RightContainer>
           {userInfo && currentLoginUserInfo && (
-            <AccountInfo userInfo={userInfo.data} currentLoginUserInfo={currentLoginUserInfo} />
+            <ProfileAccountInfo userInfo={userInfo.data} currentLoginUserInfo={currentLoginUserInfo} />
           )}
         </P.RightContainer>
       </P.Container>

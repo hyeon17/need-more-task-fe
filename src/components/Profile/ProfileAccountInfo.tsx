@@ -26,7 +26,7 @@ interface IAccountInfo {
   currentLoginUserInfo: IUser;
 }
 
-function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
+function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
   // const { department, fullName, joinCompanyYear, email, phone, profileImageUrl } = userInfo;
   const {
     watch,
@@ -423,4 +423,4 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
   );
 }
 
-export default AccountInfo;
+export default ProfileAccountInfo;
