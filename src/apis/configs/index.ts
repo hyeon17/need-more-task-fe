@@ -25,5 +25,5 @@ axiosWithToken.interceptors.request.use((config: any) => {
     return config;
   }
 
-  return { ...config, headers: { Authorization: `Bearer ${accessToken}` } };
+  return { ...config, headers: { Authorization: `${accessToken}` } };
 });
