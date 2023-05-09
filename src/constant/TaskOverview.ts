@@ -33,8 +33,10 @@ export type actionConstantsType = {
     key: string;
     value?: string;
   };
-  EDIT_TASK: {
+  EDIT_TASK?: {
     key: string;
     value?: string;
   };
 };
+
+export type actionType = keyof actionConstantsType;

@@ -1,6 +1,5 @@
 import { useModalState } from '@/store/modalStore';
 import {
-  Avatar,
   Button,
   FormControl,
   FormErrorMessage,
@@ -10,12 +9,15 @@ import {
   ModalBody,
   ModalHeader,
   Stack,
+  Text,
   Textarea,
 } from '@chakra-ui/react';
 import * as S from '@/styles/modal.styles';
 import React, { useState } from 'react';
-import { actionConstants, actionConstantsType } from '@/constant/TaskOverview';
+import { actionConstantsType } from '@/constant/TaskOverview';
 import { useForm } from 'react-hook-form';
+import { Assignee } from '@/apis/kanban';
+import CommonAvatar from '@/components/CommonAvatar/CommonAvatar';
 
 interface CreateTaskForm {
   title: string;
@@ -29,30 +31,48 @@ interface CreateTaskProps extends actionConstantsType {
   };
 }
 
+const actionConstants: actionConstantsType = {
+  DUE_DATE: {
+    key: 'Due Date',
+    value: 'Due Date',
+  },
+  ASSIGNEE: {
+    key: 'Assignee',
+  },
+  SET_STATUS: {
+    key: 'Set Status',
+  },
+  SET_PRIORITY: {
+    key: 'Set Priority',
+  },
+  DELETE_TASK: {
+    key: 'Delete Task',
+  },
+};
+
 const createActionConstant: CreateTaskProps = {
   ...actionConstants,
   CREATE_TASK: {
     key: 'CREATE_TASK',
-    value: '생성하기',
+    value: 'Create Task',
   },
 };
 
 function CreateTask() {
   const {} = useModalState();
   const [title, setTitle] = useState('');
-
+  const [avatar, setAvatar] = useState<Assignee[]>([]);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<CreateTaskForm>();
 
-  console.log(errors);
-
   const onSubmit = (data: CreateTaskForm) => {};
   const onTitleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
+
   return (
     <S.ModalContentBox>
       <Stack>
@@ -88,8 +108,9 @@ function CreateTask() {
                   <FormErrorMessage>{errors.title && errors?.title?.message}</FormErrorMessage>
                   <Heading fontSize="1rem">지정된 사람 목록</Heading>
                   <div className="avatar">
-                    {[1, 2, 3].map((item) => (
-                      <Avatar size="xs" key={item} />
+                    {avatar.length === 0 && <Text fontSize="1rem">지정된 사람이 없습니다</Text>}
+                    {avatar.map((item) => (
+                      <CommonAvatar assignee={item} key={item.userId} size="sm" max={9} />
                     ))}
                   </div>
                 </div>
