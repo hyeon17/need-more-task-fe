@@ -19,8 +19,7 @@ import { useAccessTokenStore } from '@/store/acceessTokenStore';
 
 function Login() {
   const router = useRouter();
-  const { getAccessToken, onSaveAccessToken } = useAccessTokenStore();
-  console.log('getAccessToken>>', getAccessToken());
+  const { onSaveAccessToken } = useAccessTokenStore();
 
   const [show, setShow] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -49,7 +48,7 @@ function Login() {
   };
 
   const onSuccess = (data: any) => {
-    // console.log('success data>>', data);
+    console.log('success data>>', data);
     // console.log('data>>', data.accessToken);
 
     toast({
@@ -59,9 +58,9 @@ function Login() {
       duration: 9000,
       isClosable: true,
     });
-    onSaveAccessToken(data);
-    // router.replace('/kanban');
-    window.location.href = '/kanban';
+    onSaveAccessToken(data.headers.authorization);
+    router.replace('/kanban');
+    // window.location.href = '/kanban';
   };
 
   const { mutate, isLoading } = loginAPI({ onSuccess, onError });
