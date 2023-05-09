@@ -26,6 +26,9 @@ export const CalendarWrapper = styled.div`
     --fc-event-bg-color: none;
     --fc-event-border-color: none;
   }
+  .fc-daygrid-day-frame{
+    cursor:pointer;
+  }
 `;
 
 export const EventTime = styled.div``;
@@ -57,5 +60,4 @@ export const EventWrapper = styled.div`
     }
   }};
   color: ${({ theme }) => theme.white};
-  cursor: pointer;
 `;

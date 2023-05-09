@@ -1,7 +1,7 @@
 import { MutationFunction, useMutation, UseMutationOptions, useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { axiosInstance } from '@/apis/configs';
-import { CalendarResponse } from '@/type/componentProps';
+import { KanbanBoardDataInterface } from '@/apis/kanban';
 
 // export const useGetCalendarAPI = (
 //   year: number,
@@ -22,11 +22,7 @@ import { CalendarResponse } from '@/type/componentProps';
 //   return response;
 // };
 
-
-export const getCalendar = async (year:number,month:number) => {
-  const response = await axiosInstance.get<CalendarResponse>(`/calendar?year=${year}&month=${month}`, {
-    headers: { Authorization: 'Authorization' },
-  });
+export const getCalendar = async (year: number, month: number) => {
+  const response = await axiosInstance.get<KanbanBoardDataInterface>(`/calendars?year=${year}&month=${month}`);
   return response;
 };
-
