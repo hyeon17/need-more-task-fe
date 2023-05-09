@@ -11,16 +11,15 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import { useRouter } from 'next/router';
 import { getCalendar } from '@/apis/calendar';
-import { useQuery } from '@tanstack/react-query';
-import { CalendarResponse } from '@/type/componentProps';
+import { KanbanBoardDataInterface } from '@/apis/kanban';
 import { useCalendarState } from '@/store/calendarStore';
 
 function CalendarView() {
-  const [currentEvents, setCurrentEvents] = useState<CalendarResponse[]>([]);
+  const [currentEvents, setCurrentEvents] = useState<KanbanBoardDataInterface[]>([]);
   const calendarRef = useRef<FullCalendar>(null);
   const [year, setYear] = useState<number>(Number(dayjs().format('YYYY')));
   const [month, setMonth] = useState<number>(Number(dayjs().format('MM')));
-  const { setYearStore, setMonthStore } = useCalendarState();
+  const { setYearStore, setMonthStore, setDateStore } = useCalendarState();
 
   const headerToolbar = {
     left: 'dayGridMonth,timeGridWeek,timeGridDay',
@@ -34,18 +33,18 @@ function CalendarView() {
   const handleDatesSet = (eventInfo: EventClickArg) => {
     const calendarApi = eventInfo.view.calendar;
     const currentDate = calendarApi.getDate();
-    const year: number = Number(dayjs(currentDate).format('YYYY'));
-    const month: number = Number(dayjs(currentDate).format('MM'));
-    setYear(year);
-    setYearStore(year);
-    setMonth(month);
-    setMonthStore(month);
-    router.push(`/calendar?year=${year}&month=${month}`);
+    const years: number = Number(dayjs(currentDate).format('YYYY'));
+    const months: number = Number(dayjs(currentDate).format('MM'));
+
+    setYear(years);
+    setMonth(months);
+    setYearStore(years);
+    setMonthStore(months);
+    router.push(`/calendars?year=${years}&month=${months}`);
   };
 
   useEffect(() => {
     getCalendar(year, month).then((res) => {
-      console.log(res);
       setCurrentEvents([res.data]);
     });
   }, [year, month]);
@@ -62,16 +61,17 @@ function CalendarView() {
     allEvents.push(...events);
   }
 
-  const renderEventContent = (eventContent: EventContentArg) => {
-    const handleEventClick = () => {
-      router.push(`/kanban`);
-    };
+  const handleDateClick = (info: any) => {
+    setDateStore(info.dateStr);
+    router.push(`/task?date=${info.dateStr}`);
+  };
 
+  const renderEventContent = (eventContent: EventContentArg) => {
     const event = allEvents.find((e) => e.id === eventContent.event.id);
     if (!event) return null;
 
     return (
-      <S.EventWrapper key={event.id} onClick={handleEventClick} color={event.priority}>
+      <S.EventWrapper key={event.id} color={event.priority}>
         <S.EventTitle>{eventContent.event.title}</S.EventTitle>
         <S.EventTime>{eventContent.timeText}</S.EventTime>
       </S.EventWrapper>
@@ -91,6 +91,7 @@ function CalendarView() {
           selectMirror={true}
           dayMaxEvents={1}
           eventContent={renderEventContent}
+          dateClick={handleDateClick}
           navLinks={true}
           events={allEvents}
           datesSet={handleDatesSet}
