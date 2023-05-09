@@ -149,7 +149,6 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
   });
 
   const onClickSave = (data: IUpdateProfile) => {
-    // console.log('업데이트 data>>>', { ...data, department, joinCompanyYear });
     console.log('data>>', data);
 
     if (Object.keys(errors).length === 0) {
@@ -425,45 +424,3 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
 }
 
 export default AccountInfo;
-
-{
-  /* <A.InputContainer>
-          <FormControl isInvalid={Boolean(errors.email)}>
-            <FormLabel htmlFor="email">이메일</FormLabel>
-            <InputGroup size="md" variant="flushed">
-              <Input
-                isDisabled={!edit}
-                id="email"
-                placeholder="이메일을 입력하세요"
-                pr="4.5rem"
-                variant="flushed"
-                borderColor="outlineColor"
-                focusBorderColor="inputFocusColor"
-                // value={watch('email')}
-                defaultValue={userInfo?.email || watch('email')}
-                {...register('email', {
-                  required: '이메일은 필수 입력사항입니다.',
-                  pattern: {
-                    value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                    message: '유효한 이메일 주소를 입력하세요.',
-                  },
-                  maxLength: {
-                    value: 50,
-                    message: '이메일 주소가 너무 깁니다.',
-                  },
-                })}
-              />
-              {edit ? (
-                <InputRightElement width="4.5rem">
-                  <Button h="1.75rem" size="sm" onClick={handleIsDuplicated} isLoading={isLoading}>
-                    중복 확인
-                  </Button>
-                </InputRightElement>
-              ) : (
-                ''
-              )}
-            </InputGroup>
-            <FormErrorMessage>{errors.email && errors.email?.message?.toString()}</FormErrorMessage>
-          </FormControl>
-        </A.InputContainer> */
-}

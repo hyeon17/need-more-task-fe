@@ -6,7 +6,6 @@ import TaskStatus from '@/components/Dashboard/TaskStatus';
 
 function TaskStatusList() {
   const { data: taskData, isLoading } = getTaskProgressAPI();
-  console.log('taskData>>', taskData);
 
   return (
     <D.TaskStatusContainer>
@@ -24,7 +23,7 @@ function TaskStatusList() {
         </>
       )}
 
-      {!taskData && (
+      {isLoading && (
         <D.SpinnerWrapper>
           <CommonSpinner size="lg" />
         </D.SpinnerWrapper>
