@@ -34,6 +34,8 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     register,
     formState: { errors },
   } = useForm<any>();
+
+  const toast = useToast();
   const [edit, setEdit] = useState(false);
   const [fullNameValue, setFullNameValue] = useState<string | null>(null);
   const [emailValue, setEmailValue] = useState<string | null>(null);
@@ -67,37 +69,21 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
 
   // 버튼
   const handleEditProfile = () => {
-    // setEdit(true);
+    if (userInfo?.userId !== currentLoginUserInfo?.userId || userInfo?.userId !== 1) {
+      toast({
+        title: '수정 권한이 없습니다.',
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      });
+      return;
+    }
   };
 
   const handleCancelProfileSave = () => {
     setFullNameValue(null);
     setEmailValue(null);
     setEdit(false);
-  };
-
-  const toast = useToast();
-
-  const onError = (error: AxiosError) => {
-    console.error('error>>', error);
-
-    toast({
-      title: '이미 가입한 이메일 입니다.',
-      // description: '알 수 없는 오류가 발생했습니다.',
-      status: 'error',
-      duration: 9000,
-      isClosable: true,
-    });
-  };
-
-  const onSuccess = () => {
-    toast({
-      title: '사용 가능한 이메일 입니다.',
-      // description: '알 수 없는 오류가 발생했습니다.',
-      status: 'success',
-      duration: 9000,
-      isClosable: true,
-    });
   };
 
   const onSuccessCheckPassword = (data: any) => {
@@ -128,10 +114,6 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     onError: onErrorCheckPassword,
   });
 
-  // const handleIsDuplicated = () => {
-  //   console.log('중복확인');
-  //   isDuplicatedEmailMutate(watch('email'));
-  // };
   const onSuccessUpdateProfile = (data: any) => {
     console.log('data', data);
   };

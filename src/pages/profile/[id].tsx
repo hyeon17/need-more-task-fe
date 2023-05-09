@@ -26,7 +26,7 @@ function ProfilePage({ id }: { id: string }) {
   // console.log('currentLoginUserInfo>>>', currentLoginUserInfo);
 
   const { data: userInfo } = accessToken && id ? getUserInfoAPI(id) : { data: null };
-  console.log('userInfo>>', userInfo);
+  // console.log('userInfo>>', userInfo);
 
   return (
     <Layout hasHeader>
@@ -39,10 +39,10 @@ function ProfilePage({ id }: { id: string }) {
                 {userInfo && <ProfileImage width={100} height={100} />}
               </SkeletonCircle>
 
-              <SkeletonText mt="4" noOfLines={2} spacing="4" skeletonHeight="2" isLoaded={Boolean(userInfo)}>
-                <h3>{userInfo?.data?.fullName}</h3>
-                <span>{userInfo?.data?.email}</span>
-              </SkeletonText>
+              {/* <SkeletonText mt="4" noOfLines={2} spacing="4" skeletonHeight="2" isLoaded={Boolean(userInfo)}> */}
+              <h3>{userInfo?.data?.fullName}</h3>
+              <span>{userInfo?.data?.email}</span>
+              {/* </SkeletonText> */}
             </P.ProfileWrapper>
 
             {/* NavList */}
