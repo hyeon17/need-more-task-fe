@@ -50,21 +50,19 @@ function Login() {
   const onSuccess = (data: any) => {
     toast({
       title: '로그인 성공!',
-      // description: '알 수 없는 오류가 발생했습니다.',
       status: 'success',
       duration: 9000,
       isClosable: true,
     });
     onSaveAccessToken(data.headers.authorization);
     router.replace('/kanban');
-    // window.location.href = '/kanban';
   };
 
   const { mutate, isLoading } = loginAPI({ onSuccess, onError });
   const emailValue = watch('email');
   const passwordValue = watch('password');
 
-  const onClickLogin = (data: any) => {
+  const onClickLogin = () => {
     if (Object.keys(errors).length === 0) {
       mutate({ email: emailValue, password: passwordValue });
     }
