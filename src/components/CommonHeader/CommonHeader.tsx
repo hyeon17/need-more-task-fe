@@ -47,7 +47,7 @@ function CommonHeader() {
             <MenuItem closeOnSelect={false}>이메일: {userInfo?.email}</MenuItem>
             <MenuItem closeOnSelect={false}>이름: {userInfo?.fullName}</MenuItem>
             <MenuItem closeOnSelect={false}>입사 연도: {userInfo?.joinCompanyYear}</MenuItem>
-            <MenuItem closeOnSelect={false}>휴대폰 번호: {userInfo?.phone}</MenuItem>
+            <MenuItem closeOnSelect={false}>연락처: {userInfo?.phone}</MenuItem>
           </MenuGroup>
           <MenuDivider />
           <MenuGroup title="프로필">

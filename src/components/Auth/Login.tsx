@@ -48,9 +48,6 @@ function Login() {
   };
 
   const onSuccess = (data: any) => {
-    console.log('success data>>', data);
-    // console.log('data>>', data.accessToken);
-
     toast({
       title: '로그인 성공!',
       // description: '알 수 없는 오류가 발생했습니다.',
@@ -69,7 +66,6 @@ function Login() {
 
   const onClickLogin = (data: any) => {
     if (Object.keys(errors).length === 0) {
-      console.log('로그인 성공');
       mutate({ email: emailValue, password: passwordValue });
     }
   };

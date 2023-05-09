@@ -60,7 +60,6 @@ export const authMeAPI = (options?: UseQueryOptions<AxiosResponse<any>, AxiosErr
 };
 
 export const getUserInfoAPI = (
-  accessToken?: string,
   id?: string,
   options?: UseQueryOptions<AxiosResponse<any>, AxiosError, any, string[]>,
 ) => {

@@ -264,7 +264,11 @@ export const CreateTaskButton = styled(Button)`
 `;
 
 export const LatestProjectsListContainer = styled.div`
+  /* border: 1px solid; */
+
   display: flex;
+  /* justify-content: center;
+  align-items: center; */
   gap: 24px;
   padding: 20px 24px;
 

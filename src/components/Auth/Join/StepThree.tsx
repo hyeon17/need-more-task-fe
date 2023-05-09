@@ -51,7 +51,6 @@ function StepThree() {
   const onSuccess = (data: any) => {
     console.log(data);
 
-    onResetSignup();
     router.push('/join/complete');
   };
 

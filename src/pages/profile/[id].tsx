@@ -25,7 +25,7 @@ function ProfilePage({ id }: { id: string }) {
   // console.log('id>>', id);
   // console.log('currentLoginUserInfo>>>', currentLoginUserInfo);
 
-  const { data: userInfo } = accessToken && id ? getUserInfoAPI(accessToken, id) : { data: null };
+  const { data: userInfo } = accessToken && id ? getUserInfoAPI(id) : { data: null };
   console.log('userInfo>>', userInfo);
 
   return (
