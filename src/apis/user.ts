@@ -82,7 +82,7 @@ export const validatePasswordAPI = (
 };
 
 export const updateUserInfoAPI = (
-  userId: string,
+  userId: number,
   options?: UseMutationOptions<AxiosResponse<string>, AxiosError, IUpdateProfile>,
 ) => {
   const queryKey = `/user/${userId}`;
