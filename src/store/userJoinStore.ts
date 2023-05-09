@@ -10,7 +10,7 @@ export interface IJoinData {
   passwordCheck?: string;
   profileImageUrl?: string;
   phone?: string;
-  profileId?: string;
+  profileId?: number;
 }
 
 interface IUserJoinInfoStore {

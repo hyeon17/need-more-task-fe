@@ -48,8 +48,10 @@ function StepThree() {
     });
   };
 
-  const onSuccess = () => {
-    // onResetSignup();
+  const onSuccess = (data: any) => {
+    console.log(data);
+
+    onResetSignup();
     router.push('/join/complete');
   };
 
@@ -67,7 +69,7 @@ function StepThree() {
     phone2: string;
     phone3: string;
   }
-  let profileId = '1';
+  let profileId = 1;
   const onClickNext = (data: IFormInput) => {
     const { phone1, phone2, phone3 } = data;
     const phone = `${phone1}-${phone2}-${phone3}`;

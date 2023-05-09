@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
 export interface IAccessToken {
-  accessToken: string | null | undefined;
+  accessToken: string;
 }
 
 export interface IAccessTokenStore {
@@ -16,11 +16,10 @@ export interface IAccessTokenStore {
 const accessTokenStore = create<IAccessTokenStore>()(
   devtools((set) => ({
     accessToken: null,
-    onSaveAccessToken: (data: IAccessToken) => {
-      set(() => ({ accessToken: data }));
-      // console.log('onSave', data);
+    onSaveAccessToken: (accessToken: IAccessToken) => {
+      set(() => ({ accessToken }));
 
-      localStorage.setItem('needMoreTaskToken', JSON.stringify(data.accessToken));
+      localStorage.setItem('needMoreTaskToken', JSON.stringify(accessToken));
     },
     onDeleteAccessToken: () => set(() => ({ accessToken: null })),
     onRemoveAccessToken: () => localStorage.removeItem('needMoreTaskToken'),
