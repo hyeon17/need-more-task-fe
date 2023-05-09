@@ -8,6 +8,7 @@ import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import { useUserInfo } from '@/store/userInfoStore';
 import Link from 'next/link';
 import LogoutModal from './LogoutModal';
+import { TeamEnum } from '@/utils';
 
 function CommonHeader() {
   const { userInfo } = useUserInfo();
@@ -43,7 +44,7 @@ function CommonHeader() {
 
         <MenuList zIndex={10}>
           <MenuGroup title="정보">
-            <MenuItem closeOnSelect={false}>부서: {userInfo?.department}</MenuItem>
+            <MenuItem closeOnSelect={false}>부서: {TeamEnum(userInfo?.department)}</MenuItem>
             <MenuItem closeOnSelect={false}>이메일: {userInfo?.email}</MenuItem>
             <MenuItem closeOnSelect={false}>이름: {userInfo?.fullName}</MenuItem>
             <MenuItem closeOnSelect={false}>입사 연도: {userInfo?.joinCompanyYear}</MenuItem>
