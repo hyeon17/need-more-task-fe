@@ -120,3 +120,7 @@ export const UserRoleEnum = (role: string | undefined) => {
       return '일반 사용자';
   }
 };
+
+export const formattedDate = <T extends string>(date: T) => {
+  return dayjs(date).format('YYYY-MM-DD').toString();
+};
