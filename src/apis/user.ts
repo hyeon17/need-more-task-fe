@@ -75,7 +75,7 @@ export const getUserInfoAPI = (
 export const validatePasswordAPI = (
   options?: UseMutationOptions<AxiosResponse<string>, AxiosError, IValidatePassword>,
 ) => {
-  const queryKey = `/validate/password`;
+  const queryKey = `/password/validate`;
   const queryFn = (data: IValidatePassword) => axiosWithToken.post(queryKey, data).then((res) => res.data);
 
   return useMutation([queryKey], queryFn, { ...options });
