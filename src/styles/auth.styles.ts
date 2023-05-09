@@ -55,12 +55,28 @@ export const InputContainer = styled.div`
   /* border: 1px solid; */
 `;
 export const ConfirmButton = styled(Button)`
-  margin-top: 100px;
+  margin-top: 20px;
   width: 100%;
   background-color: ${({ theme }) => theme.primary};
 
   &:hover {
     background-color: ${({ theme }) => theme.outlineColor} !important;
+  }
+`;
+export const BackButtonWrapper = styled.div`
+  margin-top: 80px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  & > span {
+    color: ${({ theme }) => theme.labelColor};
+    margin-right: 10px;
+  }
+
+  & button {
+    font-size: 12px;
+    padding: 10px;
   }
 `;
 
@@ -163,14 +179,10 @@ export const CompleteBody = styled.div`
 // `;
 
 export const CompleteButton = styled(ConfirmButton)`
-  /* position: absolute; */
-  /* margin-top: 200px; */
   display: flex;
   justify-content: center;
   align-items: center;
-  bottom: 60px;
-  left: 0;
-  /* width: 90%; */
+  margin-top: 100px;
 `;
 export const LottieWrapper = styled.div``;
 

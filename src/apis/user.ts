@@ -1,4 +1,4 @@
-import { IJoin, ILogin, IUpdateProfile, IValidatePassword } from '@/type/authTypes';
+import { IJoin, ILogin, IUpdateProfile, IUpdateRole, IValidatePassword } from '@/type/authTypes';
 import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { AxiosError, AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
@@ -36,19 +36,9 @@ export const logoutAPI = (options?: UseMutationOptions<AxiosResponse<string>, Ax
   return useMutation([queryKey], queryFn, { ...options });
 };
 
-export const authMeAPI = (
-  accessToken: string,
-  options?: UseQueryOptions<AxiosResponse<any[]>, AxiosError, any, string[]>,
-) => {
+export const authMeAPI = (options?: UseQueryOptions<AxiosResponse<any>, AxiosError, any, string[]>) => {
   const queryKey = `/auth/me`;
-  const queryFn = () =>
-    axiosInstance
-      .get(queryKey, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((res) => res.data);
+  const queryFn = () => axiosWithToken.get(queryKey).then((res) => res.data);
 
   const onError = (error: AxiosError) => {
     console.error(error);
@@ -68,14 +58,7 @@ export const getUserInfoAPI = (
   options?: UseQueryOptions<AxiosResponse<any>, AxiosError, any, string[]>,
 ) => {
   const queryKey = `/user/${id}`;
-  const queryFn = () =>
-    axiosInstance
-      .get(queryKey, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((res) => res.data);
+  const queryFn = () => axiosWithToken.get(queryKey).then((res) => res.data);
 
   return useQuery([queryKey], queryFn, {
     staleTime: 600000,
@@ -98,6 +81,14 @@ export const updateUserInfoAPI = (
 ) => {
   const queryKey = `/user/${userId}`;
   const queryFn = (data: IUpdateProfile) => axiosWithToken.put(queryKey, data).then((res) => res.data);
+
+  return useMutation([queryKey], queryFn, { ...options });
+};
+
+// role
+export const updateRoleAPI = (options?: UseMutationOptions<AxiosResponse<string>, AxiosError, IUpdateRole>) => {
+  const queryKey = `/admin/role`;
+  const queryFn = (data: IUpdateRole) => axiosWithToken.put(queryKey, data).then((res) => res.data);
 
   return useMutation([queryKey], queryFn, { ...options });
 };

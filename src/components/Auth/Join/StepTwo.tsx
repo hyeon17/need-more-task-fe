@@ -1,8 +1,9 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import * as A from '@/styles/auth.styles';
 import { useRouter } from 'next/router';
 import { useUserJoinStore } from '@/store/userJoinStore';
-import AuthInput from '../AuthInput';
+import JoinBackButton from '@/components/Auth/Join/JoinBackButton';
+
 import {
   Button,
   FormControl,
@@ -14,7 +15,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import useInput from '@/hooks/useInput';
-import PasswordInput from '../PasswordInput';
+
 import { useForm } from 'react-hook-form';
 import { AxiosError } from 'axios';
 import { isDuplicatedEmailAPI } from '@/apis/user';
@@ -66,9 +67,6 @@ function StepTwo() {
 
   const { mutate: isDuplicatedEmailMutate, isLoading } = isDuplicatedEmailAPI({ onSuccess, onError });
 
-  console.log(fullname, email);
-  console.log(password, confirmPassword);
-
   const isDisabled = useMemo(
     () => Boolean(!fullname || !email || !password || !confirmPassword),
     [fullname, email, password, confirmPassword],
@@ -96,13 +94,16 @@ function StepTwo() {
     register,
     formState: { errors },
   } = useForm<any>();
-  console.log('errors>>', errors);
 
   const emailValue = watch('email');
 
   const handleIsDuplicated = () => {
     console.log('중복확인');
     isDuplicatedEmailMutate(emailValue);
+  };
+
+  const handleBack = () => {
+    router.push('/join/1');
   };
 
   return (
@@ -117,6 +118,7 @@ function StepTwo() {
             variant="flushed"
             borderColor="outlineColor"
             focusBorderColor="inputFocusColor"
+            defaultValue={me?.fullName || watch('fullName')}
             {...register('fullName', {
               required: '이름은 필수 입력사항 입니다.',
               maxLength: {
@@ -141,6 +143,7 @@ function StepTwo() {
               variant="flushed"
               borderColor="outlineColor"
               focusBorderColor="inputFocusColor"
+              defaultValue={me?.email || watch('email')}
               {...register('email', {
                 required: '이메일은 필수 입력사항입니다.',
                 pattern: {
@@ -176,6 +179,7 @@ function StepTwo() {
               borderColor="outlineColor"
               focusBorderColor="inputFocusColor"
               type={showPassword ? 'text' : 'password'}
+              defaultValue={me?.password || watch('password')}
               {...register('password', {
                 required: '필수 입력사항 입니다.',
                 pattern: {
@@ -207,6 +211,7 @@ function StepTwo() {
               borderColor="outlineColor"
               focusBorderColor="inputFocusColor"
               type={showConfirmPassword ? 'text' : 'password'}
+              defaultValue={me?.passwordCheck || watch('confirmPassword')}
               {...register('confirmPassword', {
                 required: '필수 입력사항 입니다.',
                 validate: (val: string) => {
@@ -228,6 +233,7 @@ function StepTwo() {
 
       {/* onClick={onClickNext} */}
       {/* isDisabled={isDisabled} */}
+      <JoinBackButton step={1} />
       <A.ConfirmButton colorScheme="teal" size="md" type="submit">
         다음
       </A.ConfirmButton>

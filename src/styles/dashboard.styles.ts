@@ -6,6 +6,16 @@ export const BodyContainer = styled.main`
   padding: 0 60px;
 
   & header {
+    & > div {
+      display: flex;
+      justify-content: space-between;
+
+      & button {
+        font-size: 14px;
+        font-weight: 700;
+      }
+    }
+
     h1 {
       font-size: 28px;
       font-weight: 700;
@@ -121,7 +131,7 @@ export const LatestProjectContainer = styled.div`
   border-radius: 16px;
 
   /* width: 100%; */
-  height: 316px;
+  height: 350px;
 `;
 export const DashboardH5 = styled.div`
   padding: 16px 24px;

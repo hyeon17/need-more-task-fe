@@ -8,6 +8,7 @@ import useInput from '@/hooks/useInput';
 import AuthInput from '../AuthInput';
 import { FormControl, FormErrorMessage, FormLabel, Input, useToast } from '@chakra-ui/react';
 import Image from 'next/image';
+import JoinBackButton from '@/components/Auth/Join/JoinBackButton';
 
 import { joinAPI } from '@/apis/user';
 import { AxiosError } from 'axios';
@@ -22,7 +23,7 @@ export const inputProps = {
 function StepThree() {
   const toast = useToast();
   const router = useRouter();
-  const { me, onSaveSignup } = useUserJoinStore();
+  const { me, onSaveSignup, onResetSignup } = useUserJoinStore();
   // const {} = me
   const [phone, setPhone] = useState(me?.phone ?? '');
 
@@ -38,8 +39,6 @@ function StepThree() {
   console.log('me', me);
 
   const onError = (error: AxiosError) => {
-    console.error('error>>', error);
-
     toast({
       title: '회원가입 실패.',
       description: '알 수 없는 오류가 발생했습니다.',
@@ -50,6 +49,7 @@ function StepThree() {
   };
 
   const onSuccess = () => {
+    // onResetSignup();
     router.push('/join/complete');
   };
 
@@ -69,7 +69,6 @@ function StepThree() {
   }
   let profileId = '1';
   const onClickNext = (data: IFormInput) => {
-    console.log('data', data);
     const { phone1, phone2, phone3 } = data;
     const phone = `${phone1}-${phone2}-${phone3}`;
 
@@ -196,6 +195,7 @@ function StepThree() {
       </A.InputContainer>
 
       {/* isLoading 추가 */}
+      <JoinBackButton step={2} />
       <A.ConfirmButton colorScheme="teal" size="md" type="submit" isLoading={isLoading}>
         다음
       </A.ConfirmButton>
