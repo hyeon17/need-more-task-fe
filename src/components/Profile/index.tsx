@@ -387,7 +387,7 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
       </A.InputContainer>
 
       {/* Edit 버튼 */}
-      {userInfo?.userId === currentLoginUserInfo?.userId && (
+      {(userInfo?.userId === currentLoginUserInfo?.userId || userInfo?.userId === 1) && (
         <P.ButtonWrapper>
           {edit ? (
             <P.UpdateButton
