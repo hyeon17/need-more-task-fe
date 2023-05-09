@@ -11,6 +11,19 @@ export enum PriorityType {
   LOW = 'low',
 }
 
+export enum TeamType {
+  DEVELOPMENT = 'DEVELOPMENT',
+  HR = 'HR',
+  MANAGEMENT = 'MANAGEMENT',
+  TRADE = 'TRADE',
+  SALES = 'SALES',
+  SERVICES = 'SERVICES',
+  PRODUCTION = 'PRODUCTION',
+  EDUCATION = 'EDUCATION',
+  MARKETING = 'MARKETING',
+  OTHERS = 'OTHERS',
+}
+
 export type actionConstantsType = {
   DUE_DATE: {
     key: string;
