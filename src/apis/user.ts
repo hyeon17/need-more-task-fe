@@ -31,7 +31,7 @@ export const isDuplicatedEmailAPI = (options?: UseMutationOptions<AxiosResponse<
 
 export const loginAPI = (options?: UseMutationOptions<AxiosResponse<string>, AxiosError, ILogin>) => {
   const queryKey = `/login`;
-  const queryFn = (data: ILogin) => axiosInstance.post(queryKey, data).then((res) => res.data);
+  const queryFn = (data: ILogin) => axiosInstance.post(queryKey, data).then((res) => res);
 
   return useMutation([queryKey], queryFn, { ...options });
 };
