@@ -113,7 +113,7 @@ export const CardBadge = styled(Badge)`
       case 'TODO':
         return theme.errorColor;
       case 'IN_PROGRESS':
-        return theme.primary;
+        return theme.warningColor;
       case 'DONE':
         return theme.successColor;
       default:
