@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { Tab, Card, CardBody, Badge, Avatar } from '@chakra-ui/react';
 import CommonAvatar from '@/components/CommonAvatar/CommonAvatar';
+import theme from './theme';
 
 export const OverviewWrapper = styled.div`
   display: flex;
@@ -107,4 +108,17 @@ export const CardBadge = styled(Badge)`
   font-size: 16px;
   border-radius: 10px;
   margin: 0 10px;
+  background-color: ${({ color }) => {
+    switch (color) {
+      case 'TODO':
+        return theme.errorColor;
+      case 'IN_PROGRESS':
+        return theme.primary;
+      case 'DONE':
+        return theme.successColor;
+      default:
+        return theme.labelColor;
+    }
+  }};
+  color: ${({ theme }) => theme.white};
 `;
