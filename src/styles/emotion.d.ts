@@ -4,6 +4,7 @@ declare module '@emotion/react' {
     mainBg: string;
     secondaryBg: string;
     gray50: string;
+    gray100: string;
     textColor: string;
     primary: string;
     warningColor: string;
