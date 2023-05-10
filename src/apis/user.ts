@@ -5,8 +5,19 @@ import { useRouter } from 'next/router';
 import { axiosInstance, axiosWithToken } from '@/apis/configs';
 import { useToast } from '@chakra-ui/react';
 
+export const useUpdateProfileImageAPI = (options?: UseMutationOptions<AxiosResponse<string>, AxiosError, any>) => {
+  const queryKey = `/user/profile`;
+  const queryFn = (data: any) =>
+    axiosInstance
+      .post(queryKey, data, {
+        headers: { 'Context-Type': 'multipart/form-data' },
+      })
+      .then((res) => res.data);
+
+  return useMutation([queryKey], queryFn, { ...options });
+};
+
 export const joinAPI = (options?: UseMutationOptions<AxiosResponse<string>, AxiosError, IJoin>) => {
-  const router = useRouter();
   const queryKey = `/join`;
   const queryFn = (data: IJoin) => axiosInstance.post(queryKey, data).then((res) => res.data);
 
