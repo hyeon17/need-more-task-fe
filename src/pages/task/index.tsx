@@ -5,15 +5,17 @@ import { useGetDailyTasksAPI } from '@/apis/overview';
 import Header from '@/components/OverView/Header';
 import Content from '@/components/OverView/Content';
 import * as S from '@/styles/overview.styles';
+import Head from 'next/head';
+import { TaskOverviewProps } from '@/type/componentProps';
 
 function DailyOverview() {
   const { getDateStore } = useCalendarState();
-  const allEvents: any = [];
+  const allEvents: TaskOverviewProps[] = [];
 
   const { data: tasks, isLoading } = useGetDailyTasksAPI(getDateStore());
 
   if (tasks) {
-    const datas = tasks.data.map((event: any) => ({
+    const datas: TaskOverviewProps[] = tasks.data.map((event: TaskOverviewProps) => ({
       title: event.title,
       progress: event.progress,
       id: event.taskId.toString(),
@@ -23,12 +25,17 @@ function DailyOverview() {
   }
 
   return (
-    <Layout hasHeader>
-      <S.OverviewWrapper>
-        <Header date={getDateStore()} data={allEvents} />
-        <Content content={allEvents} />
-      </S.OverviewWrapper>
-    </Layout>
+    <>
+      <Head>
+        <title>Need More Task · Overview</title>
+      </Head>
+      <Layout hasHeader>
+        <S.OverviewWrapper>
+          <Header date={getDateStore()} content={allEvents} isLoading={isLoading} />
+          <Content content={allEvents} isLoading={isLoading} />
+        </S.OverviewWrapper>
+      </Layout>
+    </>
   );
 }
 
