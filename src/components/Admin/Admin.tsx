@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as AD from '@/styles/admin.styles';
 import {
   Button,
@@ -20,26 +20,27 @@ import { CheckIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { axiosWithToken } from '@/apis/configs';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { IUserRole } from '@/type/authTypes';
-import EmptyProjects from '@/components/Dashboard/EmptyProjects';
+import CommonEmptyUser from '@/components/common/CommonEmptyUser';
 import { UserRoleEnum } from '@/utils';
 import { updateRoleAPI } from '@/apis/user';
-import CommonToast from '../common/CommonToast';
 import UserRolePopover from '@/components/Admin/UserRolePopover';
 import UserInfoPopover from '@/components/Admin/UserInfoPopover';
+import UserRoleSelectPopover from './UserRoleSelectPopover';
 
 function Admin() {
   const toast = useToast();
   const queryClient = useQueryClient();
 
   const [checkId, setCheckId] = useState<number[]>([]);
-  const [checkedRole, setCheckedRole] = useState('');
+  // const [checkedRole, setCheckedRole] = useState('');
   const [allCheckbox, setAllCheckbox] = useState(false);
+  const [searchRoleType, setSearchRoleType] = useState('all');
 
   const [page, setPage] = useState(1);
-  const queryKey = `/admin/users?page=`;
+  const queryKey = `/admin/users?role`;
 
   const fetchUsers = async (page = 0) => {
-    const { data } = await axiosWithToken.get(`${queryKey}${page - 1}`);
+    const { data } = await axiosWithToken.get(`${queryKey}=${searchRoleType}&page=${page - 1}`);
     return data;
   };
 
@@ -50,12 +51,14 @@ function Admin() {
     isLoading,
     isFetching,
     isPreviousData,
+    refetch,
   } = useQuery({
     queryKey: [queryKey],
     queryFn: () => fetchUsers(page),
     keepPreviousData: true,
     staleTime: 10000,
   });
+  console.log('userData>>>', userData);
 
   const onSuccessRoleChange = (data: any) => {
     console.log('data>>>', data);
@@ -68,8 +71,12 @@ function Admin() {
       isClosable: true,
     });
 
-    queryClient.invalidateQueries([`/admin/users?page=`]);
+    queryClient.invalidateQueries([`/admin/users?role`]);
   };
+
+  useEffect(() => {
+    refetch();
+  }, [searchRoleType]);
 
   const { mutate: updateAdminMutate } = updateRoleAPI({ onSuccess: onSuccessRoleChange });
 
@@ -125,53 +132,34 @@ function Admin() {
     // }
   };
 
+  const handleSearchType = (e: React.MouseEvent<HTMLElement>) => {
+    const targetValue = (e.currentTarget as HTMLElement).getAttribute('data-value');
+    console.log('targetValue>>>', targetValue);
+
+    if (targetValue) {
+      if (searchRoleType === targetValue) {
+        setSearchRoleType('all');
+      } else {
+        setSearchRoleType(targetValue);
+      }
+    }
+  };
+
   return (
     <AD.Container>
       <AD.ManageRoleContainer>
         <AD.AdminH5>
           <h5>Manage role</h5>
           <AD.SelectHeaderWrapper>
-            <Checkbox
+            {/* <Checkbox
               size="lg"
               colorScheme="orange"
               // isDisabled={userId === 1 ? true : false}
               isChecked={allCheckbox}
               onChange={(e) => handleAllCheckChange(e.target.checked)}
-            />
+            /> */}
             {/* popover */}
-            <Popover>
-              <PopoverTrigger>
-                <AD.RoleButton>
-                  <span>Role</span>
-                  <ChevronDownIcon />
-                </AD.RoleButton>
-              </PopoverTrigger>
-              {/*  */}
-              <Portal>
-                <AD.SelectHeaderRole>
-                  {/* <PopoverArrow /> */}
-                  <AD.RolePopoverBody>
-                    <AD.RoleSelectWrapper>
-                      <AD.CheckWrapper>
-                        {checkedRole === 'ADMIN' ? <CheckIcon /> : <div style={{ width: '24px', height: '24px' }} />}
-                      </AD.CheckWrapper>
-                      <AD.RoleInfo>
-                        <h5>관리자</h5>
-                      </AD.RoleInfo>
-                    </AD.RoleSelectWrapper>
-
-                    <AD.RoleSelectWrapper>
-                      <AD.CheckWrapper>
-                        {checkedRole === 'USER' ? <CheckIcon /> : <div style={{ width: '24px', height: '24px' }} />}
-                      </AD.CheckWrapper>
-                      <AD.RoleInfo>
-                        <h5>일반 사용자</h5>
-                      </AD.RoleInfo>
-                    </AD.RoleSelectWrapper>
-                  </AD.RolePopoverBody>
-                </AD.SelectHeaderRole>
-              </Portal>
-            </Popover>
+            <UserRoleSelectPopover handleSearchType={handleSearchType} searchRoleType={searchRoleType} />
           </AD.SelectHeaderWrapper>
         </AD.AdminH5>
         <AD.ManageRoleSearchWrapper>
@@ -186,20 +174,19 @@ function Admin() {
         <AD.UserListWrapper>
           {userData?.data?.users.length > 0 ? (
             userData?.data?.users.map((user: IUserRole) => {
-              const { userId, email, fullName, role, profileImageUrl } = user;
+              const { userId, email, fullName, role } = user;
               // console.log('user>>>', user);
 
               return (
                 <AD.UserList key={`userId${userId}`}>
                   {/* checkbox */}
-
-                  <Checkbox
+                  {/* <Checkbox
                     size="md"
                     colorScheme="orange"
                     isDisabled={userId === 1 ? true : false}
                     isChecked={userId === 1 ? false : allCheckbox}
                     onChange={(e) => handleCheckChange(userId, e.target.checked)}
-                  />
+                  /> */}
                   {/*  */}
                   <AD.UserBasicInfoWrapper>
                     {/* user info popover */}
@@ -224,7 +211,7 @@ function Admin() {
               );
             })
           ) : (
-            <EmptyProjects />
+            <CommonEmptyUser />
           )}
           {isLoading || (isFetching && <></>)}
           <AD.PaginationButtonNav>
