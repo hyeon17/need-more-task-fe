@@ -18,15 +18,9 @@ function ProfilePage({ id }: { id: string }) {
   const { userInfo: currentLoginUserInfo } = useUserInfo();
   const { getAccessToken } = useAccessTokenStore();
   const accessToken = getAccessToken();
-  // console.log('accessToken>>', accessToken);
-
-  // console.log('query', router.query?.id);
-  // const userId = router.query?.id;
-  // console.log('id>>', id);
-  // console.log('currentLoginUserInfo>>>', currentLoginUserInfo);
 
   const { data: userInfo } = accessToken && id ? getUserInfoAPI(id) : { data: null };
-  // console.log('userInfo>>', userInfo);
+  console.log('userInfo>>>', userInfo);
 
   return (
     <Layout hasHeader>
@@ -36,7 +30,7 @@ function ProfilePage({ id }: { id: string }) {
             {/* Profile info */}
             <P.ProfileWrapper>
               <SkeletonCircle size="100" isLoaded={Boolean(userInfo)} fadeDuration={1}>
-                {userInfo && <ProfileImage width={100} height={100} />}
+                {userInfo && <ProfileImage width={100} height={100} src={userInfo?.data.profileImageUrl} />}
               </SkeletonCircle>
 
               {/* <SkeletonText mt="4" noOfLines={2} spacing="4" skeletonHeight="2" isLoaded={Boolean(userInfo)}> */}
@@ -56,13 +50,13 @@ function ProfilePage({ id }: { id: string }) {
                       <span>프로필 사진, 이름</span>
                     </div>
                   </li>
-                  <li>
+                  {/* <li>
                     <AccountCircleOutlinedIcon />
                     <div>
                       <h4>계정 정보</h4>
                       <span>프로필 사진, 이름</span>
                     </div>
-                  </li>
+                  </li> */}
                 </ul>
               </nav>
             </P.NavWrapper>
