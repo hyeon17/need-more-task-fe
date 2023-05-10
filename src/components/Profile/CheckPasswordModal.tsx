@@ -61,9 +61,6 @@ function CheckPasswordModal({
       validatePasswordMutate({ password: watch('password'), passwordCheck: watch('confirmPassword') });
     }
   };
-  const passwordCheck1 = watch('confirmPassword');
-  const passwordCheck2 = watch('password');
-  console.log('passwordCheck1>>>', passwordCheck1, passwordCheck2);
 
   const onSubmit = (e: any) => {
     e.preventDefault();
