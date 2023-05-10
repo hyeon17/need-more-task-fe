@@ -26,7 +26,7 @@ export const AdminH5 = styled.div`
   & > div {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
   }
 
   h5 {
@@ -54,8 +54,7 @@ export const SearchInput = styled(Input)`
 
 // user list wrapper
 export const UserListWrapper = styled.ul`
-  /* border: 1px solid; */
-  /* padding: 20px 16px; */
+  border: 1px solid;
 `;
 export const UserList = styled.li`
   padding: 20px 16px;

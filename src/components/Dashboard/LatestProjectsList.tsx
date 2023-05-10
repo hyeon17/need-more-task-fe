@@ -2,7 +2,7 @@ import React from 'react';
 import * as D from '@/styles/dashboard.styles';
 import CommonAvatar from '@/components/CommonAvatar/CommonAvatar';
 import { getLatestProjectsAPI } from '@/apis/dashboard';
-import EmptyProjects from '@/components/Dashboard/EmptyProjects';
+import CommonEmptyProjects from '@/components/common/CommonEmptyProjects';
 import CommonSpinner from '@/components/common/CommonSpinner';
 import { formattedDate, setTagColor } from '@/utils';
 import { Tag } from '@chakra-ui/react';
@@ -14,7 +14,7 @@ function LatestProjectsList() {
     <D.LatestProjectsListContainer>
       {isLoading && <CommonSpinner size="lg" />}
       {/*  */}
-      {latestProjectsData?.data.length === 0 && <EmptyProjects />}
+      {latestProjectsData?.data.length === 0 && <CommonEmptyProjects />}
       {latestProjectsData && latestProjectsData.data.length > 0
         ? latestProjectsData.data.map((data: any) => {
             const { taskId, taskOwner, createdAt, startAt, endAt, title, assignee, priority, progress } = data;
