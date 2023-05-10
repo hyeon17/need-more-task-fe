@@ -13,7 +13,7 @@ function Content({ content }: any) {
             <S.CardWrapper>
               <S.CardTitle>{event.title}</S.CardTitle>
               <S.AvatarWrapper>
-                <S.CardAvatar assignee={event.assignee} />
+                <S.CardAvatar size='md' assignee={event.assignee} />
               </S.AvatarWrapper>
               <S.CardBadge color={event.progress}>{event.progress}</S.CardBadge>
             </S.CardWrapper>
