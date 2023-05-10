@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { actionType, StatusType } from '@/constant/TaskOverview';
+import { StatusType } from '@/constant/TaskOverview';
 
 type ModalState = {
   modal: 'create' | 'overview' | null;
