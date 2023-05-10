@@ -1,4 +1,4 @@
-import React, { FormEventHandler, useEffect, useMemo, useState } from 'react';
+import React, { FormEventHandler, useEffect, useMemo, useRef, useState } from 'react';
 import { AccountInfoProps, IJoin, IUpdateProfile, IUser } from '@/type/authTypes';
 import StepOne from '../Auth/Join/StepOne';
 import {
@@ -17,9 +17,11 @@ import { teamOptions, getJoinCompanyYear } from '@/utils';
 import * as A from '@/styles/auth.styles';
 import * as P from '@/styles/profile.styles';
 import { useForm } from 'react-hook-form';
-import { isDuplicatedEmailAPI, updateUserInfoAPI, validatePasswordAPI } from '@/apis/user';
+import { updateUserInfoAPI, useUpdateProfileImageAPI, validatePasswordAPI } from '@/apis/user';
 import { AxiosError } from 'axios';
 import CheckPasswordModal from './CheckPasswordModal';
+import ProfileImage from '@/components/CommonHeader/ProfileImage';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface IAccountInfo {
   userInfo: IUser;
@@ -33,12 +35,23 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     handleSubmit,
     register,
     formState: { errors },
+    setValue,
   } = useForm<any>();
 
+  const queryClient = useQueryClient();
   const toast = useToast();
   const [edit, setEdit] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [profileImage, setProfileImage] = useState('');
+  const [newProfileId, setNewProfileId] = useState<number>(1);
+
+  // const [profileImageUrl, setProfileImageUrl] = useState('');
+
   const [fullNameValue, setFullNameValue] = useState<string | null>(null);
   const [emailValue, setEmailValue] = useState<string | null>(null);
+
+  const [isPassword, setIsPassword] = useState('');
+  const [isConfirmPassword, setIsConfirmPassword] = useState('');
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -51,6 +64,48 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
   // const [joinCompanyYear, setJoinCompanyYear] = useState('');
   const [department, setDepartment] = useState(userInfo?.department || '');
   const [joinCompanyYear, setJoinCompanyYear] = useState(userInfo?.joinCompanyYear?.toString() || '');
+
+  // console.log('profileImageUrl>>>', profileImageUrl);
+
+  const onSuccessUploadImage = (data: any) => {
+    console.log('data>>', data);
+    const { profileId } = data.data;
+    setProfileImage(data.data.profileImageUrl);
+    setNewProfileId(profileId);
+
+    // /user/profile
+    queryClient.invalidateQueries([`/user/profile`]);
+  };
+
+  const onErrorUploadImage = (error: AxiosError) => {
+    console.error(error);
+  };
+
+  const { mutate: uploadImageMutate, isLoading: isLoadingUploadImage } = useUpdateProfileImageAPI({
+    onSuccess: onSuccessUploadImage,
+    onError: onErrorUploadImage,
+  });
+
+  const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files === null) return;
+
+    const file = e.target.files[0];
+    console.log('file', file);
+
+    const formData = new FormData();
+
+    formData.append('profileImage', file);
+    formData.append('type', fileInputRef.current!.name);
+
+    try {
+      // await axiosInstance.post(`/user/profile`, formData, {
+      //   headers: { 'Context-Type': 'multipart/form-data' },
+      // });
+      uploadImageMutate(formData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleDepartmentChange = (selectedOption: unknown) => {
     setDepartment((selectedOption as { value: string }).value);
@@ -69,7 +124,8 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
 
   // 버튼
   const handleEditProfile = () => {
-    if (userInfo?.userId !== currentLoginUserInfo?.userId || userInfo?.userId !== 1) {
+    // || userInfo?.userId == 1
+    if (userInfo?.userId !== currentLoginUserInfo?.userId) {
       toast({
         title: '수정 권한이 없습니다.',
         status: 'error',
@@ -94,6 +150,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
 
     toast({
       title: '비밀번호 확인 성공.',
+      description: '프로필 수정이 가능합니다.',
       status: 'success',
       duration: 9000,
       isClosable: true,
@@ -116,7 +173,23 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
 
   const onSuccessUpdateProfile = (data: any) => {
     console.log('data', data);
+
+    queryClient.invalidateQueries([`/user/${userInfo?.userId}`]);
+    queryClient.invalidateQueries([`/auth/me`]);
+
+    toast({
+      title: '프로필 업데이트 성공.',
+      status: 'success',
+      duration: 9000,
+      isClosable: true,
+    });
+    setShowPassword(false);
+    setShowConfirmPassword(false);
+    setValue('password', '');
+    setValue('passwordCheck', '');
+    setEdit(false);
   };
+
   const onErrorUpdateProfile = (error: AxiosError) => {
     toast({
       title: '프로필 업데이트 실패.',
@@ -130,20 +203,29 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     onError: onErrorUpdateProfile,
   });
 
-  const onClickSave = (data: IUpdateProfile) => {
+  const onClickSave = (data: any) => {
     console.log('data>>', data);
 
     if (Object.keys(errors).length === 0) {
       setFullNameValue(watch('fullName'));
       setEmailValue(watch('email'));
-      setEdit(false);
-      updateProfileMutate(data);
+      console.log('newProfileId>>', newProfileId);
+
+      updateProfileMutate({
+        ...data,
+        department,
+        joinCompanyYear,
+        profileId: newProfileId,
+        password: data.password,
+        passwordCheck: data.passwordCheck,
+        phone: `${data.phone1}-${data.phone2}-${data.phone3}`,
+      });
     }
   };
 
   const onSubmit = (e: any) => {
     e.preventDefault();
-    // handleSubmit(onClickSave)();
+
     handleSubmit(onClickSave)();
   };
 
@@ -165,6 +247,26 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
             focusBorderColor="inputFocusColor"
           />
         </A.InputContainer>
+
+        {/* 프로필 */}
+        <A.ProfileWrapper>
+          <FormLabel>프로필</FormLabel>
+          <A.ProfileFigures>
+            <ProfileImage src={profileImage || userInfo?.profileImageUrl} width={150} height={150} />
+            {/* {values['profileIMG'] && <Image width={150} height={150} src={values['profileIMG']} alt="프로필" />} */}
+          </A.ProfileFigures>
+          <A.ProfileIMGWrapper>
+            <Input
+              type="file"
+              ref={fileInputRef}
+              onChange={uploadImage}
+              colorScheme="teal"
+              variant="outline"
+              accept=".jpg, .jpeg, .webp, .png, .gif, .svg"
+              isDisabled={!edit}
+            />
+          </A.ProfileIMGWrapper>
+        </A.ProfileWrapper>
 
         {/* department */}
         <A.InputContainer>
@@ -244,6 +346,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
             <InputGroup size="md" variant="flushed">
               <Input
                 isDisabled={!edit}
+                value={watch('password') || ''}
                 id="password"
                 placeholder="영어 소문자 6자~16자, (특수문자 . - 만 허용)"
                 pr="4.5rem"
@@ -260,7 +363,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
                 })}
               />
               <InputRightElement width="4.5rem">
-                <Button h="1.75rem" size="sm" onClick={handleShowPassword}>
+                <Button h="1.75rem" size="sm" onClick={handleShowPassword} isDisabled={!edit}>
                   {showPassword ? '보기' : '숨기기'}
                 </Button>
               </InputRightElement>
@@ -271,19 +374,20 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
 
         {/* 새 비밀번호 확인 */}
         <A.InputContainer>
-          <FormControl isInvalid={Boolean(errors.confirmPassword)}>
-            <FormLabel htmlFor="confirmPassword">새 비밀번호 확인</FormLabel>
+          <FormControl isInvalid={Boolean(errors.passwordCheck)}>
+            <FormLabel htmlFor="passwordCheck">새 비밀번호 확인</FormLabel>
             <InputGroup size="md" variant="flushed">
               <Input
                 isDisabled={!edit}
-                id="confirmPassword"
+                value={watch('passwordCheck') || ''}
+                id="passwordCheck"
                 placeholder="영어 소문자 6자~16자, (특수문자 . - 만 허용)"
                 pr="4.5rem"
                 variant="flushed"
                 borderColor="outlineColor"
                 focusBorderColor="inputFocusColor"
                 type={showConfirmPassword ? 'text' : 'password'}
-                {...register('confirmPassword', {
+                {...register('passwordCheck', {
                   required: '필수 입력사항 입니다.',
                   validate: (val: string) => {
                     if (watch('password') !== val) {
@@ -293,12 +397,12 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
                 })}
               />
               <InputRightElement width="4.5rem">
-                <Button h="1.75rem" size="sm" onClick={handleShowConfirmPassword}>
+                <Button h="1.75rem" size="sm" onClick={handleShowConfirmPassword} isDisabled={!edit}>
                   {showConfirmPassword ? '보기' : '숨기기'}
                 </Button>
               </InputRightElement>
             </InputGroup>
-            <FormErrorMessage>{errors.confirmPassword && errors.confirmPassword?.message?.toString()}</FormErrorMessage>
+            <FormErrorMessage>{errors.passwordCheck && errors.passwordCheck?.message?.toString()}</FormErrorMessage>
           </FormControl>
         </A.InputContainer>
         {/*  */}
