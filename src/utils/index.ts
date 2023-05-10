@@ -31,21 +31,6 @@ export const setTagColor = (value: string) => {
   }
 };
 
-export const setTagColorB = (value: string) => {
-  switch (value) {
-    case 'URGENT':
-      return 'errorColor';
-    case 'HIGH':
-      return 'warningColor';
-    case 'MEDIUM':
-      return 'successColor';
-    case 'LOW':
-      return 'primary';
-    default:
-      return 'labelColor';
-  }
-};
-
 export const setActionTextToKorean = (value: string) => {
   switch (value) {
     case 'START_AT':

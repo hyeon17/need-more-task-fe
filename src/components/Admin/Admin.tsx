@@ -55,7 +55,6 @@ function Admin() {
     keepPreviousData: true,
     staleTime: 10000,
   });
-  console.log('userData>>>', userData);
 
   const onSuccessRoleChange = (data: any) => {
     console.log('data>>>', data);

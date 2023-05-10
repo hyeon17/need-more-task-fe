@@ -4,7 +4,7 @@ import CommonAvatar from '@/components/CommonAvatar/CommonAvatar';
 import { getLatestProjectsAPI } from '@/apis/dashboard';
 import EmptyProjects from '@/components/Dashboard/EmptyProjects';
 import CommonSpinner from '@/components/common/CommonSpinner';
-import { formattedDate, setTagColor, setTagColorB } from '@/utils';
+import { formattedDate, setTagColor } from '@/utils';
 import { Tag } from '@chakra-ui/react';
 
 function LatestProjectsList() {
@@ -34,7 +34,7 @@ function LatestProjectsList() {
                     <D.ProjectTitleWrapper>
                       <h5>{title}</h5>
                       <span>
-                        <Tag size="sm" backgroundColor={setTagColorB(priority)} color="white">
+                        <Tag size="sm" backgroundColor={setTagColor(priority)} color="white">
                           {priority}
                         </Tag>
                         <Tag size="sm" backgroundColor={setTagColor(progress)} color="white">
