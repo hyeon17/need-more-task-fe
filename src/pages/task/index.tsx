@@ -8,7 +8,7 @@ import * as S from '@/styles/overview.styles';
 
 function DailyOverview() {
   const { getDateStore } = useCalendarState();
-  const allEvents: any=[];
+  const allEvents: any = [];
 
   const { data: tasks, isLoading } = useGetDailyTasksAPI(getDateStore());
 
