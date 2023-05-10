@@ -30,11 +30,11 @@ function TaskOverview() {
 
   if (!data) return null;
   const { title, desc, assignee, endAt, progress, priority } = data.data;
-  console.log(data.data);
+
   const actionConstants: actionConstantsType = {
     END_AT: {
-      key: 'DUE_DATE',
-      date: endAt,
+      key: 'END_AT',
+      value: endAt,
     },
     ASSIGNEE: {
       key: 'ASSIGNEE',
@@ -94,18 +94,12 @@ function TaskOverview() {
                   <AnimatePresence>
                     {modalAction === item.key ? (
                       <motion.div initial="initial" animate="animate" exit="exit" variants={variants}>
-                        <ModalActionComponent action={modalAction!} />
+                        {/*<ModalActionComponent action={modalAction!} />*/}
                       </motion.div>
                     ) : null}
                   </AnimatePresence>
                   {typeof item.value !== 'object' ? (
-                    <Tag
-                      size="sm"
-                      colorScheme={setTagColor(item.value!)}
-                      borderRadius="full"
-                      variant="solid"
-                      mt="0.5rem"
-                    >
+                    <Tag size="lg" backgroundColor={setTagColor(item.value!)} color="white">
                       {item.value}
                     </Tag>
                   ) : null}

@@ -16,12 +16,10 @@ import * as S from '@/styles/modal.styles';
 import React, { useState } from 'react';
 import { actionConstantsType, actionType } from '@/constant/TaskOverview';
 import { useForm } from 'react-hook-form';
-import { Assignee } from '@/apis/kanban';
 import CommonAvatar from '@/components/CommonAvatar/CommonAvatar';
 import { getKeyByValue, setActionTextToKorean, setTagColor } from '@/utils';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
 import ModalActionComponent from '@/components/modal/ModalActionComponent';
-import dayjs from 'dayjs';
 import { postTaskDetail } from '@/apis/task';
 import { useMutation } from '@tanstack/react-query';
 
@@ -33,7 +31,7 @@ export interface CreateTaskForm {
 export interface CreateTaskProps extends actionConstantsType {
   START_AT: {
     key: string;
-    date?: Date;
+    value?: Date;
   };
   CREATE_TASK: {
     key: string;
@@ -103,8 +101,8 @@ function CreateTask() {
     const { SET_STATUS, SET_PRIORITY, START_AT, END_AT } = taskStatus;
     const progress = SET_STATUS.value;
     const priority = SET_PRIORITY.value;
-    const startAt = START_AT.date;
-    const endAt = END_AT.date;
+    const startAt = START_AT.value;
+    const endAt = END_AT.value;
     const payload = {
       title,
       desc,
@@ -137,8 +135,11 @@ function CreateTask() {
       }));
     }
 
+    // @ts-ignore
     if (e.target) {
+      // @ts-ignore
       const { value } = e.target;
+      // @ts-ignore
       const key = e.target.id;
       setTaskStatus((prevState) => ({
         ...prevState,
@@ -237,7 +238,7 @@ function CreateTask() {
                           </motion.div>
                         ) : null}
                       </AnimatePresence>
-                      {item.value && (
+                      {typeof item.value !== 'object' && item.value && (
                         <Tag size="lg" backgroundColor={setTagColor(item.value)} color="white">
                           {item.value}
                         </Tag>
