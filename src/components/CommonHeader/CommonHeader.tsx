@@ -9,9 +9,14 @@ import { useUserInfo } from '@/store/userInfoStore';
 import Link from 'next/link';
 import LogoutModal from './LogoutModal';
 import { TeamEnum } from '@/utils';
+import { useRouter } from 'next/router';
 
 function CommonHeader() {
+  const router = useRouter();
   const { userInfo } = useUserInfo();
+
+  const pathName = router.pathname;
+  const isDashboardActive = pathName === '/dashboard';
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -21,21 +26,21 @@ function CommonHeader() {
         <Image src={Logo} alt="Logo" width={50} height={50} />
         <C.Nav>
           <ul>
-            <li>
-              <Link href={`/dashboard`}>Dashboard</Link>
-            </li>
-            <li>
-              <Link href={`/kanban`}>Kanban</Link>
-            </li>
-            <li>
-              <Link href={`/calendar`}>Calendar</Link>
-            </li>
+            <Link href={`/dashboard`}>
+              <li className={pathName === '/dashboard' ? 'selected' : ''}>Dashboard</li>
+            </Link>
+            <Link href={`/kanban`}>
+              <li className={pathName === '/kanban' ? 'selected' : ''}>Kanban</li>
+            </Link>
+            <Link href={`/calendar`}>
+              <li className={pathName === '/calendar' ? 'selected' : ''}>Calendar</li>
+            </Link>
           </ul>
           {/* <C.CreateTaskButton>New Task</C.CreateTaskButton> */}
           <MenuButton>
             {/* as={Button} */}
             <C.ProfileWrapper>
-              <ProfileImage />
+              <ProfileImage src={userInfo?.profileImageUrl} />
               <ExpandMoreOutlinedIcon />
             </C.ProfileWrapper>
           </MenuButton>
@@ -51,12 +56,12 @@ function CommonHeader() {
           </MenuGroup>
           <MenuDivider />
           <MenuGroup title="프로필">
-            <MenuItem>
-              <Link href={`/profile/${userInfo?.userId}`}>프로필 편집</Link>
-            </MenuItem>
-            <MenuItem>
-              <Link href={`/profile/${userInfo?.userId}`}>권한 변경 신청</Link>
-            </MenuItem>
+            <Link href={`/profile/${userInfo?.userId}`}>
+              <MenuItem>프로필 편집</MenuItem>
+            </Link>
+            <Link href={`/profile/${userInfo?.userId}`}>
+              <MenuItem>권한 변경 신청</MenuItem>
+            </Link>
             <LogoutModal isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
               <MenuItem>로그아웃</MenuItem>
             </LogoutModal>
