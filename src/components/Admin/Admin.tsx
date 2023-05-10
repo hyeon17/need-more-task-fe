@@ -25,6 +25,7 @@ import { UserRoleEnum } from '@/utils';
 import { updateRoleAPI } from '@/apis/user';
 import CommonToast from '../common/CommonToast';
 import UserRolePopover from '@/components/Admin/UserRolePopover';
+import UserInfoPopover from '@/components/Admin/UserInfoPopover';
 
 function Admin() {
   const toast = useToast();
@@ -137,7 +138,7 @@ function Admin() {
               isChecked={allCheckbox}
               onChange={(e) => handleAllCheckChange(e.target.checked)}
             />
-            {/*  */}
+            {/* popover */}
             <Popover>
               <PopoverTrigger>
                 <AD.RoleButton>
@@ -186,6 +187,7 @@ function Admin() {
           {userData?.data?.users.length > 0 ? (
             userData?.data?.users.map((user: IUserRole) => {
               const { userId, email, fullName, role, profileImageUrl } = user;
+              // console.log('user>>>', user);
 
               return (
                 <AD.UserList key={`userId${userId}`}>
@@ -200,7 +202,10 @@ function Admin() {
                   />
                   {/*  */}
                   <AD.UserBasicInfoWrapper>
-                    <ProfileImage width="50" height="50" />
+                    {/* user info popover */}
+                    <UserInfoPopover user={user} />
+                    {/* <ProfileImage width="50" height="50" src={profileImageUrl} /> */}
+
                     <AD.UserName>
                       {/* hover 하면 유저정보 popover */}
                       <Link href={`/profile/${userId}`}>{fullName}</Link>
