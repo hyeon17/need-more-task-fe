@@ -37,6 +37,7 @@ export const LeftContainer = styled.div`
 `;
 export const RightContainer = styled.div`
   padding: 0 120px 0 120px;
+  margin-bottom: 80px;
 `;
 
 export const AsideWrapper = styled.div`
@@ -95,6 +96,8 @@ export const AccountWrapper = styled.div`
 export const ButtonWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+
+  margin-top: 20px;
 `;
 export const UpdateButton = styled(Button)`
   width: 166px;
