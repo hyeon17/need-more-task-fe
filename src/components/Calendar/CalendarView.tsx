@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { EventContentArg, EventInput, EventClickArg } from '@fullcalendar/core';
+import { EventContentArg, EventInput, DatesSetArg } from '@fullcalendar/core';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -26,7 +26,7 @@ function CalendarView() {
   const router = useRouter();
   const allEvents: EventInput[] = [];
 
-  const handleDatesSet = (eventInfo: EventClickArg) => {
+  const handleDatesSet = (eventInfo: DatesSetArg) => {
     const calendarApi = eventInfo.view.calendar;
     const currentDate = calendarApi.getDate();
     const years: number = Number(dayjs(currentDate).format('YYYY'));
@@ -64,8 +64,12 @@ function CalendarView() {
     const event = allEvents.find((e) => e.id === eventContent.event.id);
     if (!event) return null;
 
+    const handleEventClick = () => {
+      alert(`${eventContent.event.title}의 상세보기는 보고싶은 날의 빈 공간을 클릭하여 확인할 수 있습니다`);
+    };
+
     return (
-      <S.EventWrapper key={event.id} color={event.priority}>
+      <S.EventWrapper key={event.id} color={event.priority} onClick={handleEventClick}>
         <S.EventTitle>{eventContent.event.title}</S.EventTitle>
         <S.EventTime>{eventContent.timeText}</S.EventTime>
       </S.EventWrapper>
@@ -74,24 +78,29 @@ function CalendarView() {
 
   return (
     <S.Container>
-      <S.CalendarWrapper>
-        <FullCalendar
-          ref={calendarRef}
-          plugins={plugins}
-          themeSystem="bootstrap5"
-          headerToolbar={headerToolbar}
-          initialView="dayGridMonth"
-          selectable={true}
-          selectMirror={true}
-          dayMaxEvents={1}
-          dayMaxEventRows={10}
-          eventContent={renderEventContent}
-          dateClick={useHandleDateClick}
-          navLinks={true}
-          events={allEvents}
-          datesSet={handleDatesSet}
-        />
-      </S.CalendarWrapper>
+      {isLoading ? (
+        <S.SkeletonWrapper></S.SkeletonWrapper>
+      ) : (
+        <S.CalendarWrapper>
+          <FullCalendar
+            height="1100px"
+            ref={calendarRef}
+            plugins={plugins}
+            themeSystem="bootstrap5"
+            headerToolbar={headerToolbar}
+            initialView="dayGridMonth"
+            selectable={true}
+            selectMirror={true}
+            dayMaxEvents={3}
+            dayMaxEventRows={10}
+            eventContent={renderEventContent}
+            dateClick={useHandleDateClick}
+            navLinks={true}
+            events={allEvents}
+            datesSet={handleDatesSet}
+          />
+        </S.CalendarWrapper>
+      )}
     </S.Container>
   );
 }
