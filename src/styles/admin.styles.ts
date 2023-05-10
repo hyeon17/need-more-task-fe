@@ -150,3 +150,45 @@ export const CheckWrapper = styled.div`
 export const SelectHeaderRole = styled(PopoverContent)`
   width: auto;
 `;
+
+// user info popover
+export const UserPopoverBody = styled(PopoverBody)`
+  padding: 10px 16px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+export const UserPopoverInfoWrapper = styled.div`
+  & > div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    & h5 {
+      font-weight: 700;
+      font-size: 18px;
+      color: ${({ theme }) => theme.textColor};
+      &:hover {
+        color: ${({ theme }) => theme.primary};
+      }
+    }
+
+    & p {
+      font-size: 14px;
+      color: ${({ theme }) => theme.labelColor};
+      &:hover {
+        color: ${({ theme }) => theme.primary};
+      }
+    }
+  }
+
+  & strong {
+    font-weight: 700;
+  }
+
+  & span {
+    display: block;
+  }
+`;

@@ -24,7 +24,7 @@ export interface IUser {
   role?: string;
 }
 
-export type IUserRole = Pick<IUser, 'userId' | 'email' | 'fullName' | 'role' | 'profileImageUrl'>;
+export type IUserRole = Omit<IUser, 'phone'>;
 
 export interface AccountInfoProps {
   userInfo: IUser;

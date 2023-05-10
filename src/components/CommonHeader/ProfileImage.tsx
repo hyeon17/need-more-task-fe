@@ -19,9 +19,7 @@ function ProfileImage({
   return (
     <>
       <Image
-        src={
-          src ? `${process.env.NEXT_PUBLIC_MOCK_SERVER_BASE_URL}/${src}` : 'https://www.gravatar.com/avatar?d=mp&f=y'
-        }
+        src={src ? src : 'https://www.gravatar.com/avatar?d=mp&f=y'}
         alt={alt}
         width={width}
         height={height}

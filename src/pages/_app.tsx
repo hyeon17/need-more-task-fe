@@ -20,9 +20,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <Hydrate state={pageProps?.dehydratedState}>
         {process.env.NODE_ENV !== 'production' ? <ReactQueryDevtools initialIsOpen={false} /> : null}
         <ChakraProviders>
-          {/*<AuthUser>*/}
-          <Component {...pageProps} />
-          {/*</AuthUser>*/}
+          <AuthUser>
+            <Component {...pageProps} />
+          </AuthUser>
         </ChakraProviders>
       </Hydrate>
     </QueryClientProvider>

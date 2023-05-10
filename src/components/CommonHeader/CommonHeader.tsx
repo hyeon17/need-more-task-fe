@@ -12,7 +12,6 @@ import { TeamEnum } from '@/utils';
 
 function CommonHeader() {
   const { userInfo } = useUserInfo();
-  // console.log('userInfo>>', userInfo);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
