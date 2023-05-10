@@ -68,22 +68,21 @@ function Admin() {
     keepPreviousData: true,
     staleTime: 10000,
   });
-  console.log('SearchedUserData>>', SearchedUserData);
+  // console.log('SearchedUserData>>', SearchedUserData);
 
   // console.log('SelectedRoleUserData>>>', SelectedRoleUserData);
 
   const onSuccessRoleChange = (data: any) => {
-    console.log('data>>>', data);
-
     toast({
       title: '권한 수정 성공',
-      // description: '알 수 없는 오류가 발생했습니다.',
+
       status: 'success',
       duration: 9000,
       isClosable: true,
     });
 
-    queryClient.invalidateQueries([`/admin/users?role`]);
+    queryClient.invalidateQueries([queryKey]);
+    queryClient.invalidateQueries([searchUserKey]);
   };
 
   useEffect(() => {
@@ -150,8 +149,6 @@ function Admin() {
   };
 
   const handleChangeInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('e.target.value>>>', e.target.value);
-
     if (e.target.value.trim().length > 0) {
       setIsShowSearchedUserList(true);
       setSearchValue(e.target.value);
@@ -190,7 +187,20 @@ function Admin() {
         </AD.ManageRoleSearchWrapper>
         {/* search user list */}
         {isShowSearchedUserList ? (
-          <SearchedUserList />
+          <>
+            {SearchedUserData && (
+              <SelectedRoleUserList
+                userData={SearchedUserData}
+                handleAdminRoleChange={handleAdminRoleChange}
+                handleUserRoleChange={handleUserRoleChange}
+                isLoading={isLoadingSearchedUserData}
+                isFetching={isFetchingSearchedUserData}
+                isPreviousData={isPreviousSearchedUserData}
+                page={userSearchPage}
+                setPage={setUserSearchPage}
+              />
+            )}
+          </>
         ) : (
           <>
             {SelectedRoleUserData && (
@@ -198,11 +208,11 @@ function Admin() {
                 userData={SelectedRoleUserData}
                 handleAdminRoleChange={handleAdminRoleChange}
                 handleUserRoleChange={handleUserRoleChange}
-                isLoadingSelectedRoleUser={isLoadingSelectedRoleUser}
-                isFetchingSelectedRoleUser={isFetchingSelectedRoleUser}
-                isPreviousSelectedRoleUserData={isPreviousSelectedRoleUserData}
-                userRolePage={userRolePage}
-                setUserRolePage={setUserRolePage}
+                isLoading={isLoadingSelectedRoleUser}
+                isFetching={isFetchingSelectedRoleUser}
+                isPreviousData={isPreviousSelectedRoleUserData}
+                page={userRolePage}
+                setPage={setUserRolePage}
               />
             )}
           </>

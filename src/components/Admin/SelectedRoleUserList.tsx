@@ -11,22 +11,22 @@ interface ISelectedRoleUserList {
   userData: any;
   handleAdminRoleChange: any;
   handleUserRoleChange: any;
-  isLoadingSelectedRoleUser: boolean;
-  isFetchingSelectedRoleUser: boolean;
-  isPreviousSelectedRoleUserData: boolean;
-  userRolePage: number;
-  setUserRolePage: React.Dispatch<React.SetStateAction<number>>;
+  isLoading: boolean;
+  isFetching: boolean;
+  isPreviousData: boolean;
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 function SelectedRoleUserList({
   userData,
   handleAdminRoleChange,
   handleUserRoleChange,
-  isLoadingSelectedRoleUser,
-  isFetchingSelectedRoleUser,
-  isPreviousSelectedRoleUserData,
-  userRolePage,
-  setUserRolePage,
+  isLoading,
+  isFetching,
+  isPreviousData,
+  page,
+  setPage,
 }: ISelectedRoleUserList) {
   return (
     <AD.UserListWrapper>
@@ -71,15 +71,15 @@ function SelectedRoleUserList({
       ) : (
         <CommonEmptyUser />
       )}
-      {isLoadingSelectedRoleUser || (isFetchingSelectedRoleUser && <></>)}
+      {isLoading || (isFetching && <></>)}
       <AD.PaginationButtonNav>
-        <Button size="sm" disabled={isPreviousSelectedRoleUserData || userRolePage === 1}>
+        <Button size="sm" disabled={isPreviousData || page === 1}>
           {'<'}
         </Button>
         <Button colorScheme="blue" size="sm">
           1
         </Button>
-        <Button size="sm" disabled={isPreviousSelectedRoleUserData}>
+        <Button size="sm" disabled={isPreviousData}>
           {'>'}
         </Button>
       </AD.PaginationButtonNav>
