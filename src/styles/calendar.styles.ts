@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
 import theme from './theme';
+import { Skeleton } from '@chakra-ui/react';
 
 export const Container = styled.div`
   width: 1100px;
+  height: 1130px;
 `;
 
 export const CalendarWrapper = styled.div`
@@ -20,7 +22,7 @@ export const CalendarWrapper = styled.div`
     background-color: ${({ theme }) => theme.primary};
   }
   .fc .fc-daygrid-day-frame {
-    height: 130px;
+    height: 150px;
   }
   .fc {
     --fc-event-bg-color: none;
@@ -32,22 +34,21 @@ export const CalendarWrapper = styled.div`
 `;
 
 export const EventTime = styled.div`
-  padding: 0 5px 5px 5px;
-
+  padding: 0 2px;
 `;
 
 export const EventTitle = styled.div`
-  padding: 5px 5px 0 5px;
+  padding: 0 2px;
 `;
 
 export const EventWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 5px 0 5px 5px;
+  margin: 1px 0 1px 5px;
   width: 99%;
-  height: 45px;
-  font-size: 12px;
+  height: 30px;
+  font-size: 8px;
   text-overflow: ellipsis;
   overflow: hidden;
   padding: 5px;
@@ -67,4 +68,9 @@ export const EventWrapper = styled.div`
     }
   }};
   color: ${({ theme }) => theme.white};
+`;
+
+export const SkeletonWrapper = styled(Skeleton)`
+  width: inherit;
+  height: inherit;
 `;
