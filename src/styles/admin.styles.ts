@@ -38,7 +38,13 @@ export const AdminH5 = styled.div`
 // select header
 export const SelectHeaderWrapper = styled.div`
   /* border: 1px solid; */
+  display: flex;
+  justify-content: space-between;
   margin-top: 10px;
+
+  & > span {
+    margin-right: 20px;
+  }
 `;
 export const ManageRoleSearchWrapper = styled.div`
   padding: 16px 20px;
@@ -55,6 +61,7 @@ export const SearchInput = styled(Input)`
 // user list wrapper
 export const UserListWrapper = styled.ul`
   /* border: 1px solid; */
+  min-height: 900px;
 `;
 export const UserList = styled.li`
   padding: 20px 16px;
@@ -106,6 +113,7 @@ export const PaginationButtonNav = styled.nav`
   justify-content: center;
   align-items: center;
 `;
+export const PaginationButton = styled(Button)``;
 export const RolePopoverBody = styled(PopoverBody)`
   display: flex;
   flex-direction: column;

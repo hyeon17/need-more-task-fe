@@ -86,11 +86,11 @@ function Admin() {
 
   useEffect(() => {
     refetchSelectedRoleUser();
-  }, [searchRoleType]);
+  }, [searchRoleType, userRolePage]);
 
   useEffect(() => {
     refetchSearchedUserData();
-  }, [debouncedSearchValue]);
+  }, [debouncedSearchValue, userSearchPage]);
 
   const { mutate: updateAdminMutate } = updateRoleAPI({ onSuccess: onSuccessRoleChange });
 
@@ -162,6 +162,7 @@ function Admin() {
       <AD.ManageRoleContainer>
         <AD.AdminH5>
           <h5>Manage role</h5>
+
           <AD.SelectHeaderWrapper>
             {/* <Checkbox
               size="lg"
@@ -170,8 +171,12 @@ function Admin() {
               isChecked={allCheckbox}
               onChange={(e) => handleAllCheckChange(e.target.checked)}
             /> */}
+            {isShowSearchedUserList && <span>검색 결과: {SearchedUserData.data.totalCount} 명</span>}
+            {!isShowSearchedUserList && <span>사원 수: {SelectedRoleUserData.data.totalCount}</span>}
             {/* popover */}
-            <UserRoleSelectPopover handleSearchType={handleSearchType} searchRoleType={searchRoleType} />
+            {!isShowSearchedUserList && (
+              <UserRoleSelectPopover handleSearchType={handleSearchType} searchRoleType={searchRoleType} />
+            )}
           </AD.SelectHeaderWrapper>
         </AD.AdminH5>
         <AD.ManageRoleSearchWrapper>

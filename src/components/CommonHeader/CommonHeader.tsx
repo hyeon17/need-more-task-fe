@@ -59,9 +59,9 @@ function CommonHeader() {
             <Link href={`/profile/${userInfo?.userId}`}>
               <MenuItem>프로필 편집</MenuItem>
             </Link>
-            <Link href={`/profile/${userInfo?.userId}`}>
+            {/* <Link href={`/profile/${userInfo?.userId}`}>
               <MenuItem>권한 변경 신청</MenuItem>
-            </Link>
+            </Link> */}
             <LogoutModal isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
               <MenuItem>로그아웃</MenuItem>
             </LogoutModal>

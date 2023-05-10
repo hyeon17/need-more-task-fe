@@ -235,7 +235,11 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
         <h1>계정 정보</h1>
         {/* 이메일 */}
         <A.InputContainer>
-          <FormLabel htmlFor="email">이메일(이메일은 수정이 불가합니다.)</FormLabel>
+          <FormLabel htmlFor="email">
+            이메일
+            {userInfo?.userId === currentLoginUserInfo?.userId ||
+              (userInfo?.userId === 1 && <>(이메일은 수정이 불가합니다.)</>)}
+          </FormLabel>
           <Input
             isDisabled={true}
             // value={fullNameValue === null ? userInfo?.fullName || '' : fullNameValue}
