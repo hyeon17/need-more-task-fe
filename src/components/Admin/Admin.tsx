@@ -10,7 +10,6 @@ import { updateRoleAPI } from '@/apis/user';
 import UserRoleSelectPopover from './UserRoleSelectPopover';
 import SelectedRoleUserList from '@/components/Admin/SelectedRoleUserList';
 import useDebounce from '@/hooks/useDebounce';
-import SearchedUserList from '@/components/Admin/SearchedUserList';
 
 function Admin() {
   const toast = useToast();
