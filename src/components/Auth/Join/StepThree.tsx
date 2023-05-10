@@ -56,7 +56,13 @@ function StepThree() {
   };
 
   const onSuccess = (data: any) => {
-    console.log(data);
+    // console.log(data);
+    toast({
+      title: '회원가입 성공.',
+      status: 'success',
+      duration: 9000,
+      isClosable: true,
+    });
 
     router.push('/join/complete');
   };

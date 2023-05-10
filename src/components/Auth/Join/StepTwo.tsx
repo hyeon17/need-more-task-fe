@@ -76,12 +76,12 @@ function StepTwo() {
     fullname: string;
     email: string;
     password: string;
-    confirmPassword: string;
+    passwordCheck: string;
   }
 
   const onClickNext = (data: IFormInput) => {
     if (Object.keys(errors).length === 0) {
-      const { confirmPassword: passwordCheck, ...rest } = data;
+      const { passwordCheck, ...rest } = data;
 
       onSaveSignup({ ...me, ...rest, passwordCheck });
       router.push('/join/3');
@@ -200,19 +200,19 @@ function StepTwo() {
 
       {/* 비밀번호 확인 */}
       <A.InputContainer>
-        <FormControl isInvalid={Boolean(errors.confirmPassword)}>
-          <FormLabel htmlFor="confirmPassword">비밀번호 확인</FormLabel>
+        <FormControl isInvalid={Boolean(errors.passwordCheck)}>
+          <FormLabel htmlFor="passwordCheck">비밀번호 확인</FormLabel>
           <InputGroup size="md" variant="flushed">
             <Input
-              id="confirmPassword"
+              id="passwordCheck"
               placeholder="비밀번호를 다시 입력하세요"
               pr="4.5rem"
               variant="flushed"
               borderColor="outlineColor"
               focusBorderColor="inputFocusColor"
               type={showConfirmPassword ? 'text' : 'password'}
-              defaultValue={me?.passwordCheck || watch('confirmPassword')}
-              {...register('confirmPassword', {
+              defaultValue={me?.passwordCheck || watch('passwordCheck')}
+              {...register('passwordCheck', {
                 required: '필수 입력사항 입니다.',
                 validate: (val: string) => {
                   if (watch('password') !== val) {
@@ -227,7 +227,7 @@ function StepTwo() {
               </Button>
             </InputRightElement>
           </InputGroup>
-          <FormErrorMessage>{errors.confirmPassword && errors.confirmPassword?.message?.toString()}</FormErrorMessage>
+          <FormErrorMessage>{errors.passwordCheck && errors.passwordCheck?.message?.toString()}</FormErrorMessage>
         </FormControl>
       </A.InputContainer>
 
