@@ -15,7 +15,7 @@ import { useCalendarState } from '@/store/calendarStore';
 
 function CalendarView() {
   const calendarRef = useRef<FullCalendar>(null);
-  const { setYearStore, setMonthStore, setDateStore, getYearStore, getMonthStore, getDateStore } = useCalendarState();
+  const { setYearStore, setMonthStore, setDateStore, getYearStore, getMonthStore } = useCalendarState();
 
   const headerToolbar = {
     left: 'dayGridMonth,timeGridWeek,timeGridDay',
@@ -38,13 +38,20 @@ function CalendarView() {
   const { data: events, isLoading } = useGetCalendarAPI(getYearStore(), getMonthStore());
 
   if (events) {
-    const datas: EventInput[] = events.data.map((event: any) => ({
-      id: event.taskId.toString(),
-      title: event.title,
-      start: event.startAt,
-      end: event.endAt,
-      priority: event.priority,
-    }));
+    const datas: EventInput[] = events.data.map((event: any) => {
+      const start = event.startAt;
+      const end = event.endAt;
+      const isAllDay = dayjs(start).format('HH:mm:ss') === '00:00:00' && dayjs(end).format('HH:mm:ss') === '00:00:00';
+
+      return {
+        id: event.taskId.toString(),
+        title: event.title,
+        start: isAllDay ? start : new Date(start),
+        end: isAllDay ? dayjs(end).add(1, 'day').toDate() : new Date(end),
+        allDay: isAllDay,
+        priority: event.priority,
+      };
+    });
     allEvents.push(...datas);
   }
 
@@ -77,6 +84,7 @@ function CalendarView() {
           selectable={true}
           selectMirror={true}
           dayMaxEvents={1}
+          dayMaxEventRows={10}
           eventContent={renderEventContent}
           dateClick={useHandleDateClick}
           navLinks={true}
