@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useUserJoinStore } from '@/store/userJoinStore';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
@@ -10,9 +10,12 @@ import { FormControl, FormErrorMessage, FormLabel, Input, useToast } from '@chak
 import Image from 'next/image';
 import JoinBackButton from '@/components/Auth/Join/JoinBackButton';
 
-import { joinAPI } from '@/apis/user';
+import { joinAPI, useUpdateProfileImageAPI } from '@/apis/user';
 import { AxiosError } from 'axios';
 import { IJoin } from '@/type/authTypes';
+import { axiosInstance } from '@/apis/configs';
+import ProfileImage from '@/components/CommonHeader/ProfileImage';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const inputProps = {
   variant: 'flushed',
@@ -21,6 +24,8 @@ export const inputProps = {
 };
 
 function StepThree() {
+  const queryClient = useQueryClient();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const toast = useToast();
   const router = useRouter();
   const { me, onSaveSignup, onResetSignup } = useUserJoinStore();
@@ -32,6 +37,8 @@ function StepThree() {
   const [thirdNum, onChangeThirdNum] = useInput('');
 
   const [values, setValues] = useState({ profileIMG: '' });
+  const [profileImage, setProfileImage] = useState('');
+
   const [profileImageUrl, setProfileImageUrl] = useState('');
 
   const [profileUrl, setProfileUrl] = useState('');
@@ -68,13 +75,13 @@ function StepThree() {
     phone2: string;
     phone3: string;
   }
-  let profileId = 1;
+
   const onClickNext = (data: IFormInput) => {
     const { phone1, phone2, phone3 } = data;
     const phone = `${phone1}-${phone2}-${phone3}`;
 
     if (Object.keys(errors).length === 0) {
-      onSaveSignup({ ...me, phone, profileId });
+      onSaveSignup({ ...me, phone });
 
       joinMutate({ ...me } as IJoin);
     }
@@ -116,23 +123,63 @@ function StepThree() {
   };
   console.log('profileImageUrl>>>', profileImageUrl);
 
+  const onSuccessUploadImage = (data: any) => {
+    console.log('data>>', data);
+    const { profileId } = data.data;
+    setProfileImage(data.data.profileImageUrl);
+    onSaveSignup({ ...me, profileId });
+
+    // /user/profile
+    queryClient.invalidateQueries([`/user/profile`]);
+  };
+
+  const onErrorUploadImage = (error: AxiosError) => {
+    console.error(error);
+  };
+
+  const { mutate: uploadImageMutate, isLoading: isLoadingUploadImage } = useUpdateProfileImageAPI({
+    onSuccess: onSuccessUploadImage,
+    onError: onErrorUploadImage,
+  });
+
+  const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files === null) return;
+
+    const file = e.target.files[0];
+    console.log('file', file);
+
+    const formData = new FormData();
+
+    formData.append('profileImage', file);
+    formData.append('type', fileInputRef.current!.name);
+
+    try {
+      // await axiosInstance.post(`/user/profile`, formData, {
+      //   headers: { 'Context-Type': 'multipart/form-data' },
+      // });
+      uploadImageMutate(formData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit(onClickNext)}>
       {/* 프로필 이미지 */}
       <A.ProfileWrapper>
         <FormLabel>프로필</FormLabel>
-        <A.ProfileFigure>
-          {values['profileIMG'] && <Image width={150} height={150} src={values['profileIMG']} alt="프로필" />}
-        </A.ProfileFigure>
+        <A.ProfileFigures>
+          <ProfileImage src={profileImage} width={150} height={150} />
+          {/* {values['profileIMG'] && <Image width={150} height={150} src={values['profileIMG']} alt="프로필" />} */}
+        </A.ProfileFigures>
         <A.ProfileIMGWrapper>
           <Input
+            type="file"
+            ref={fileInputRef}
+            onChange={uploadImage}
             colorScheme="teal"
             variant="outline"
-            type="file"
             accept=".jpg, .jpeg, .webp, .png, .gif, .svg"
-            placeholder="파일선택"
-            onChange={handleProfileIMG}
-            value=""
           />
         </A.ProfileIMGWrapper>
       </A.ProfileWrapper>
