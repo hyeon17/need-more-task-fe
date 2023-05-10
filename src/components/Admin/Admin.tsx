@@ -26,6 +26,7 @@ import { updateRoleAPI } from '@/apis/user';
 import UserRolePopover from '@/components/Admin/UserRolePopover';
 import UserInfoPopover from '@/components/Admin/UserInfoPopover';
 import UserRoleSelectPopover from './UserRoleSelectPopover';
+import SelectedRoleUserList from '@/components/Admin/SelectedRoleUserList';
 
 function Admin() {
   const toast = useToast();
@@ -46,19 +47,19 @@ function Admin() {
 
   const {
     status,
-    data: userData,
+    data: SelectedRoleUserData,
     error,
-    isLoading,
-    isFetching,
-    isPreviousData,
-    refetch,
+    isLoading: isLoadingSelectedRoleUser,
+    isFetching: isFetchingSelectedRoleUser,
+    isPreviousData: isPreviousSelectedRoleUserData,
+    refetch: refetchSelectedRoleUser,
   } = useQuery({
     queryKey: [queryKey],
     queryFn: () => fetchUsers(page),
     keepPreviousData: true,
     staleTime: 10000,
   });
-  console.log('userData>>>', userData);
+  console.log('SelectedRoleUserData>>>', SelectedRoleUserData);
 
   const onSuccessRoleChange = (data: any) => {
     console.log('data>>>', data);
@@ -75,7 +76,7 @@ function Admin() {
   };
 
   useEffect(() => {
-    refetch();
+    refetchSelectedRoleUser();
   }, [searchRoleType]);
 
   const { mutate: updateAdminMutate } = updateRoleAPI({ onSuccess: onSuccessRoleChange });
@@ -171,61 +172,16 @@ function Admin() {
           />
         </AD.ManageRoleSearchWrapper>
         {/* user list */}
-        <AD.UserListWrapper>
-          {userData?.data?.users.length > 0 ? (
-            userData?.data?.users.map((user: IUserRole) => {
-              const { userId, email, fullName, role } = user;
-              // console.log('user>>>', user);
-
-              return (
-                <AD.UserList key={`userId${userId}`}>
-                  {/* checkbox */}
-                  {/* <Checkbox
-                    size="md"
-                    colorScheme="orange"
-                    isDisabled={userId === 1 ? true : false}
-                    isChecked={userId === 1 ? false : allCheckbox}
-                    onChange={(e) => handleCheckChange(userId, e.target.checked)}
-                  /> */}
-                  {/*  */}
-                  <AD.UserBasicInfoWrapper>
-                    {/* user info popover */}
-                    <UserInfoPopover user={user} />
-                    {/* <ProfileImage width="50" height="50" src={profileImageUrl} /> */}
-
-                    <AD.UserName>
-                      {/* hover 하면 유저정보 popover */}
-                      <Link href={`/profile/${userId}`}>{fullName}</Link>
-                      <span>{email}</span>
-                    </AD.UserName>
-                  </AD.UserBasicInfoWrapper>
-
-                  {/* user role popover component */}
-                  <UserRolePopover
-                    userId={userId}
-                    role={role}
-                    handleAdminRoleChange={handleAdminRoleChange}
-                    handleUserRoleChange={handleUserRoleChange}
-                  />
-                </AD.UserList>
-              );
-            })
-          ) : (
-            <CommonEmptyUser />
-          )}
-          {isLoading || (isFetching && <></>)}
-          <AD.PaginationButtonNav>
-            <Button size="sm" disabled={isPreviousData || page === 1}>
-              {'<'}
-            </Button>
-            <Button colorScheme="blue" size="sm">
-              1
-            </Button>
-            <Button size="sm" disabled={isPreviousData}>
-              {'>'}
-            </Button>
-          </AD.PaginationButtonNav>
-        </AD.UserListWrapper>
+        <SelectedRoleUserList
+          userData={SelectedRoleUserData}
+          handleAdminRoleChange={handleAdminRoleChange}
+          handleUserRoleChange={handleUserRoleChange}
+          isLoadingSelectedRoleUser={isLoadingSelectedRoleUser}
+          isFetchingSelectedRoleUser={isFetchingSelectedRoleUser}
+          isPreviousSelectedRoleUserData={isPreviousSelectedRoleUserData}
+          page={page}
+          setPage={setPage}
+        />
       </AD.ManageRoleContainer>
     </AD.Container>
   );
