@@ -1,17 +1,14 @@
 import React from 'react';
 import * as S from '@/styles/overview.styles';
 import { Tabs, TabList } from '@chakra-ui/react';
-import { TaskProgress } from '@/apis/kanban';
+import { useOverViewState } from '@/store/overViewStore';
 
 function Header({ date, data }: { date: any; data: any }) {
-  const Progress: TaskProgress[] = ['TODO', 'IN_PROGRESS', 'DONE'];
-  const allCount: number = Object.values(data).length;
-  const length: number[] = Progress.map((status: TaskProgress) => {
-    return Object.values(data).filter((item: any) => item.progress === status).length;
-  });
-  const todoCount: number = length[0] || 0;
-  const inProgressCount: number = length[1] || 0;
-  const doneCount: number = length[2] || 0;
+  const allCount = data.length;
+  const todoCount = data.filter((event: any) => event.progress === 'TODO').length;
+  const inProgressCount = data.filter((event: any) => event.progress === 'IN_PROGRESS').length;
+  const doneCount = data.filter((event: any) => event.progress === 'DONE').length;
+  // const { getTODOStore, getIN_PROGRESSStore, getDONEStore } = useOverViewState();
 
   return (
     <S.OverViewHeader>

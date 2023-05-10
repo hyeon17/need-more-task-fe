@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { EventContentArg, EventInput, EventClickArg } from '@fullcalendar/core';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -10,16 +10,12 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import { useRouter } from 'next/router';
-import { getCalendar } from '@/apis/calendar';
-import { KanbanBoardDataInterface } from '@/apis/kanban';
+import { useGetCalendarAPI } from '@/apis/calendar';
 import { useCalendarState } from '@/store/calendarStore';
 
 function CalendarView() {
-  const [currentEvents, setCurrentEvents] = useState<KanbanBoardDataInterface[]>([]);
   const calendarRef = useRef<FullCalendar>(null);
-  const [year, setYear] = useState<number>(Number(dayjs().format('YYYY')));
-  const [month, setMonth] = useState<number>(Number(dayjs().format('MM')));
-  const { setYearStore, setMonthStore, setDateStore } = useCalendarState();
+  const { setYearStore, setMonthStore, setDateStore, getYearStore, getMonthStore, getDateStore } = useCalendarState();
 
   const headerToolbar = {
     left: 'dayGridMonth,timeGridWeek,timeGridDay',
@@ -35,33 +31,24 @@ function CalendarView() {
     const currentDate = calendarApi.getDate();
     const years: number = Number(dayjs(currentDate).format('YYYY'));
     const months: number = Number(dayjs(currentDate).format('MM'));
-
-    setYear(years);
-    setMonth(months);
     setYearStore(years);
     setMonthStore(months);
-    router.push(`/calendars?year=${years}&month=${months}`);
   };
 
-  useEffect(() => {
-    getCalendar(year, month).then((res) => {
-      setCurrentEvents([res.data]);
-    });
-  }, [year, month]);
+  const { data: events, isLoading } = useGetCalendarAPI(getYearStore(), getMonthStore());
 
-  const data = currentEvents.map((event) => event.data);
-  if (data && data[0]) {
-    const events: EventInput[] = data[0].map((event) => ({
+  if (events) {
+    const datas: EventInput[] = events.data.map((event: any) => ({
       id: event.taskId.toString(),
       title: event.title,
       start: event.startAt,
       end: event.endAt,
       priority: event.priority,
     }));
-    allEvents.push(...events);
+    allEvents.push(...datas);
   }
 
-  const handleDateClick = (info: any) => {
+  const useHandleDateClick = (info: any) => {
     setDateStore(info.dateStr);
     router.push(`/task?date=${info.dateStr}`);
   };
@@ -91,7 +78,7 @@ function CalendarView() {
           selectMirror={true}
           dayMaxEvents={1}
           eventContent={renderEventContent}
-          dateClick={handleDateClick}
+          dateClick={useHandleDateClick}
           navLinks={true}
           events={allEvents}
           datesSet={handleDatesSet}
