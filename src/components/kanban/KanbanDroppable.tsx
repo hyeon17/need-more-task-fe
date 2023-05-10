@@ -5,6 +5,7 @@ import KanbanDraggable from '@/components/kanban/KanbanDraggable';
 import { KanbanDroppableItemProps } from '@/type/componentProps';
 import { useModalState } from '@/store/modalStore';
 import { setStatusToKorean } from '@/utils';
+import * as S from '@/styles/kanban.styles';
 
 function KanbanDroppable({ provided, status, data }: KanbanDroppableItemProps) {
   const { onOpenCreate, onSetModalId } = useModalState();
@@ -20,6 +21,11 @@ function KanbanDroppable({ provided, status, data }: KanbanDroppableItemProps) {
           {setStatusToKorean(status)}
         </Text>
         <Stack spacing="4">
+          {data.length === 0 && (
+            <S.KanbanTaskItem>
+              <Text align="center">지금은 {setStatusToKorean(status)}이 없습니다.</Text>
+            </S.KanbanTaskItem>
+          )}
           {data &&
             data.map((item, index) => (
               <Draggable draggableId={item.taskId + status} index={index} key={index}>

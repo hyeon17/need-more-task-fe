@@ -19,11 +19,16 @@ export const axiosWithToken: AxiosInstance = axios.create({
 // });
 
 axiosWithToken.interceptors.request.use((config: any) => {
-  const accessToken = JSON.parse(localStorage.getItem('needMoreTaskToken') || 'null');
+  // const accessToken = JSON.parse(localStorage.getItem('needMoreTaskToken') || 'null');
+  //
+  // if (accessToken === null) {
+  //   return config;
+  // }
 
-  if (accessToken === null) {
-    return config;
-  }
-
-  return { ...config, headers: { Authorization: `Bearer ${accessToken}` } };
+  return {
+    ...config,
+    headers: {
+      Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqd3RzdHVkeSIsInJvbGUiOiJVU0VSIiwiaWQiOjIsImV4cCI6MTY4MzY5NDk2OH0.pplsZC9hoCZ4NYskoiPfRWBQFqlz8ZZTATxEB1I_GRCNy2TFQg4IuQhmOw3J9YCDtwcJuUO6Cle9DCFRHxIoYA`,
+    },
+  };
 });

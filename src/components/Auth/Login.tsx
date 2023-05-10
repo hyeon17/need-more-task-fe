@@ -19,8 +19,8 @@ import { useAccessTokenStore } from '@/store/acceessTokenStore';
 
 function Login() {
   const router = useRouter();
-  const { getAccessToken, onSaveAccessToken } = useAccessTokenStore();
-  console.log('getAccessToken>>', getAccessToken());
+  // const { getAccessToken, onSaveAccessToken } = useAccessTokenStore();
+  // console.log('getAccessToken>>', getAccessToken());
 
   const [show, setShow] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
