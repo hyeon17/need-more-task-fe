@@ -48,7 +48,9 @@ export const setTagColorB = (value: string) => {
 
 export const setActionTextToKorean = (value: string) => {
   switch (value) {
-    case 'DUE_DATE':
+    case 'START_AT':
+      return '시작일 설정';
+    case 'END_AT':
       return '마감일 설정';
     case 'ASSIGNEE':
       return '담당자 지정';
@@ -60,6 +62,8 @@ export const setActionTextToKorean = (value: string) => {
       return '삭제하기';
     case 'EDIT_TASK':
       return '수정하기';
+    case 'CREATE_TASK':
+      return '생성하기';
     default:
       return '예기치 못한 에러 발생';
   }
@@ -70,9 +74,9 @@ export const setStatusToKorean = (value: string) => {
     case StatusType.TODO:
       return '할 일';
     case StatusType.IN_PROGRESS:
-      return '진행 중';
+      return '진행 중인 일';
     case StatusType.DONE:
-      return '완료';
+      return '완료된 일';
     default:
       return '상태';
   }

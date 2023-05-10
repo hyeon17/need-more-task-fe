@@ -1,3 +1,5 @@
+import { Assignee } from '@/apis/kanban';
+
 export enum StatusType {
   TODO = 'TODO',
   IN_PROGRESS = 'IN_PROGRESS',
@@ -5,10 +7,10 @@ export enum StatusType {
 }
 
 export enum PriorityType {
-  URGENT = 'urgent',
-  HIGH = 'high',
-  MEDIUM = 'medium',
-  LOW = 'low',
+  URGENT = 'URGENT',
+  HIGH = 'HIGH',
+  MEDIUM = 'MEDIUM',
+  LOW = 'LOW',
 }
 
 export enum TeamType {
@@ -25,14 +27,19 @@ export enum TeamType {
 }
 
 export type actionConstantsType = {
-  DUE_DATE: {
+  START_AT?: {
+    key: string;
+    date?: Date;
+    value?: string;
+  };
+  END_AT: {
     key: string;
     date?: Date;
     value?: string;
   };
   ASSIGNEE: {
     key: string;
-    value?: string;
+    value?: Assignee[];
   };
   SET_STATUS: {
     key: string;

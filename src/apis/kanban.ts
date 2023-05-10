@@ -1,4 +1,4 @@
-import { axiosInstance } from '@/apis/configs';
+import { axiosWithToken } from '@/apis/configs';
 import { PriorityType, StatusType } from '@/constant/TaskOverview';
 
 export interface KanbanBoardDataInterface {
@@ -35,6 +35,6 @@ export interface TaskOwner {
 }
 
 export const getKanbanBoard = async () => {
-  const res = await axiosInstance.get<KanbanBoardDataInterface>(`/kanban`);
+  const res = await axiosWithToken.get<KanbanBoardDataInterface>(`/kanbans`);
   return res.data;
 };

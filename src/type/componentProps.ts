@@ -1,6 +1,10 @@
 import { DraggableProvided, DroppableProvided } from 'react-beautiful-dnd';
 import { TaskData } from '@/apis/kanban';
-import { actionType } from '@/constant/TaskOverview';
+import { actionConstantsType, actionType, StatusType } from '@/constant/TaskOverview';
+import TFieldName, { UseFormRegister, UseFormRegisterReturn } from 'react-hook-form/dist/types/form';
+import { CreateTaskForm } from '@/components/modal/CreateTask';
+import { FieldPath, RegisterOptions } from 'react-hook-form';
+import React from 'react';
 
 export interface KanbanDroppableItemProps {
   status: string;
@@ -12,6 +16,13 @@ export interface KanbanDraggableItemProps {
   task: TaskData;
   provided: DraggableProvided;
   index: number;
+}
+
+export interface ModalActionLayoutProps {
+  item:
+    | { key: string; date?: Date | undefined; value?: string | undefined }
+    | { key: string; value?: string | undefined }
+    | { key: string; value?: StatusType | undefined };
 }
 
 // export interface getDataInterface {
@@ -56,4 +67,5 @@ export interface KanbanDraggableItemProps {
 
 export interface ModalActionComponentProps {
   action: actionType;
+  setTaskStatusHandler: (e: unknown) => void;
 }

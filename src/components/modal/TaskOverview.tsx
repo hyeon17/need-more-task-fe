@@ -2,36 +2,50 @@ import React, { useState } from 'react';
 import { Avatar, Heading, ModalBody, ModalHeader, Stack, Tag, Text } from '@chakra-ui/react';
 import { useModalState } from '@/store/modalStore';
 import * as S from '@/styles/modal.styles';
-import { actionConstantsType, actionType } from '@/constant/TaskOverview';
-import { getKeyByValue, setActionTextToKorean, setTagColor } from '@/utils';
+import { actionConstantsType, actionType, PriorityType, StatusType } from '@/constant/TaskOverview';
 import { useQuery } from '@tanstack/react-query';
 import { getTaskDetail } from '@/apis/task';
-import ModalActionComponent from '@/components/modal/ModalActionComponent';
-import { AnimatePresence, motion } from 'framer-motion';
+import { getKeyByValue, setActionTextToKorean, setTagColor } from '@/utils';
+import { AnimatePresence, motion, Variants } from 'framer-motion';
+
+const variants: Variants = {
+  initial: {
+    opacity: 0,
+    x: 20,
+  },
+  animate: {
+    opacity: 1,
+    x: 0,
+  },
+  exit: {
+    opacity: 0,
+    x: -20,
+  },
+};
 
 function TaskOverview() {
   const { id } = useModalState();
   const { data } = useQuery(['task', id], () => getTaskDetail(Number(id)));
-  const [action, setAction] = useState<actionType | null>(null);
-  if (!data) return null;
-  const { title, desc, assignee, endAt, progress, priority } = data.data[0];
+  const [modalAction, setModalAction] = useState<actionType | null>(null);
 
+  if (!data) return null;
+  const { title, desc, assignee, endAt, progress, priority } = data.data;
+  console.log(data.data);
   const actionConstants: actionConstantsType = {
-    DUE_DATE: {
+    END_AT: {
       key: 'DUE_DATE',
       date: endAt,
-      value: 'Due Date',
     },
     ASSIGNEE: {
       key: 'ASSIGNEE',
     },
     SET_STATUS: {
       key: 'SET_STATUS',
-      value: progress,
+      value: progress as StatusType,
     },
     SET_PRIORITY: {
       key: 'SET_PRIORITY',
-      value: priority,
+      value: priority as PriorityType,
     },
     EDIT_TASK: {
       key: 'EDIT_TASK',
@@ -39,10 +53,6 @@ function TaskOverview() {
     DELETE_TASK: {
       key: 'DELETE_TASK',
     },
-  };
-
-  const handleAction = (action: actionType) => {
-    setAction(action);
   };
 
   return (
@@ -60,11 +70,11 @@ function TaskOverview() {
           >
             <S.ModalTaskContentBox>
               <div className="title">
-                <Heading fontSize="1.4rem">Title</Heading>
+                <Heading fontSize="1.4rem">{title}</Heading>
                 <Text fontSize="1rem">Assigned to</Text>
                 <div className="avatar">
                   {assignee.map((item) => (
-                    <Avatar size="xs" key={item.userId} />
+                    <Avatar size="xs" key={item.userID} src={item.profileImageURL} />
                   ))}
                 </div>
               </div>
@@ -76,36 +86,29 @@ function TaskOverview() {
             <S.ModalTaskActionBox>
               {Object.values(actionConstants).map((item) => (
                 <div
-                  className="action"
                   key={item.key}
-                  onClick={() => handleAction(getKeyByValue(actionConstants, item) as actionType)}
+                  className="action"
+                  onClick={() => setModalAction(getKeyByValue(actionConstants, item) as actionType)}
                 >
                   <Heading fontSize="1rem">{setActionTextToKorean(item.key)}</Heading>
                   <AnimatePresence>
-                    {action === item.key && (
-                      <motion.div
-                        initial={{
-                          opacity: 0,
-                          x: 20,
-                        }}
-                        animate={{
-                          opacity: 1,
-                          x: 0,
-                        }}
-                        exit={{
-                          opacity: 0,
-                          x: -20,
-                        }}
-                      >
-                        <ModalActionComponent action={action} />
+                    {modalAction === item.key ? (
+                      <motion.div initial="initial" animate="animate" exit="exit" variants={variants}>
+                        <ModalActionComponent action={modalAction!} />
                       </motion.div>
-                    )}
+                    ) : null}
                   </AnimatePresence>
-                  {item.value && (
-                    <Tag size="lg" backgroundColor={setTagColor(item.value)} color="white">
+                  {typeof item.value !== 'object' ? (
+                    <Tag
+                      size="sm"
+                      colorScheme={setTagColor(item.value!)}
+                      borderRadius="full"
+                      variant="solid"
+                      mt="0.5rem"
+                    >
                       {item.value}
                     </Tag>
-                  )}
+                  ) : null}
                 </div>
               ))}
             </S.ModalTaskActionBox>

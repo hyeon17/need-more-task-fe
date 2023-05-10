@@ -18,7 +18,7 @@ const initialEmptyData: KanbanDataType = {
 };
 
 function Kanban() {
-  const { data, isLoading } = useQuery(['kanban'], getKanbanBoard);
+  const { data, isLoading, error } = useQuery(['kanban'], getKanbanBoard);
   const [kanbanBoardData, setKanbanBoardData] = useState<KanbanDataType>(initialEmptyData);
 
   const reorderByStatus = (data: TaskData[]): KanbanDataType => {
