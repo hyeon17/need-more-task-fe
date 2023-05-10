@@ -14,8 +14,8 @@ interface ISelectedRoleUserList {
   isLoadingSelectedRoleUser: boolean;
   isFetchingSelectedRoleUser: boolean;
   isPreviousSelectedRoleUserData: boolean;
-  page: number;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
+  userRolePage: number;
+  setUserRolePage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 function SelectedRoleUserList({
@@ -25,8 +25,8 @@ function SelectedRoleUserList({
   isLoadingSelectedRoleUser,
   isFetchingSelectedRoleUser,
   isPreviousSelectedRoleUserData,
-  page,
-  setPage,
+  userRolePage,
+  setUserRolePage,
 }: ISelectedRoleUserList) {
   return (
     <AD.UserListWrapper>
@@ -73,7 +73,7 @@ function SelectedRoleUserList({
       )}
       {isLoadingSelectedRoleUser || (isFetchingSelectedRoleUser && <></>)}
       <AD.PaginationButtonNav>
-        <Button size="sm" disabled={isPreviousSelectedRoleUserData || page === 1}>
+        <Button size="sm" disabled={isPreviousSelectedRoleUserData || userRolePage === 1}>
           {'<'}
         </Button>
         <Button colorScheme="blue" size="sm">

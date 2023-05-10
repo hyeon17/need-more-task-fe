@@ -54,7 +54,7 @@ export const SearchInput = styled(Input)`
 
 // user list wrapper
 export const UserListWrapper = styled.ul`
-  border: 1px solid;
+  /* border: 1px solid; */
 `;
 export const UserList = styled.li`
   padding: 20px 16px;

@@ -1,47 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import * as AD from '@/styles/admin.styles';
-import {
-  Button,
-  Checkbox,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverFooter,
-  PopoverHeader,
-  PopoverTrigger,
-  Portal,
-  useToast,
-} from '@chakra-ui/react';
-import ProfileImage from '@/components/CommonHeader/ProfileImage';
-import Link from 'next/link';
-import { CheckIcon, ChevronDownIcon } from '@chakra-ui/icons';
+import { useToast } from '@chakra-ui/react';
+
 import { axiosWithToken } from '@/apis/configs';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { IUserRole } from '@/type/authTypes';
-import CommonEmptyUser from '@/components/common/CommonEmptyUser';
-import { UserRoleEnum } from '@/utils';
+
 import { updateRoleAPI } from '@/apis/user';
-import UserRolePopover from '@/components/Admin/UserRolePopover';
-import UserInfoPopover from '@/components/Admin/UserInfoPopover';
+
 import UserRoleSelectPopover from './UserRoleSelectPopover';
 import SelectedRoleUserList from '@/components/Admin/SelectedRoleUserList';
+import useDebounce from '@/hooks/useDebounce';
+import SearchedUserList from '@/components/Admin/SearchedUserList';
 
 function Admin() {
   const toast = useToast();
   const queryClient = useQueryClient();
 
-  const [checkId, setCheckId] = useState<number[]>([]);
+  const [searchValue, setSearchValue] = useState('');
+  const [isShowSearchedUserList, setIsShowSearchedUserList] = useState(false);
+  const debouncedSearchValue = useDebounce(searchValue, 500);
+
+  // const [checkId, setCheckId] = useState<number[]>([]);
   // const [checkedRole, setCheckedRole] = useState('');
-  const [allCheckbox, setAllCheckbox] = useState(false);
+  // const [allCheckbox, setAllCheckbox] = useState(false);
   const [searchRoleType, setSearchRoleType] = useState('all');
 
-  const [page, setPage] = useState(1);
+  //
+  const [userSearchPage, setUserSearchPage] = useState(1);
+  const searchUserKey = `/users/search?fullName`;
+  //
+  const [userRolePage, setUserRolePage] = useState(1);
   const queryKey = `/admin/users?role`;
 
-  const fetchUsers = async (page = 0) => {
+  const fetchRoleUsers = async (page = 0) => {
     const { data } = await axiosWithToken.get(`${queryKey}=${searchRoleType}&page=${page - 1}`);
+    return data;
+  };
+  const fetchSearchUsers = async (page = 0) => {
+    const { data } = await axiosWithToken.get(`${searchUserKey}=${debouncedSearchValue}&page=${page - 1}`);
     return data;
   };
 
@@ -55,11 +51,26 @@ function Admin() {
     refetch: refetchSelectedRoleUser,
   } = useQuery({
     queryKey: [queryKey],
-    queryFn: () => fetchUsers(page),
+    queryFn: () => fetchRoleUsers(userRolePage),
     keepPreviousData: true,
     staleTime: 10000,
   });
-  console.log('SelectedRoleUserData>>>', SelectedRoleUserData);
+
+  const {
+    data: SearchedUserData,
+    isLoading: isLoadingSearchedUserData,
+    isFetching: isFetchingSearchedUserData,
+    isPreviousData: isPreviousSearchedUserData,
+    refetch: refetchSearchedUserData,
+  } = useQuery({
+    queryKey: [searchUserKey],
+    queryFn: () => fetchSearchUsers(userSearchPage),
+    keepPreviousData: true,
+    staleTime: 10000,
+  });
+  console.log('SearchedUserData>>', SearchedUserData);
+
+  // console.log('SelectedRoleUserData>>>', SelectedRoleUserData);
 
   const onSuccessRoleChange = (data: any) => {
     console.log('data>>>', data);
@@ -78,6 +89,10 @@ function Admin() {
   useEffect(() => {
     refetchSelectedRoleUser();
   }, [searchRoleType]);
+
+  useEffect(() => {
+    refetchSearchedUserData();
+  }, [debouncedSearchValue]);
 
   const { mutate: updateAdminMutate } = updateRoleAPI({ onSuccess: onSuccessRoleChange });
 
@@ -99,39 +114,27 @@ function Admin() {
     updateAdminMutate({ userId, role: 'USER' });
   };
 
-  const handleCheckChange = (userId: number, isChecked: boolean) => {
-    if (isChecked) {
-      if (!checkId.includes(userId)) {
-        setCheckId((prevId) => [...prevId, userId]);
-      }
-    } else {
-      setCheckId((prevId) => prevId.filter((id) => id !== userId)); // checkId 배열에서 해당 userId 값을 제거하여 상태를 업데이트
-    }
+  // const handleCheckChange = (userId: number, isChecked: boolean) => {
+  //   if (isChecked) {
+  //     if (!checkId.includes(userId)) {
+  //       setCheckId((prevId) => [...prevId, userId]);
+  //     }
+  //   } else {
+  //     setCheckId((prevId) => prevId.filter((id) => id !== userId)); // checkId 배열에서 해당 userId 값을 제거하여 상태를 업데이트
+  //   }
 
-    // if (userId) {
-    //   return false;
-    // }
-  };
-  console.log(checkId);
+  //   // if (userId) {
+  //   //   return false;
+  //   // }
+  // };
 
-  const handleRememberCheck = (userId: number) => {
-    // const isIncludedUserId =
-    // if (isIncludedUserId) {
+  // const handleRememberCheck = (userId: number) => {
+  //   return checkId.includes(userId);
+  // };
 
-    // }
-    return checkId.includes(userId);
-  };
-
-  const handleAllCheckChange = (isChecked: boolean) => {
-    // userId, e.target.checked
-    setAllCheckbox(!allCheckbox);
-
-    // if (isChecked) {
-    //   setAllCheckbox(false);
-    // } else if (!isChecked) {
-    //   setAllCheckbox(true);
-    // }
-  };
+  // const handleAllCheckChange = (isChecked: boolean) => {
+  //   setAllCheckbox(!allCheckbox);
+  // };
 
   const handleSearchType = (e: React.MouseEvent<HTMLElement>) => {
     const targetValue = (e.currentTarget as HTMLElement).getAttribute('data-value');
@@ -143,6 +146,18 @@ function Admin() {
       } else {
         setSearchRoleType(targetValue);
       }
+    }
+  };
+
+  const handleChangeInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('e.target.value>>>', e.target.value);
+
+    if (e.target.value.trim().length > 0) {
+      setIsShowSearchedUserList(true);
+      setSearchValue(e.target.value);
+    } else {
+      setIsShowSearchedUserList(false);
+      setSearchValue('');
     }
   };
 
@@ -169,19 +184,30 @@ function Admin() {
             size="md"
             backgroundColor="outlineColor"
             borderColor="labelColor"
+            value={searchValue}
+            onChange={(e) => handleChangeInputValue(e)}
           />
         </AD.ManageRoleSearchWrapper>
-        {/* user list */}
-        <SelectedRoleUserList
-          userData={SelectedRoleUserData}
-          handleAdminRoleChange={handleAdminRoleChange}
-          handleUserRoleChange={handleUserRoleChange}
-          isLoadingSelectedRoleUser={isLoadingSelectedRoleUser}
-          isFetchingSelectedRoleUser={isFetchingSelectedRoleUser}
-          isPreviousSelectedRoleUserData={isPreviousSelectedRoleUserData}
-          page={page}
-          setPage={setPage}
-        />
+        {/* search user list */}
+        {isShowSearchedUserList ? (
+          <SearchedUserList />
+        ) : (
+          <>
+            {SelectedRoleUserData && (
+              <SelectedRoleUserList
+                userData={SelectedRoleUserData}
+                handleAdminRoleChange={handleAdminRoleChange}
+                handleUserRoleChange={handleUserRoleChange}
+                isLoadingSelectedRoleUser={isLoadingSelectedRoleUser}
+                isFetchingSelectedRoleUser={isFetchingSelectedRoleUser}
+                isPreviousSelectedRoleUserData={isPreviousSelectedRoleUserData}
+                userRolePage={userRolePage}
+                setUserRolePage={setUserRolePage}
+              />
+            )}
+          </>
+        )}
+        {/* user role tpe list */}
       </AD.ManageRoleContainer>
     </AD.Container>
   );
