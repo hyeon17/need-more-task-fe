@@ -60,7 +60,6 @@ export const authMeAPI = (options?: UseQueryOptions<AxiosResponse<any>, AxiosErr
 };
 
 export const getUserInfoAPI = (
-  accessToken?: string,
   id?: string,
   options?: UseQueryOptions<AxiosResponse<any>, AxiosError, any, string[]>,
 ) => {
@@ -76,14 +75,14 @@ export const getUserInfoAPI = (
 export const validatePasswordAPI = (
   options?: UseMutationOptions<AxiosResponse<string>, AxiosError, IValidatePassword>,
 ) => {
-  const queryKey = `/validate/password`;
+  const queryKey = `/password/validate`;
   const queryFn = (data: IValidatePassword) => axiosWithToken.post(queryKey, data).then((res) => res.data);
 
   return useMutation([queryKey], queryFn, { ...options });
 };
 
 export const updateUserInfoAPI = (
-  userId: string,
+  userId: number,
   options?: UseMutationOptions<AxiosResponse<string>, AxiosError, IUpdateProfile>,
 ) => {
   const queryKey = `/user/${userId}`;

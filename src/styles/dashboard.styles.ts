@@ -264,7 +264,11 @@ export const CreateTaskButton = styled(Button)`
 `;
 
 export const LatestProjectsListContainer = styled.div`
+  /* border: 1px solid; */
+
   display: flex;
+  /* justify-content: center;
+  align-items: center; */
   gap: 24px;
   padding: 20px 24px;
 
@@ -293,7 +297,14 @@ export const ProjectsListBodyWrapper = styled.div`
 `;
 export const ProjectsListBodyHeader = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+
+  & > span {
+    font-size: 12px;
+    & > strong {
+      font-weight: 700;
+    }
+  }
 `;
 export const ProjectsListBody = styled.div`
   margin-top: 25px;
@@ -315,6 +326,8 @@ export const ProjectTitleWrapper = styled.div`
   }
 
   & > span {
+    display: flex;
+    gap: 3px;
     font-weight: 500;
     font-size: 12px;
     line-height: 18px;

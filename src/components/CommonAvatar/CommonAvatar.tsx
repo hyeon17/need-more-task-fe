@@ -1,11 +1,19 @@
 import { Avatar, AvatarGroup } from '@chakra-ui/react';
+import styled from '@emotion/styled';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
+
+interface IAssignee {
+  profileImageUrl: string;
+  userId: number;
+}
 
 interface ICommonAvatar {
   size?: string;
   max?: number;
   src?: string;
-  assignee: any;
+  assignee: IAssignee[];
 }
 
 function CommonAvatar({
@@ -14,14 +22,26 @@ function CommonAvatar({
   max = 2,
   src = 'https://www.gravatar.com/avatar?d=mp&f=y',
 }: ICommonAvatar) {
+  const router = useRouter();
   return (
     <AvatarGroup size={size} max={max}>
-      {assignee.map((user: any) => {
+      {assignee?.map((user: IAssignee) => {
         const { profileImageUrl, userId } = user;
-        return <Avatar src={src} key={`userId${userId}`} />;
+        return (
+          <StyledAvatar
+            src={profileImageUrl ? profileImageUrl : src}
+            key={`userId${userId}`}
+            onClick={() => router.push(`/profile/${userId}`)}
+            style={{ cursor: 'pointer' }}
+          />
+        );
       })}
     </AvatarGroup>
   );
 }
 
 export default CommonAvatar;
+
+export const StyledAvatar = styled(Avatar)`
+  cursor: pointer;
+`;
