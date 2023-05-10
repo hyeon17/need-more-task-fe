@@ -28,62 +28,85 @@ function SelectedRoleUserList({
   page,
   setPage,
 }: ISelectedRoleUserList) {
-  return (
-    <AD.UserListWrapper>
-      {userData?.data?.users.length > 0 ? (
-        userData?.data?.users.map((user: IUserRole) => {
-          const { userId, email, fullName, role } = user;
-          // console.log('user>>>', user);
+  const pagesButtonArray = Array(Math.ceil(userData.data.totalCount / 10.0))
+    .fill(0)
+    .map((_, index) => index + 1);
+  console.log('pagesArray', pagesButtonArray);
 
-          return (
-            <AD.UserList key={`userId${userId}`}>
-              {/* checkbox */}
-              {/* <Checkbox
+  return (
+    <>
+      <AD.UserListWrapper>
+        {userData?.data?.users.length > 0 ? (
+          userData?.data?.users.map((user: IUserRole) => {
+            const { userId, email, fullName, role } = user;
+            // console.log('user>>>', user);
+
+            return (
+              <AD.UserList key={`userId${userId}`}>
+                {/* checkbox */}
+                {/* <Checkbox
             size="md"
             colorScheme="orange"
             isDisabled={userId === 1 ? true : false}
             isChecked={userId === 1 ? false : allCheckbox}
             onChange={(e) => handleCheckChange(userId, e.target.checked)}
           /> */}
-              {/*  */}
-              <AD.UserBasicInfoWrapper>
-                {/* user info popover */}
-                <UserInfoPopover user={user} />
-                {/* <ProfileImage width="50" height="50" src={profileImageUrl} /> */}
+                {/*  */}
+                <AD.UserBasicInfoWrapper>
+                  {/* user info popover */}
+                  <UserInfoPopover user={user} />
+                  {/* <ProfileImage width="50" height="50" src={profileImageUrl} /> */}
 
-                <AD.UserName>
-                  {/* hover 하면 유저정보 popover */}
-                  <Link href={`/profile/${userId}`}>{fullName}</Link>
-                  <span>{email}</span>
-                </AD.UserName>
-              </AD.UserBasicInfoWrapper>
+                  <AD.UserName>
+                    {/* hover 하면 유저정보 popover */}
+                    <Link href={`/profile/${userId}`}>{fullName}</Link>
+                    <span>{email}</span>
+                  </AD.UserName>
+                </AD.UserBasicInfoWrapper>
 
-              {/* user role popover component */}
-              <UserRolePopover
-                userId={userId}
-                role={role}
-                handleAdminRoleChange={handleAdminRoleChange}
-                handleUserRoleChange={handleUserRoleChange}
-              />
-            </AD.UserList>
-          );
-        })
-      ) : (
-        <CommonEmptyUser />
-      )}
-      {isLoading || (isFetching && <></>)}
+                {/* user role popover component */}
+                <UserRolePopover
+                  userId={userId}
+                  role={role}
+                  handleAdminRoleChange={handleAdminRoleChange}
+                  handleUserRoleChange={handleUserRoleChange}
+                />
+              </AD.UserList>
+            );
+          })
+        ) : (
+          <CommonEmptyUser />
+        )}
+      </AD.UserListWrapper>
+
       <AD.PaginationButtonNav>
-        <Button size="sm" disabled={isPreviousData || page === 1}>
-          {'<'}
-        </Button>
-        <Button colorScheme="blue" size="sm">
-          1
-        </Button>
-        <Button size="sm" disabled={isPreviousData}>
-          {'>'}
-        </Button>
+        <>
+          <Button size="sm" isDisabled={isPreviousData || page === 1} onClick={() => setPage((prev) => prev - 1)}>
+            {'<'}
+          </Button>
+          {pagesButtonArray.map((btn: number) => {
+            return (
+              <AD.PaginationButton
+                colorScheme={btn === page ? 'blue' : 'gray'}
+                size="sm"
+                key={`Pagination${btn}`}
+                onClick={() => setPage(btn)}
+              >
+                {btn}
+              </AD.PaginationButton>
+            );
+          })}
+
+          <Button
+            size="sm"
+            isDisabled={isPreviousData || page === pagesButtonArray.length}
+            onClick={() => setPage((prev) => prev + 1)}
+          >
+            {'>'}
+          </Button>
+        </>
       </AD.PaginationButtonNav>
-    </AD.UserListWrapper>
+    </>
   );
 }
 
