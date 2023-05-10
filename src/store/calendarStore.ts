@@ -17,9 +17,10 @@ type CalendarAction = {
 
 type CalendarStore = CalendarState & CalendarAction;
 
-const calendarState = create<CalendarStore>((set,get) => ({
-  year: 0,
-  month: 0,
+const today = new Date();
+const calendarState = create<CalendarStore>((set, get) => ({
+  year: today.getFullYear(),
+  month: today.getMonth() + 1,
   date: '',
   getYearStore: () => get().year,
   getMonthStore: () => get().month,

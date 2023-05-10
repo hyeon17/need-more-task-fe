@@ -1,25 +1,25 @@
-import React from 'react'
+import React from 'react';
 import * as S from '@/styles/overview.styles';
 
-function Content(content : any) {
+function Content({ content }: any) {
   return (
     <S.OverViewContent>
-      {Object.values(content).map((event: any) => {
-        const { title, progress, id, assignee } = event;
-        return (
-          <S.Cards variant={'outline'} key={id}>
-            <S.CardWrapper>
-              <S.CardTitle>{title}</S.CardTitle>
-              <S.AvatarWrapper>
-                <S.CardAvatar assignee={assignee} />
-              </S.AvatarWrapper>
-              <S.CardBadge>{progress}</S.CardBadge>
-            </S.CardWrapper>
-          </S.Cards>
-        );
-      })}
+      {content.map((event: any) => {
+          return (
+            <S.Cards variant={'outline'} key={event.id}>
+              <S.CardWrapper>
+                <S.CardTitle>{event.title}</S.CardTitle>
+                <S.AvatarWrapper>
+                  <S.CardAvatar assignee={event.assignee} />
+                </S.AvatarWrapper>
+                <S.CardBadge color={event.progress}>{event.progress}</S.CardBadge>
+              </S.CardWrapper>
+            </S.Cards>
+          )
+        })
+      }
     </S.OverViewContent>
   );
 }
 
-export default Content
+export default Content;
