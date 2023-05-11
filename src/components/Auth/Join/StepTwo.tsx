@@ -98,7 +98,6 @@ function StepTwo() {
   const emailValue = watch('email');
 
   const handleIsDuplicated = () => {
-    console.log('중복확인');
     isDuplicatedEmailMutate(emailValue);
   };
 

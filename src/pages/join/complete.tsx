@@ -11,7 +11,6 @@ import TitleLabel from '@/components/Auth/TitleLabel';
 function complete() {
   const router = useRouter();
   const { me, onResetSignup } = useUserJoinStore();
-  console.log('me>>>', me);
 
   const onClickRoute = () => {
     onResetSignup();

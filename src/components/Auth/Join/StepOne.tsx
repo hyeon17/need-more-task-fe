@@ -13,9 +13,6 @@ function StepOne() {
   const [department, setDepartment] = useState('');
   const [joinCompanyYear, setJoinCompanyYear] = useState('');
 
-  console.log(joinCompanyYear, department);
-  console.log('me', me);
-
   const handleDepartmentChange = (selectedOption: unknown) => {
     setDepartment((selectedOption as { value: string }).value);
   };

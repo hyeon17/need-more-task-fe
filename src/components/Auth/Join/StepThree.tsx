@@ -2,18 +2,14 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useUserJoinStore } from '@/store/userJoinStore';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
-// import UploadImage from '@/components/Auth/UploadImage';
 import * as A from '@/styles/auth.styles';
 import useInput from '@/hooks/useInput';
-import AuthInput from '../AuthInput';
 import { FormControl, FormErrorMessage, FormLabel, Input, useToast } from '@chakra-ui/react';
-import Image from 'next/image';
-import JoinBackButton from '@/components/Auth/Join/JoinBackButton';
 
+import JoinBackButton from '@/components/Auth/Join/JoinBackButton';
 import { joinAPI, useUpdateProfileImageAPI } from '@/apis/user';
 import { AxiosError } from 'axios';
 import { IJoin } from '@/type/authTypes';
-import { axiosInstance } from '@/apis/configs';
 import ProfileImage from '@/components/CommonHeader/ProfileImage';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -43,8 +39,6 @@ function StepThree() {
 
   const [profileUrl, setProfileUrl] = useState('');
 
-  console.log('me', me);
-
   const onError = (error: AxiosError) => {
     toast({
       title: '회원가입 실패.',
@@ -55,8 +49,7 @@ function StepThree() {
     });
   };
 
-  const onSuccess = (data: any) => {
-    // console.log(data);
+  const onSuccess = () => {
     toast({
       title: '회원가입 성공.',
       status: 'success',
@@ -109,28 +102,7 @@ function StepThree() {
     return true;
   };
 
-  const handleProfileIMG = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('e', e.target.value);
-    if (e.target.files) {
-      const file = e.target.files[0];
-      setProfileImageUrl(file.name);
-
-      if (!isProfileOversize(file.size)) return;
-
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-
-      reader.onload = () => {
-        if (typeof reader.result === 'string') {
-          setValues({ profileIMG: reader.result.toString() });
-        }
-      };
-    }
-  };
-  console.log('profileImageUrl>>>', profileImageUrl);
-
   const onSuccessUploadImage = (data: any) => {
-    console.log('data>>', data);
     const { profileId } = data.data;
     setProfileImage(data.data.profileImageUrl);
     onSaveSignup({ ...me, profileId });
@@ -152,7 +124,6 @@ function StepThree() {
     if (e.target.files === null) return;
 
     const file = e.target.files[0];
-    console.log('file', file);
 
     const formData = new FormData();
 
@@ -160,12 +131,9 @@ function StepThree() {
     formData.append('type', fileInputRef.current!.name);
 
     try {
-      // await axiosInstance.post(`/user/profile`, formData, {
-      //   headers: { 'Context-Type': 'multipart/form-data' },
-      // });
       uploadImageMutate(formData);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

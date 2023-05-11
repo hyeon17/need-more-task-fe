@@ -2,8 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { motion } from 'framer-motion';
 import * as D from '@/styles/dashboard.styles';
-import { PopoverHeader, Tooltip } from '@chakra-ui/react';
-import { Popover, PopoverTrigger, PopoverContent, PopoverArrow, PopoverBody } from '@chakra-ui/react';
+import { PopoverTrigger, PopoverContent } from '@chakra-ui/react';
 
 interface BarChartData {
   date: string;

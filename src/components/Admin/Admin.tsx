@@ -67,9 +67,6 @@ function Admin() {
     keepPreviousData: true,
     staleTime: 10000,
   });
-  // console.log('SearchedUserData>>', SearchedUserData);
-
-  // console.log('SelectedRoleUserData>>>', SelectedRoleUserData);
 
   const onSuccessRoleChange = (data: any) => {
     toast({

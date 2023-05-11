@@ -3,9 +3,6 @@ import { axiosInstance } from '@/apis/configs';
 
 export const serverSideAuth: GetServerSideProps = async ({ req, res }) => {
   try {
-    console.log('req.headers>>>', req.headers);
-    // console.log('req.headers.authorization>>>', req.headers.authorization);
-
     const token = req.headers.authorization;
 
     // 토큰이 없으면 에러를 전송

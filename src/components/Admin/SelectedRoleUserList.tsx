@@ -38,7 +38,6 @@ function SelectedRoleUserList({
         {userData?.data?.users.length > 0 ? (
           userData?.data?.users.map((user: IUserRole) => {
             const { userId, email, fullName, role } = user;
-            // console.log('user>>>', user);
 
             return (
               <AD.UserList key={`userId${userId}`}>

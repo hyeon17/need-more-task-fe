@@ -19,8 +19,6 @@ function LogoutModal({ children, isOpen, onOpen, onClose }: ILogoutModal) {
   const [overlay, setOverlay] = useState(<OverlayOne />);
 
   const onSuccess = (data: any) => {
-    console.log(data);
-
     // onClose();
     window.location.href = '/login';
     onRemoveAccessToken();
