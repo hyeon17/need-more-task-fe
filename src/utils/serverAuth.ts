@@ -19,7 +19,7 @@ export const serverSideAuth: GetServerSideProps = async ({ req, res }) => {
     return { props: {} };
   } catch (error) {
     // 인증 처리 실패 시, /login 페이지로 이동
-    // res.writeHead(307, { Location: '/login' }).end();
+    res.writeHead(307, { Location: '/login' }).end();
 
     return { props: {} };
   }

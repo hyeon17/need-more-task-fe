@@ -125,8 +125,8 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
 
   // 버튼
   const handleEditProfile = () => {
-    // || userInfo?.userId == 1
     if (userInfo?.userId !== currentLoginUserInfo?.userId) {
+      // onCloseCheckPassword()
       toast({
         title: '수정 권한이 없습니다.',
         status: 'error',
@@ -479,7 +479,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
       </A.InputContainer>
 
       {/* Edit 버튼 */}
-      {(userInfo?.userId === currentLoginUserInfo?.userId || userInfo?.userId === 1) && (
+      {userInfo?.userId === currentLoginUserInfo?.userId && (
         <P.ButtonWrapper>
           {edit ? (
             <P.UpdateButton
