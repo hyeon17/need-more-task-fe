@@ -135,6 +135,8 @@ function Admin() {
   // };
 
   const handleSearchType = (e: React.MouseEvent<HTMLElement>) => {
+    setUserSearchPage(1);
+    setUserRolePage(1);
     const targetValue = (e.currentTarget as HTMLElement).getAttribute('data-value');
     console.log('targetValue>>>', targetValue);
 
