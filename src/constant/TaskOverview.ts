@@ -34,7 +34,7 @@ export type actionConstantsType = {
     key: string;
     value?: PriorityType;
   };
-  DELETE_TASK: {
+  DELETE_TASK?: {
     key: string;
     value?: string;
   };

@@ -5,7 +5,7 @@ import * as S from '@/styles/modal.styles';
 import { actionConstantsType, actionType, PriorityType, StatusType } from '@/constant/TaskOverview';
 import { useQuery } from '@tanstack/react-query';
 import { getTaskDetail } from '@/apis/task';
-import { getKeyByValue, setActionTextToKorean, setTagColor } from '@/utils';
+import { getKeyByValue, setActionTextToKorean, setTagColor, setTagTextToKorean } from '@/utils';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
 
 const variants: Variants = {
@@ -98,11 +98,11 @@ function TaskOverview() {
                       </motion.div>
                     ) : null}
                   </AnimatePresence>
-                  {typeof item.value !== 'object' ? (
-                    <Tag size="lg" backgroundColor={setTagColor(item.value!)} color="white">
-                      {item.value}
+                  {typeof item.value !== 'object' && item.value && (
+                    <Tag size="lg" backgroundColor={setTagColor(item.value)} color="white">
+                      {setTagTextToKorean(item.value)}
                     </Tag>
-                  ) : null}
+                  )}
                 </div>
               ))}
             </S.ModalTaskActionBox>

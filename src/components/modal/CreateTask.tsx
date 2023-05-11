@@ -68,9 +68,6 @@ const actionConstants: actionConstantsType = {
   SET_PRIORITY: {
     key: 'SET_PRIORITY',
   },
-  DELETE_TASK: {
-    key: 'DELETE_TASK',
-  },
 };
 
 function CreateTask() {
