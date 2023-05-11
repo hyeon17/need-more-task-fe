@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Tab, Card, CardBody, Badge, Avatar } from '@chakra-ui/react';
+import { Tab, Card, CardBody, Badge, Skeleton } from '@chakra-ui/react';
 import CommonAvatar from '@/components/CommonAvatar/CommonAvatar';
 import theme from './theme';
 
@@ -8,6 +8,7 @@ export const OverviewWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 1200px;
+  margin-bottom: 20px;
   .chakra-tabs__tab[aria-selected='true'] {
     background-color: ${({ theme }) => theme.successColor};
     color: ${({ theme }) => theme.white};
@@ -72,7 +73,6 @@ export const OverViewContent = styled.div`
 `;
 export const Cards = styled(Card)`
   margin: 15px;
-  
 `;
 export const CardWrapper = styled(CardBody)`
   display: flex;
@@ -113,7 +113,7 @@ export const CardBadge = styled(Badge)`
       case 'TODO':
         return theme.errorColor;
       case 'IN_PROGRESS':
-        return theme.primary;
+        return theme.warningColor;
       case 'DONE':
         return theme.successColor;
       default:
@@ -121,4 +121,32 @@ export const CardBadge = styled(Badge)`
     }
   }};
   color: ${({ theme }) => theme.white};
+`;
+
+export const TabSkeleton = styled(Skeleton)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30px;
+  width: 130px;
+  height: 40px;
+  margin: 0 10px;
+`;
+
+export const DateSkeleton = styled(Skeleton)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 40px;
+  margin: 0 10px;
+`;
+
+export const CardSkeleton = styled(Skeleton)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1168px;
+  height: 90px;
+  margin: 10px auto;
 `;

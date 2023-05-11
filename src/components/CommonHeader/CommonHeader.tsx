@@ -9,12 +9,19 @@ import { useUserInfo } from '@/store/userInfoStore';
 import Link from 'next/link';
 import LogoutModal from './LogoutModal';
 import { TeamEnum } from '@/utils';
+import { useOverViewState } from '@/store/overViewStore';
 
 function CommonHeader() {
   const { userInfo } = useUserInfo();
+  const overViewState = useOverViewState();
   // console.log('userInfo>>', userInfo);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  function handleCalendarLinkClick() {
+    overViewState.setSelectedProgress('All');
+    overViewState.setDisplayedData(null);
+  }
 
   return (
     <C.Container>
@@ -29,7 +36,9 @@ function CommonHeader() {
               <Link href={`/kanban`}>Kanban</Link>
             </li>
             <li>
-              <Link href={`/calendar`}>Calendar</Link>
+              <Link href={`/calendar`} onClick={handleCalendarLinkClick}>
+                Calendar
+              </Link>
             </li>
           </ul>
           {/* <C.CreateTaskButton>New Task</C.CreateTaskButton> */}

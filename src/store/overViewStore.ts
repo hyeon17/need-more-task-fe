@@ -4,12 +4,13 @@ type OverViewState = {
   TODO: string;
   IN_PROGRESS: string;
   DONE: string;
+  selectedProgress: string;
+  displayedData: any;
 };
 
 type OverViewAction = {
-  // getTODOStore: () => MouseEventHandler<HTMLButtonElement>;
-  getIN_PROGRESSStore: () => string;
-  getDONEStore: () => string;
+  setSelectedProgress: (progress: string) => void;
+  setDisplayedData: (data: any) => void;
 };
 
 type OverViewStore = OverViewState & OverViewAction;
@@ -18,9 +19,10 @@ const overViewState = create<OverViewStore>((set, get) => ({
   TODO: 'TODO',
   IN_PROGRESS: 'IN_PROGRESS',
   DONE: 'DONE',
-  getTODOStore: () => get().TODO,
-  getIN_PROGRESSStore: () => get().IN_PROGRESS,
-  getDONEStore: () => get().DONE,
+  selectedProgress: 'All' || get().TODO || get().IN_PROGRESS || get().DONE,
+  displayedData: null,
+  setSelectedProgress: (progress: string) => set({ selectedProgress: progress }),
+  setDisplayedData: (data: any) => set({ displayedData: data }),
 }));
 
 export const useOverViewState = () => overViewState((state) => state);
