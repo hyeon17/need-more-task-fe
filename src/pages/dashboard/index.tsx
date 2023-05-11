@@ -10,12 +10,16 @@ import { axiosWithToken } from '@/apis/configs';
 import { useAccessTokenStore } from '@/store/acceessTokenStore';
 import { authMeAPI } from '@/apis/user';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
+import Head from 'next/head';
 
 function DashBoardPage() {
   const { userInfo } = useUserInfo();
 
   return (
     <Layout hasHeader>
+      <Head>
+        <title>Need More Task · Dashboard</title>
+      </Head>
       <DashboardBody userInfo={userInfo} />
       <CommonFooter />
     </Layout>

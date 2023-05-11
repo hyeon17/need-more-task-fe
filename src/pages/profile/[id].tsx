@@ -13,6 +13,7 @@ import { useRouter } from 'next/router';
 import { getUserInfoAPI } from '@/apis/user';
 import { useAccessTokenStore } from '@/store/acceessTokenStore';
 import { Box, Skeleton, SkeletonCircle, SkeletonText, Stack } from '@chakra-ui/react';
+import Head from 'next/head';
 
 interface IProfilePage {
   id: string;
@@ -27,6 +28,9 @@ function ProfilePage({ id }: IProfilePage) {
 
   return (
     <Layout hasHeader>
+      <Head>
+        <title>Need More Task · {userInfo?.data.fullName} 프로필</title>
+      </Head>
       <P.Container>
         <P.LeftContainer>
           <P.AsideWrapper>
