@@ -40,7 +40,7 @@ function Login() {
 
     toast({
       title: '로그인에 실패하였습니다.',
-      // description: '알 수 없는 오류가 발생했습니다.',
+      description: '이메일과 비밀번호를 다시 한 번 확인해 주세요.',
       status: 'error',
       duration: 9000,
       isClosable: true,

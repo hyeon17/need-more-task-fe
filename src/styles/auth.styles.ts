@@ -143,6 +143,12 @@ export const ProfileFigure = styled.figure`
     object-fit: contain;
   }
 `;
+export const ProfileFigures = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+`;
 export const SelectButton = styled.input`
   color: #d7a1b5;
 `;

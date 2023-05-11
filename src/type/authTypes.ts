@@ -24,7 +24,7 @@ export interface IUser {
   role?: string;
 }
 
-export type IUserRole = Pick<IUser, 'userId' | 'email' | 'fullName' | 'role' | 'profileImageUrl'>;
+export type IUserRole = Omit<IUser, 'phone'>;
 
 export interface AccountInfoProps {
   userInfo: IUser;
@@ -36,12 +36,11 @@ export interface IValidatePassword {
 }
 
 export interface IUpdateProfile {
-  profileId?: string;
+  profileId?: number;
   department?: string;
   fullName: string;
   joinCompanyYear: string;
   phone?: string;
-  profileImageUrl: string;
   password?: string;
   passwordCheck?: string;
 }
