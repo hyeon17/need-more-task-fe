@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { ModalTaskActionSelectBox } from '@/styles/modal.styles';
-import { IAssignee } from '@/components/CommonAvatar/CommonAvatar';
 import { getUsers, User } from '@/apis/task';
 import { useQuery } from '@tanstack/react-query';
 import { ModalActionAssigneeProps } from '@/type/componentProps';

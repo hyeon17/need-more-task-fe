@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ModalActionComponentProps } from '@/type/componentProps';
 import { Input } from '@chakra-ui/react';
 import { ModalTaskActionSelectBox, ModalTaskDeleteButton } from '@/styles/modal.styles';
-import { useQuery } from '@tanstack/react-query';
-import { getUsers } from '@/apis/task';
 import ModalActionAssignee from '@/components/modal/ModalActionAssignee';
 
 const setStatusConstants = [
