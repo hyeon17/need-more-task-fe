@@ -24,20 +24,15 @@ function StepThree() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const toast = useToast();
   const router = useRouter();
-  const { me, onSaveSignup, onResetSignup } = useUserJoinStore();
-  // const {} = me
-  const [phone, setPhone] = useState(me?.phone ?? '');
+  const { me, onSaveSignup } = useUserJoinStore();
+  console.log('me>>', me);
 
-  const [firstNum, onChangeFirstNum] = useInput('');
-  const [secondNum, onChangeSecondNum] = useInput('');
-  const [thirdNum, onChangeThirdNum] = useInput('');
+  // const [phone, setPhone] = useState(me?.phone ?? '');
 
-  const [values, setValues] = useState({ profileIMG: '' });
+  // const [firstNum, onChangeFirstNum] = useInput('');
+  // const [secondNum, onChangeSecondNum] = useInput('');
+  // const [thirdNum, onChangeThirdNum] = useInput('');
   const [profileImage, setProfileImage] = useState('');
-
-  const [profileImageUrl, setProfileImageUrl] = useState('');
-
-  const [profileUrl, setProfileUrl] = useState('');
 
   const onError = (error: AxiosError) => {
     toast({
@@ -62,12 +57,12 @@ function StepThree() {
 
   const { mutate: joinMutate, isLoading } = joinAPI({ onSuccess, onError });
 
-  useEffect(() => {
-    const combinedPhone = `${firstNum}-${secondNum}-${thirdNum}`;
-    setPhone(combinedPhone);
-  }, [firstNum, secondNum, thirdNum]);
+  // useEffect(() => {
+  //   const combinedPhone = `${firstNum}-${secondNum}-${thirdNum}`;
+  //   setPhone(combinedPhone);
+  // }, [firstNum, secondNum, thirdNum]);
 
-  const isDisabled = useMemo(() => Boolean(!phone), [phone]);
+  // const isDisabled = useMemo(() => Boolean(!phone), [phone]);
 
   interface IFormInput {
     phone1: string;
@@ -76,11 +71,13 @@ function StepThree() {
   }
 
   const onClickNext = (data: IFormInput) => {
+    console.log('phone>>>', data);
+
     const { phone1, phone2, phone3 } = data;
     const phone = `${phone1}-${phone2}-${phone3}`;
 
     if (Object.keys(errors).length === 0) {
-      onSaveSignup({ ...me, phone });
+      onSaveSignup({ ...me, phone, profileId: me?.profileId || 1 });
 
       joinMutate({ ...me } as IJoin);
     }
@@ -212,7 +209,7 @@ function StepThree() {
               })}
             />
           </A.PhoneNumWrapper>
-          <FormErrorMessage>{errors.phone && errors.phone?.message?.toString()}</FormErrorMessage>
+          <FormErrorMessage>{errors.phone1 && errors.phone1?.message?.toString()}</FormErrorMessage>
         </FormControl>
       </A.InputContainer>
 
