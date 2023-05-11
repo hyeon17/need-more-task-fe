@@ -10,15 +10,22 @@ import Link from 'next/link';
 import LogoutModal from './LogoutModal';
 import { TeamEnum } from '@/utils';
 import { useRouter } from 'next/router';
+import { useOverViewState } from '@/store/overViewStore';
 
 function CommonHeader() {
   const router = useRouter();
   const { userInfo } = useUserInfo();
+  const overViewState = useOverViewState();
 
   const pathName = router.pathname;
   const isDashboardActive = pathName === '/dashboard';
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  function handleCalendarLinkClick() {
+    overViewState.setSelectedProgress('All');
+    overViewState.setDisplayedData(null);
+  }
 
   return (
     <C.Container>
@@ -33,7 +40,9 @@ function CommonHeader() {
               <li className={pathName === '/kanban' ? 'selected' : ''}>Kanban</li>
             </Link>
             <Link href={`/calendar`}>
-              <li className={pathName === '/calendar' ? 'selected' : ''}>Calendar</li>
+              <li className={pathName === '/calendar' ? 'selected' : ''} onClick={handleCalendarLinkClick}>
+                Calendar
+              </li>
             </Link>
           </ul>
           {/* <C.CreateTaskButton>New Task</C.CreateTaskButton> */}

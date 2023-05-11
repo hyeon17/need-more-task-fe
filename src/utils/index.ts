@@ -82,6 +82,27 @@ export const setPriorityToKorean = (value: string) => {
   }
 };
 
+export const setTagTextToKorean = (value: string) => {
+  switch (value) {
+    case StatusType.TODO:
+      return '할 일';
+    case StatusType.IN_PROGRESS:
+      return '진행 중';
+    case StatusType.DONE:
+      return '완료';
+    case PriorityType.URGENT:
+      return '긴급';
+    case PriorityType.HIGH:
+      return '높음';
+    case PriorityType.MEDIUM:
+      return '중간';
+    case PriorityType.LOW:
+      return '낮음';
+    default:
+      return value;
+  }
+};
+
 export function getKeyByValue(object: { [key: string]: any }, value: any): string | undefined {
   return Object.keys(object).find((key) => object[key] === value);
 }
