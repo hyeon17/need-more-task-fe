@@ -30,6 +30,7 @@ export interface OverViewProps {
   date?: any;
   content: any;
   isLoading: boolean;
+  totalCount?: number;
 }
 
 export interface TaskOverviewProps {
@@ -38,6 +39,8 @@ export interface TaskOverviewProps {
   progress: string;
   id: number;
   assignee: Assignee[];
+  startAt: string;
+  endAt: string;
 }
 export interface Assignee {
   userId: number;
