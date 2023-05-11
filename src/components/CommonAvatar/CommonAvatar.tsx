@@ -1,6 +1,5 @@
-import { Avatar, AvatarGroup, Tooltip } from '@chakra-ui/react';
+import { Avatar, AvatarGroup } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useModalState } from '@/store/modalStore';
