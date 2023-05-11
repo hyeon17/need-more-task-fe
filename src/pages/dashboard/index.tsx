@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '@/components/Layout';
 import DashboardBody from '@/components/Dashboard/DashboardBody';
-import DashboardFooter from '@/components/Dashboard/DashboardFooter';
+import CommonFooter from '@/components/common/CommonFooter';
 
 import { useUserInfo } from '@/store/userInfoStore';
 import { GetServerSideProps } from 'next';
@@ -17,7 +17,7 @@ function DashBoardPage() {
   return (
     <Layout hasHeader>
       <DashboardBody userInfo={userInfo} />
-      <DashboardFooter />
+      <CommonFooter />
     </Layout>
   );
 }
