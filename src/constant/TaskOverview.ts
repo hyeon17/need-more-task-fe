@@ -1,4 +1,5 @@
 import { Assignee } from '@/apis/kanban';
+import { IAssignee } from '@/components/CommonAvatar/CommonAvatar';
 
 export enum StatusType {
   TODO = 'TODO',
@@ -37,7 +38,7 @@ export type actionConstantsType = {
   };
   ASSIGNEE: {
     key: string;
-    value?: Assignee[];
+    value?: IAssignee[];
   };
   SET_STATUS: {
     key: string;
