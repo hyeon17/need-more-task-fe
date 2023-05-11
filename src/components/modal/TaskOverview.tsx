@@ -5,7 +5,7 @@ import * as S from '@/styles/modal.styles';
 import { actionConstantsType, actionType, PriorityType, StatusType } from '@/constant/TaskOverview';
 import { useQuery } from '@tanstack/react-query';
 import { getTaskDetail } from '@/apis/task';
-import { getKeyByValue, setActionTextToKorean, setTagColor } from '@/utils';
+import { getKeyByValue, setActionTextToKorean, setTagColor, setTagTextToKorean } from '@/utils';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
 
 const variants: Variants = {
@@ -30,11 +30,11 @@ function TaskOverview() {
 
   if (!data) return null;
   const { title, desc, assignee, endAt, progress, priority } = data.data;
-  console.log(data.data);
+
   const actionConstants: actionConstantsType = {
     END_AT: {
-      key: 'DUE_DATE',
-      date: endAt,
+      key: 'END_AT',
+      value: endAt,
     },
     ASSIGNEE: {
       key: 'ASSIGNEE',
@@ -94,21 +94,15 @@ function TaskOverview() {
                   <AnimatePresence>
                     {modalAction === item.key ? (
                       <motion.div initial="initial" animate="animate" exit="exit" variants={variants}>
-                        <ModalActionComponent action={modalAction!} />
+                        {/*<ModalActionComponent action={modalAction!} />*/}
                       </motion.div>
                     ) : null}
                   </AnimatePresence>
-                  {typeof item.value !== 'object' ? (
-                    <Tag
-                      size="sm"
-                      colorScheme={setTagColor(item.value!)}
-                      borderRadius="full"
-                      variant="solid"
-                      mt="0.5rem"
-                    >
-                      {item.value}
+                  {typeof item.value !== 'object' && item.value && (
+                    <Tag size="lg" backgroundColor={setTagColor(item.value)} color="white">
+                      {setTagTextToKorean(item.value)}
                     </Tag>
-                  ) : null}
+                  )}
                 </div>
               ))}
             </S.ModalTaskActionBox>

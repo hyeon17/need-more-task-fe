@@ -54,3 +54,8 @@ export const postTaskDetail = async (data: TaskPostData) => {
   const res = await axiosWithToken.post<TaskPostResponse>(`/task`, data);
   return res.data;
 };
+
+export const getUsers = async () => {
+  const res = await axiosWithToken.get(`/users`);
+  return res.data;
+};
