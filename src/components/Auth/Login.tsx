@@ -19,8 +19,7 @@ import { useAccessTokenStore } from '@/store/acceessTokenStore';
 
 function Login() {
   const router = useRouter();
-  const { getAccessToken, onSaveAccessToken } = useAccessTokenStore();
-  console.log('getAccessToken>>', getAccessToken());
+  const { onSaveAccessToken } = useAccessTokenStore();
 
   const [show, setShow] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -41,7 +40,7 @@ function Login() {
 
     toast({
       title: '로그인에 실패하였습니다.',
-      // description: '알 수 없는 오류가 발생했습니다.',
+      description: '이메일과 비밀번호를 다시 한 번 확인해 주세요.',
       status: 'error',
       duration: 9000,
       isClosable: true,
@@ -49,28 +48,22 @@ function Login() {
   };
 
   const onSuccess = (data: any) => {
-    // console.log('success data>>', data);
-    // console.log('data>>', data.accessToken);
-
     toast({
       title: '로그인 성공!',
-      // description: '알 수 없는 오류가 발생했습니다.',
       status: 'success',
       duration: 9000,
       isClosable: true,
     });
-    onSaveAccessToken(data);
-    // router.replace('/kanban');
-    window.location.href = '/kanban';
+    onSaveAccessToken(data.headers.authorization);
+    router.replace('/kanban');
   };
 
   const { mutate, isLoading } = loginAPI({ onSuccess, onError });
   const emailValue = watch('email');
   const passwordValue = watch('password');
 
-  const onClickLogin = (data: any) => {
+  const onClickLogin = () => {
     if (Object.keys(errors).length === 0) {
-      console.log('로그인 성공');
       mutate({ email: emailValue, password: passwordValue });
     }
   };

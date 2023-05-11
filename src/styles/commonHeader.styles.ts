@@ -1,5 +1,6 @@
 import { Button, Menu, MenuGroup, MenuList } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import Link from 'next/link';
 
 export const Container = styled.header`
   /* border: 1px solid; */
@@ -21,6 +22,10 @@ export const Nav = styled.nav`
   align-items: center;
   justify-content: space-between;
 
+  .selected {
+    color: ${({ theme }) => theme.primary};
+  }
+
   & ul {
     display: flex;
     align-items: center;
@@ -30,7 +35,7 @@ export const Nav = styled.nav`
     font-weight: 700;
     font-size: 12px;
 
-    & > li {
+    & li {
       cursor: pointer;
       &:hover,
       &:active {
@@ -77,3 +82,5 @@ export const UserInfoWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
 `;
+
+//

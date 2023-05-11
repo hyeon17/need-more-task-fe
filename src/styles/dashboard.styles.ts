@@ -6,6 +6,16 @@ export const BodyContainer = styled.main`
   padding: 0 60px;
 
   & header {
+    & > div {
+      display: flex;
+      justify-content: space-between;
+
+      & button {
+        font-size: 14px;
+        font-weight: 700;
+      }
+    }
+
     h1 {
       font-size: 28px;
       font-weight: 700;
@@ -121,7 +131,7 @@ export const LatestProjectContainer = styled.div`
   border-radius: 16px;
 
   /* width: 100%; */
-  height: 316px;
+  height: 350px;
 `;
 export const DashboardH5 = styled.div`
   padding: 16px 24px;
@@ -254,7 +264,11 @@ export const CreateTaskButton = styled(Button)`
 `;
 
 export const LatestProjectsListContainer = styled.div`
+  /* border: 1px solid; */
+
   display: flex;
+  /* justify-content: center;
+  align-items: center; */
   gap: 24px;
   padding: 20px 24px;
 
@@ -283,7 +297,14 @@ export const ProjectsListBodyWrapper = styled.div`
 `;
 export const ProjectsListBodyHeader = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+
+  & > span {
+    font-size: 12px;
+    & > strong {
+      font-weight: 700;
+    }
+  }
 `;
 export const ProjectsListBody = styled.div`
   margin-top: 25px;
@@ -305,6 +326,8 @@ export const ProjectTitleWrapper = styled.div`
   }
 
   & > span {
+    display: flex;
+    gap: 3px;
     font-weight: 500;
     font-size: 12px;
     line-height: 18px;

@@ -31,13 +31,17 @@ function StepOne() {
     router.push('/join/2');
   };
 
-  const findSelectedDepartment = (dept: string) => {
+  const findSelectedDepartment = (dept: string | undefined) => {
     return teamOptions.find((option) => option.value === dept);
   };
 
   // useEffect(() => {
   //   setDepartment(findSelectedDepartment(me?.department) || '');
   // }, [me?.department]);
+
+  const findSelectedJoinCompanyYear = (year?: number | undefined | string) => {
+    return getJoinCompanyYear().find((option) => option.value === year);
+  };
 
   return (
     <>
@@ -50,9 +54,7 @@ function StepOne() {
             aria-live="polite"
             name="teams"
             options={teamOptions}
-            // value={me?.department ? me?.department : department}
-            // value={me?.department || department}
-            value={findSelectedDepartment(me?.department || department)}
+            value={findSelectedDepartment(department || me?.department)}
             placeholder="팀 선택"
             closeMenuOnSelect={true}
             size="sm"
@@ -60,6 +62,7 @@ function StepOne() {
           />
         </FormControl>
       </A.InputContainer>
+
       {/* 입사연도 선택 */}
       <A.InputContainer>
         <FormControl isRequired>
@@ -69,6 +72,7 @@ function StepOne() {
             aria-live="polite"
             name="join year"
             options={joinCompanyYearOptions}
+            value={findSelectedJoinCompanyYear(joinCompanyYear || me?.joinCompanyYear)}
             placeholder="입사 연도 선택"
             closeMenuOnSelect={true}
             size="sm"

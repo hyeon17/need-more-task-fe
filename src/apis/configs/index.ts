@@ -1,7 +1,6 @@
-import { useAccessTokenStore } from '@/store/acceessTokenStore';
 import axios, { AxiosInstance } from 'axios';
 
-export const baseURL = `${process.env.NEXT_PUBLIC_MOCK_SERVER_BASE_URL}`;
+export const baseURL = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api`;
 
 export const axiosInstance: AxiosInstance = axios.create({
   baseURL,
@@ -26,5 +25,5 @@ axiosWithToken.interceptors.request.use((config: any) => {
     return config;
   }
 
-  return { ...config, headers: { Authorization: `Bearer ${accessToken}` } };
+  return { ...config, headers: { Authorization: `${accessToken}` } };
 });

@@ -8,9 +8,9 @@ export interface IJoinData {
   email?: string;
   password?: string;
   passwordCheck?: string;
-  profileImageUrl?: string;
+  // profileImageUrl?: string;
   phone?: string;
-  profileId?: string;
+  profileId?: number;
 }
 
 interface IUserJoinInfoStore {

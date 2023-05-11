@@ -11,19 +11,19 @@ function TaskStatusList() {
     <D.TaskStatusContainer>
       {taskData && (
         <>
-          <TaskStatus title="Task Done" graph={taskData.data.DONE.graph} totalCount={taskData.data.DONE.totalCount} />
+          <TaskStatus title="Task Done" graph={taskData.data.done.graph} totalCount={taskData.data.done.totalCount} />
 
           <TaskStatus
             title="Avg. Progress"
-            graph={taskData.data.IN_PROGRESS.graph}
-            totalCount={taskData.data.IN_PROGRESS.totalCount}
+            graph={taskData.data.inProgress.graph}
+            totalCount={taskData.data.inProgress.totalCount}
           />
 
-          <TaskStatus title="Todo" graph={taskData.data.TODO.graph} totalCount={taskData.data.TODO.totalCount} />
+          <TaskStatus title="Todo" graph={taskData.data.todo.graph} totalCount={taskData.data.todo.totalCount} />
         </>
       )}
 
-      {!taskData && (
+      {isLoading && (
         <D.SpinnerWrapper>
           <CommonSpinner size="lg" />
         </D.SpinnerWrapper>

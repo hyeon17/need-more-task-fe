@@ -1,5 +1,6 @@
 import { DraggableProvided, DroppableProvided } from 'react-beautiful-dnd';
 import { TaskData } from '@/apis/kanban';
+import { actionType, StatusType } from '@/constant/TaskOverview';
 
 export interface KanbanDroppableItemProps {
   status: string;
@@ -13,25 +14,32 @@ export interface KanbanDraggableItemProps {
   index: number;
 }
 
-export interface CalendarResponse {
-  data: {
-    taskId: number;
-    taskOwner: {
-      userId: number;
-      fullName: string;
-      profileImageUrl: string;
-    };
-    createdAt: Date;
-    updatedAt: Date;
-    startAt: Date;
-    endAt: Date;
-    title: string;
-    desc: string;
-    assignee: {
-      userId: number;
-      profileImageUrl: string;
-    };
-  }[];
-  priority: string;
+export interface ModalActionLayoutProps {
+  item:
+    | { key: string; date?: Date | undefined; value?: string | undefined }
+    | { key: string; value?: string | undefined }
+    | { key: string; value?: StatusType | undefined };
+}
+
+export interface ModalActionComponentProps {
+  action: actionType;
+  setTaskStatusHandler: (e: unknown) => void;
+}
+
+export interface OverViewProps {
+  date?: any;
+  content: any;
+  isLoading: boolean;
+}
+
+export interface TaskOverviewProps {
+  taskId: number;
+  title: string;
   progress: string;
+  id: number;
+  assignee: Assignee[];
+}
+export interface Assignee {
+  userId: number;
+  profileImageUrl: string;
 }

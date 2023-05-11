@@ -1,6 +1,5 @@
 import React from 'react';
 import * as D from '@/styles/dashboard.styles';
-import EmptyProjects from '@/components/Dashboard/EmptyProjects';
 import LatestProjectsList from '@/components/Dashboard/LatestProjectsList';
 import { Button } from '@chakra-ui/react';
 
@@ -21,8 +20,7 @@ function LatestProjects() {
         </div>
       </D.DashboardH5>
 
-      {/* empty projects lottie */}
-      {/* <EmptyProjects /> */}
+      {/*  */}
       <LatestProjectsList />
     </D.LatestProjectContainer>
   );

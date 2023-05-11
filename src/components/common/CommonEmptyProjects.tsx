@@ -3,7 +3,7 @@ import * as D from '@/styles/dashboard.styles';
 import LottieAni from '@/hooks/LottieAni';
 import noProjects from 'public/lottie/noProjects.json';
 
-function EmptyProjects() {
+function CommonEmptyProjects() {
   return (
     <D.EmptyProjects>
       <D.LottieWrapper>
@@ -14,4 +14,4 @@ function EmptyProjects() {
   );
 }
 
-export default EmptyProjects;
+export default CommonEmptyProjects;

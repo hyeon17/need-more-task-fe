@@ -14,14 +14,17 @@ export interface ILogin {
 }
 
 export interface IUser {
-  userId: string;
+  userId: number;
   department?: string;
   email: string;
   fullName: string;
   joinCompanyYear: string;
   phone: string;
   profileImageUrl: string;
+  role?: string;
 }
+
+export type IUserRole = Omit<IUser, 'phone'>;
 
 export interface AccountInfoProps {
   userInfo: IUser;
@@ -33,12 +36,16 @@ export interface IValidatePassword {
 }
 
 export interface IUpdateProfile {
-  profileId?: string;
+  profileId?: number;
   department?: string;
   fullName: string;
   joinCompanyYear: string;
   phone?: string;
-  profileImageUrl: string;
   password?: string;
   passwordCheck?: string;
+}
+
+export interface IUpdateRole {
+  userId: number;
+  role: string;
 }

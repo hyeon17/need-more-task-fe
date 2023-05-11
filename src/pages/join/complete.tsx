@@ -10,10 +10,11 @@ import TitleLabel from '@/components/Auth/TitleLabel';
 
 function complete() {
   const router = useRouter();
-  const { me } = useUserJoinStore();
+  const { me, onResetSignup } = useUserJoinStore();
   console.log('me>>>', me);
 
   const onClickRoute = () => {
+    onResetSignup();
     router.push('/login');
   };
 
@@ -25,7 +26,7 @@ function complete() {
           <A.LottieWrapper>
             <LottieAni aniName={welcome} />
           </A.LottieWrapper>
-          <h1>안녕하세요 {me?.fullName}님 </h1>
+          <h1>안녕하세요 {me?.fullName}님,</h1>
           <h1>Task 받을 준비 되셨나요?</h1>
           <p>우선 로그인 하러 갑시다.</p>
 
