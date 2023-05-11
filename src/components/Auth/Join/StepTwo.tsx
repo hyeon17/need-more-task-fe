@@ -35,6 +35,7 @@ function StepTwo() {
   const [password, onChangePassword] = useInput(me?.password ?? '');
   const [confirmPassword, onChangeConfirmPassword] = useInput(me?.passwordCheck ?? '');
 
+  const [isDuplicatedEmail, setIsDuplicatedEmail] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -43,11 +44,12 @@ function StepTwo() {
 
   const toast = useToast();
 
-  const onError = (error: AxiosError) => {
+  const onError = (error: any) => {
     console.error('error>>', error);
+    setIsDuplicatedEmail(false);
 
     toast({
-      title: '이미 가입한 이메일 입니다.',
+      title: `${error?.response?.data?.data?.value}`,
       // description: '알 수 없는 오류가 발생했습니다.',
       status: 'error',
       duration: 9000,
@@ -56,9 +58,9 @@ function StepTwo() {
   };
 
   const onSuccess = () => {
+    setIsDuplicatedEmail(true);
     toast({
       title: '사용 가능한 이메일 입니다.',
-      // description: '알 수 없는 오류가 발생했습니다.',
       status: 'success',
       duration: 9000,
       isClosable: true,
@@ -79,8 +81,30 @@ function StepTwo() {
     passwordCheck: string;
   }
 
+  // const onClickNext = (data: IFormInput) => {
+  //   if (Object.keys(errors).length === 0) {
+  //     const { passwordCheck, ...rest } = data;
+
+  //     onSaveSignup({ ...me, ...rest, passwordCheck });
+  //     router.push('/join/3');
+  //   }
+  // };
   const onClickNext = (data: IFormInput) => {
     if (Object.keys(errors).length === 0) {
+      if (emailValue !== me?.email) {
+        setIsDuplicatedEmail(false);
+      }
+
+      if (!emailValue || !isDuplicatedEmail) {
+        toast({
+          title: '이메일 중복 확인을 해주세요.',
+          status: 'warning',
+          duration: 3000,
+          isClosable: true,
+        });
+        return;
+      }
+
       const { passwordCheck, ...rest } = data;
 
       onSaveSignup({ ...me, ...rest, passwordCheck });
@@ -98,6 +122,19 @@ function StepTwo() {
   const emailValue = watch('email');
 
   const handleIsDuplicated = () => {
+    if (emailValue !== me?.email) {
+      setIsDuplicatedEmail(false);
+    }
+
+    if (!emailValue) {
+      toast({
+        title: '이메일을 입력하세요.',
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
     isDuplicatedEmailMutate(emailValue);
   };
 
@@ -156,7 +193,13 @@ function StepTwo() {
               })}
             />
             <InputRightElement width="4.5rem">
-              <Button h="1.75rem" size="sm" onClick={handleIsDuplicated} isLoading={isLoading}>
+              <Button
+                h="1.75rem"
+                size="sm"
+                onClick={handleIsDuplicated}
+                isLoading={isLoading}
+                isDisabled={!emailValue || errors.email ? true : false}
+              >
                 중복 확인
               </Button>
             </InputRightElement>
