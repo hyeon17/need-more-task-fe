@@ -26,7 +26,7 @@ interface IAccountInfo {
   currentLoginUserInfo: IUser;
 }
 
-function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
+function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
   // const { department, fullName, joinCompanyYear, email, phone, profileImageUrl } = userInfo;
   const {
     watch,
@@ -34,6 +34,8 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     register,
     formState: { errors },
   } = useForm<any>();
+
+  const toast = useToast();
   const [edit, setEdit] = useState(false);
   const [fullNameValue, setFullNameValue] = useState<string | null>(null);
   const [emailValue, setEmailValue] = useState<string | null>(null);
@@ -67,37 +69,21 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
 
   // 버튼
   const handleEditProfile = () => {
-    // setEdit(true);
+    if (userInfo?.userId !== currentLoginUserInfo?.userId || userInfo?.userId !== 1) {
+      toast({
+        title: '수정 권한이 없습니다.',
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      });
+      return;
+    }
   };
 
   const handleCancelProfileSave = () => {
     setFullNameValue(null);
     setEmailValue(null);
     setEdit(false);
-  };
-
-  const toast = useToast();
-
-  const onError = (error: AxiosError) => {
-    console.error('error>>', error);
-
-    toast({
-      title: '이미 가입한 이메일 입니다.',
-      // description: '알 수 없는 오류가 발생했습니다.',
-      status: 'error',
-      duration: 9000,
-      isClosable: true,
-    });
-  };
-
-  const onSuccess = () => {
-    toast({
-      title: '사용 가능한 이메일 입니다.',
-      // description: '알 수 없는 오류가 발생했습니다.',
-      status: 'success',
-      duration: 9000,
-      isClosable: true,
-    });
   };
 
   const onSuccessCheckPassword = (data: any) => {
@@ -128,10 +114,6 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     onError: onErrorCheckPassword,
   });
 
-  // const handleIsDuplicated = () => {
-  //   console.log('중복확인');
-  //   isDuplicatedEmailMutate(watch('email'));
-  // };
   const onSuccessUpdateProfile = (data: any) => {
     console.log('data', data);
   };
@@ -149,7 +131,6 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
   });
 
   const onClickSave = (data: IUpdateProfile) => {
-    // console.log('업데이트 data>>>', { ...data, department, joinCompanyYear });
     console.log('data>>', data);
 
     if (Object.keys(errors).length === 0) {
@@ -388,7 +369,7 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
       </A.InputContainer>
 
       {/* Edit 버튼 */}
-      {userInfo?.userId === currentLoginUserInfo?.userId && (
+      {(userInfo?.userId === currentLoginUserInfo?.userId || userInfo?.userId === 1) && (
         <P.ButtonWrapper>
           {edit ? (
             <P.UpdateButton
@@ -424,46 +405,4 @@ function AccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
   );
 }
 
-export default AccountInfo;
-
-{
-  /* <A.InputContainer>
-          <FormControl isInvalid={Boolean(errors.email)}>
-            <FormLabel htmlFor="email">이메일</FormLabel>
-            <InputGroup size="md" variant="flushed">
-              <Input
-                isDisabled={!edit}
-                id="email"
-                placeholder="이메일을 입력하세요"
-                pr="4.5rem"
-                variant="flushed"
-                borderColor="outlineColor"
-                focusBorderColor="inputFocusColor"
-                // value={watch('email')}
-                defaultValue={userInfo?.email || watch('email')}
-                {...register('email', {
-                  required: '이메일은 필수 입력사항입니다.',
-                  pattern: {
-                    value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                    message: '유효한 이메일 주소를 입력하세요.',
-                  },
-                  maxLength: {
-                    value: 50,
-                    message: '이메일 주소가 너무 깁니다.',
-                  },
-                })}
-              />
-              {edit ? (
-                <InputRightElement width="4.5rem">
-                  <Button h="1.75rem" size="sm" onClick={handleIsDuplicated} isLoading={isLoading}>
-                    중복 확인
-                  </Button>
-                </InputRightElement>
-              ) : (
-                ''
-              )}
-            </InputGroup>
-            <FormErrorMessage>{errors.email && errors.email?.message?.toString()}</FormErrorMessage>
-          </FormControl>
-        </A.InputContainer> */
-}
+export default ProfileAccountInfo;
