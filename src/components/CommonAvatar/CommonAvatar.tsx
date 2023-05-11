@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useModalState } from '@/store/modalStore';
+import CommonToolTip from '@/components/common/CommonToolTip';
 
 export interface IAssignee {
   profileImageUrl: string;
@@ -37,7 +38,7 @@ function CommonAvatar({
       {assignee?.map((user: IAssignee) => {
         const { profileImageUrl, userId } = user;
         return (
-          <Tooltip label={user.name}>
+          <CommonToolTip toolTip={user.name}>
             <StyledAvatar
               src={profileImageUrl ? profileImageUrl : src}
               key={`userId${userId}`}
@@ -45,7 +46,7 @@ function CommonAvatar({
               style={{ cursor: 'pointer' }}
               size={size}
             />
-          </Tooltip>
+          </CommonToolTip>
         );
       })}
     </AvatarGroup>
