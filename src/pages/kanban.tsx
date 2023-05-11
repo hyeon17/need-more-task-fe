@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '@/components/Layout';
 import { Heading, Skeleton, Stack } from '@chakra-ui/react';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import KanbanDroppable from '@/components/kanban/KanbanDroppable';
-import { getKanbanBoard, TaskData, TaskProgress } from '@/apis/kanban';
-import { useQuery } from '@tanstack/react-query';
+import { getKanbanBoard, moveTaskToDifferentKanban, TaskData, TaskProgress } from '@/apis/kanban';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { StatusType } from '@/constant/TaskOverview';
+import { useKanbanBoardState } from '@/store/KanbanBoardStore';
 
-type KanbanDataType = {
+export type KanbanDataType = {
   [key in TaskProgress as string]: TaskData[];
 };
 
-const initialEmptyData: KanbanDataType = {
-  DONE: [],
-  IN_PROGRESS: [],
-  TODO: [],
-};
-
 function Kanban() {
-  const { data, isLoading, error } = useQuery(['kanban'], getKanbanBoard);
-  const [kanbanBoardData, setKanbanBoardData] = useState<KanbanDataType>(initialEmptyData);
+  const { data, isLoading, refetch } = useQuery(['kanban'], getKanbanBoard);
+  const { mutate } = useMutation(moveTaskToDifferentKanban, {
+    onSuccess: async () => {
+      await refetch();
+    },
+  });
+  const { kanban, onAddKanban } = useKanbanBoardState();
 
   const reorderByStatus = (data: TaskData[]): KanbanDataType => {
     const result: KanbanDataType = {
@@ -45,23 +45,32 @@ function Kanban() {
 
   useEffect(() => {
     if (!data) return;
-    setKanbanBoardData(reorderByStatus(data.data));
+    onAddKanban(reorderByStatus(data.data));
   }, [data]);
 
-  const onDragEnd = () => {};
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+    if (result.destination === result.source) return;
+    const { source, destination, draggableId } = result;
+    const sourceStatus = source.droppableId as TaskProgress;
+    const destinationStatus = destination.droppableId as TaskProgress;
+    const sourceIndex = source.index;
+    const newTask = kanban[sourceStatus][sourceIndex];
+    newTask.progress = destinationStatus;
+
+    mutate(newTask);
+  };
   return (
     <Layout hasHeader>
       <Heading size="xl" mb="4" padding="0 2rem">
         Kanban Board
       </Heading>
-      <Stack direction="row" alignItems="start" spacing="6" minHeight="80vh" minWidth="1200px">
+      <Stack direction="row" alignItems="start" spacing="6" maxHeight="80vh" minWidth="1200px">
         {data && (
           <DragDropContext onDragEnd={onDragEnd}>
-            {Object.keys(kanbanBoardData).map((progress) => (
+            {Object.keys(kanban).map((progress) => (
               <Droppable droppableId={progress} key={progress}>
-                {(provided) => (
-                  <KanbanDroppable status={progress} provided={provided} data={kanbanBoardData[progress]} />
-                )}
+                {(provided) => <KanbanDroppable status={progress} provided={provided} data={kanban[progress]} />}
               </Droppable>
             ))}
           </DragDropContext>
