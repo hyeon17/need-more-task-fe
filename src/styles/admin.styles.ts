@@ -1,4 +1,4 @@
-import { Button, Input, PopoverBody } from '@chakra-ui/react';
+import { Button, Checkbox, Input, PopoverBody, PopoverContent } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { Select } from 'chakra-react-select';
 
@@ -20,7 +20,8 @@ export const ManageRoleContainer = styled.div`
 export const AdminH5 = styled.div`
   padding: 16px 24px;
   border-bottom: 1px solid ${({ theme }) => theme.outlineColor};
-  background-color: ${({ theme }) => theme.outlineColor};
+  background-color: ${({ theme }) => theme.gray100};
+  /* #F6F8FA */
 
   & > div {
     display: flex;
@@ -143,4 +144,9 @@ export const CheckWrapper = styled.div`
     width: 14px;
     margin-top: 3px;
   }
+`;
+
+//
+export const SelectHeaderRole = styled(PopoverContent)`
+  width: auto;
 `;

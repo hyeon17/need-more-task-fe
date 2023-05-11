@@ -20,7 +20,6 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as A from '@/styles/auth.styles';
 import * as P from '@/styles/profile.styles';
-import { validatePasswordAPI } from '@/apis/user';
 
 interface ICheckPasswordModal {
   isOpenCheckPassword: boolean;
@@ -46,7 +45,6 @@ function CheckPasswordModal({
   const handleShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
   const OverlayOne = () => <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) hue-rotate(90deg)" />;
 
-  // const { isOpen, onOpen, onClose } = useDisclosure();
   const [overlay, setOverlay] = useState(<OverlayOne />);
 
   const {
@@ -56,13 +54,11 @@ function CheckPasswordModal({
     formState: { errors },
   } = useForm<any>();
 
-  // const { mutate, isLoading } = validatePasswordAPI();
-
   const onClickSave = (data: any) => {
     if (Object.keys(errors).length === 0) {
       // 저장 api
       console.log('비밀번호 검증 api');
-      validatePasswordMutate({ password: watch('password'), passwordCheck: watch('passwordCheck') });
+      validatePasswordMutate({ password: watch('password'), passwordCheck: watch('confirmPassword') });
     }
   };
 

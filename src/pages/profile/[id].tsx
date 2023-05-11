@@ -4,7 +4,7 @@ import * as P from '@/styles/profile.styles';
 import ProfileImage from '@/components/CommonHeader/ProfileImage';
 import { useUserInfo } from '@/store/userInfoStore';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import AccountInfo from '@/components/Profile';
+import ProfileAccountInfo from '@/components/Profile/ProfileAccountInfo';
 import { GetServerSideProps } from 'next';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { axiosInstance } from '@/apis/configs';
@@ -25,8 +25,8 @@ function ProfilePage({ id }: { id: string }) {
   // console.log('id>>', id);
   // console.log('currentLoginUserInfo>>>', currentLoginUserInfo);
 
-  const { data: userInfo } = accessToken && id ? getUserInfoAPI(accessToken, id) : { data: null };
-  console.log('userInfo>>', userInfo);
+  const { data: userInfo } = accessToken && id ? getUserInfoAPI(id) : { data: null };
+  // console.log('userInfo>>', userInfo);
 
   return (
     <Layout hasHeader>
@@ -39,10 +39,10 @@ function ProfilePage({ id }: { id: string }) {
                 {userInfo && <ProfileImage width={100} height={100} />}
               </SkeletonCircle>
 
-              <SkeletonText mt="4" noOfLines={2} spacing="4" skeletonHeight="2" isLoaded={Boolean(userInfo)}>
-                <h3>{userInfo?.data?.fullName}</h3>
-                <span>{userInfo?.data?.email}</span>
-              </SkeletonText>
+              {/* <SkeletonText mt="4" noOfLines={2} spacing="4" skeletonHeight="2" isLoaded={Boolean(userInfo)}> */}
+              <h3>{userInfo?.data?.fullName}</h3>
+              <span>{userInfo?.data?.email}</span>
+              {/* </SkeletonText> */}
             </P.ProfileWrapper>
 
             {/* NavList */}
@@ -72,7 +72,7 @@ function ProfilePage({ id }: { id: string }) {
         {/* 개인정보 */}
         <P.RightContainer>
           {userInfo && currentLoginUserInfo && (
-            <AccountInfo userInfo={userInfo.data} currentLoginUserInfo={currentLoginUserInfo} />
+            <ProfileAccountInfo userInfo={userInfo.data} currentLoginUserInfo={currentLoginUserInfo} />
           )}
         </P.RightContainer>
       </P.Container>

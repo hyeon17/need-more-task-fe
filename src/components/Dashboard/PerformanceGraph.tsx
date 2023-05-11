@@ -101,9 +101,9 @@ function PerformanceGraph({ data }: BarChartProps) {
       .append('rect')
       .attr('class', 'taskBar')
       .attr('x', (d) => x(d.date)!)
-      .attr('y', (d) => y(d.taskCount))
+      .attr('y', (d) => y(d.doneCount))
       .attr('width', barWidth)
-      .attr('height', (d) => height - y(d.taskCount))
+      .attr('height', (d) => height - y(d.doneCount))
       .attr('fill', '#3E7EFF')
       .attr('rx', 3)
       .attr('ry', 3)
@@ -123,9 +123,9 @@ function PerformanceGraph({ data }: BarChartProps) {
       .append('rect')
       .attr('class', 'doneBar')
       .attr('x', (d) => x(d.date)! + barWidth)
-      .attr('y', (d) => y(d.doneCount))
+      .attr('y', (d) => y(d.taskCount))
       .attr('width', barWidth)
-      .attr('height', (d) => height - y(d.doneCount))
+      .attr('height', (d) => height - y(d.taskCount))
       .attr('fill', '#E4E6E8D9')
       .attr('rx', 3)
       .attr('ry', 3)
@@ -190,11 +190,11 @@ function PerformanceGraph({ data }: BarChartProps) {
                   <span>Done: {tooltipData.doneCount}</span> */}
                 <D.FlagWrapper>
                   <D.DoneFlag></D.DoneFlag>
-                  <D.FlagTitle>Done {tooltipData.taskCount}</D.FlagTitle>
+                  <D.FlagTitle>Done {tooltipData.doneCount}</D.FlagTitle>
                 </D.FlagWrapper>
                 <D.FlagWrapper>
                   <D.AssignedFlag></D.AssignedFlag>
-                  <D.FlagTitle>Assigned {tooltipData.doneCount}</D.FlagTitle>
+                  <D.FlagTitle>Assigned {tooltipData.taskCount}</D.FlagTitle>
                 </D.FlagWrapper>
               </div>
             </D.StyledPopoverBody>

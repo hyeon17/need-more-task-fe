@@ -48,28 +48,22 @@ function Login() {
   };
 
   const onSuccess = (data: any) => {
-    console.log('success data>>', data);
-    // console.log('data>>', data.accessToken);
-
     toast({
       title: '로그인 성공!',
-      // description: '알 수 없는 오류가 발생했습니다.',
       status: 'success',
       duration: 9000,
       isClosable: true,
     });
     onSaveAccessToken(data.headers.authorization);
     router.replace('/kanban');
-    // window.location.href = '/kanban';
   };
 
   const { mutate, isLoading } = loginAPI({ onSuccess, onError });
   const emailValue = watch('email');
   const passwordValue = watch('password');
 
-  const onClickLogin = (data: any) => {
+  const onClickLogin = () => {
     if (Object.keys(errors).length === 0) {
-      console.log('로그인 성공');
       mutate({ email: emailValue, password: passwordValue });
     }
   };
