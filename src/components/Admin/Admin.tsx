@@ -171,8 +171,8 @@ function Admin() {
               isChecked={allCheckbox}
               onChange={(e) => handleAllCheckChange(e.target.checked)}
             /> */}
-            {isShowSearchedUserList && <span>검색 결과: {SearchedUserData.data.totalCount} 명</span>}
-            {!isShowSearchedUserList && <span>사원 수: {SelectedRoleUserData.data.totalCount}</span>}
+            {isShowSearchedUserList && <span>검색 결과: {SearchedUserData?.data.totalCount} 명</span>}
+            {!isShowSearchedUserList && <span>사원 수: {SelectedRoleUserData?.data.totalCount}</span>}
             {/* popover */}
             {!isShowSearchedUserList && (
               <UserRoleSelectPopover handleSearchType={handleSearchType} searchRoleType={searchRoleType} />
