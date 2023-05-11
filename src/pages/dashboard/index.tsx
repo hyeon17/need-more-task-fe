@@ -20,7 +20,7 @@ function DashBoardPage() {
     if (!accessToken) {
       toast({
         title: '인증되지 않은 사용자는 접근할 수 없습니다.',
-        description: '잠시 후 로그인 페이지로 이동합니다.',
+        description: '로그인 페이지로 이동합니다.',
         status: 'error',
         duration: 9000,
         isClosable: true,
