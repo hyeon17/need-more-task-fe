@@ -36,6 +36,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     register,
     formState: { errors },
     setValue,
+    reset,
   } = useForm<any>();
 
   const queryClient = useQueryClient();
@@ -137,6 +138,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
   };
 
   const handleCancelProfileSave = () => {
+    reset();
     setFullNameValue(null);
     setEmailValue(null);
     setEdit(false);
