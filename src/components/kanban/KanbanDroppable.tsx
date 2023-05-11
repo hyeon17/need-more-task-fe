@@ -28,7 +28,7 @@ function KanbanDroppable({ provided, status, data }: KanbanDroppableItemProps) {
           )}
           {data &&
             data.map((item, index) => (
-              <Draggable draggableId={item.taskId + status} index={index} key={index}>
+              <Draggable draggableId={index + status} index={index} key={index}>
                 {(provided) => <KanbanDraggable task={item} index={index} provided={provided} />}
               </Draggable>
             ))}

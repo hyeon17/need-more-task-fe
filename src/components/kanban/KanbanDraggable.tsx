@@ -38,4 +38,4 @@ function KanbanDraggable({ task, provided, index }: KanbanDraggableItemProps) {
   );
 }
 
-export default React.memo(KanbanDraggable);
+export default KanbanDraggable;

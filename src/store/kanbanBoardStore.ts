@@ -7,7 +7,6 @@ type KanbanBoard = {
 
 type KanbanBoardAction = {
   onAddKanban: (kanban: KanbanDataType) => void;
-  onUpdateKanban: (kanban: KanbanDataType) => void;
 };
 
 type KanbanBoardStore = KanbanBoard & KanbanBoardAction;
@@ -19,7 +18,6 @@ const KanbanBoardStore = create<KanbanBoardStore>((set) => ({
     TODO: [],
   },
   onAddKanban: (kanban) => set(() => ({ kanban })),
-  onUpdateKanban: (kanban) => set(() => ({ kanban })),
 }));
 
 export const useKanbanBoardState = () => KanbanBoardStore((state) => state);
