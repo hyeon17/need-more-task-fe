@@ -259,15 +259,24 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
           <FormLabel>프로필</FormLabel>
           <A.ProfileFigures>
             <ProfileImage src={profileImage || userInfo?.profileImageUrl} width={150} height={150} />
-            {/* {values['profileIMG'] && <Image width={150} height={150} src={values['profileIMG']} alt="프로필" />} */}
           </A.ProfileFigures>
           <A.ProfileIMGWrapper>
-            <Input
-              type="file"
-              ref={fileInputRef}
-              onChange={uploadImage}
+            <Button
+              as="label" // 버튼으로 사용하기 위해 <label> 요소로 지정
+              htmlFor="profileImageInput" // 파일 입력 필드와 연결
               colorScheme="teal"
               variant="outline"
+              cursor="pointer" // 마우스 커서를 포인터로 변경하여 클릭 가능한 모양으로 만듦
+              isDisabled={!edit}
+            >
+              프로필 이미지 업로드
+            </Button>
+            <Input
+              type="file"
+              id="profileImageInput" // label의 htmlFor 속성과 연결
+              ref={fileInputRef}
+              onChange={uploadImage}
+              display="none" // 실제 파일 입력 필드는 보이지 않도록 함
               accept=".jpg, .jpeg, .webp, .png, .gif, .svg"
               isDisabled={!edit}
             />
