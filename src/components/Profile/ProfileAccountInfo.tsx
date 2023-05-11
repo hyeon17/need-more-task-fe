@@ -216,8 +216,8 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
         department,
         joinCompanyYear,
         profileId: newProfileId,
-        password: data.password,
-        passwordCheck: data.passwordCheck,
+        password: data.password ? data.password : '',
+        passwordCheck: data.passwordCheck ? data.passwordCheck : '',
         phone: `${data.phone1}-${data.phone2}-${data.phone3}`,
       });
     }
@@ -359,7 +359,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
                 focusBorderColor="inputFocusColor"
                 type={showPassword ? 'text' : 'password'}
                 {...register('password', {
-                  required: '필수 입력사항 입니다.',
+                  // required: '필수 입력사항 입니다.',
                   pattern: {
                     value: /^[a-zA-Z0-9.\-]{6,16}$/,
                     message: '영어 소문자 6자~16자, (특수문자 . - 만 허용)',
@@ -392,7 +392,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
                 focusBorderColor="inputFocusColor"
                 type={showConfirmPassword ? 'text' : 'password'}
                 {...register('passwordCheck', {
-                  required: '필수 입력사항 입니다.',
+                  // required: '필수 입력사항 입니다.',
                   validate: (val: string) => {
                     if (watch('password') !== val) {
                       return '입력하신 비밀번호/비밀번호 확인이 일치하지 않습니다.';
