@@ -23,6 +23,23 @@ function ModalActionAssignee({ setTaskAssigneeHandler }: ModalActionAssigneeProp
   ]);
   const { data } = useQuery(['users'], getUsers);
 
+  const filterByInput = (input: string) => {
+    if (!data) return;
+    const filteredData = data.filter((user: User) => {
+      return user.fullName.includes(input);
+    });
+    setAssignee(
+      filteredData.map((user: User) => {
+        return {
+          key: 'ASSIGNEE',
+          label: user.fullName,
+          value: user.userId,
+          profileImage: user.profileImageUrl,
+        };
+      }),
+    );
+  };
+
   useEffect(() => {
     if (data) {
       setAssignee(
@@ -38,9 +55,9 @@ function ModalActionAssignee({ setTaskAssigneeHandler }: ModalActionAssigneeProp
     }
   }, [data]);
 
-  console.log(assignee);
-
-  return <ModalTaskActionSelectBox options={assignee} onChange={setTaskAssigneeHandler} />;
+  return (
+    <ModalTaskActionSelectBox options={assignee} onChange={setTaskAssigneeHandler} onInputChange={filterByInput} />
+  );
 }
 
 export default React.memo(ModalActionAssignee);
