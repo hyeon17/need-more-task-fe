@@ -55,7 +55,7 @@ function Login() {
       isClosable: true,
     });
     onSaveAccessToken(data.headers.authorization);
-    router.replace('/kanban');
+    router.replace('/calendar');
   };
 
   const { mutate, isLoading } = loginAPI({ onSuccess, onError });

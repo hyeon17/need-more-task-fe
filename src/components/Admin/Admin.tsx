@@ -138,7 +138,6 @@ function Admin() {
     setUserSearchPage(1);
     setUserRolePage(1);
     const targetValue = (e.currentTarget as HTMLElement).getAttribute('data-value');
-    console.log('targetValue>>>', targetValue);
 
     if (targetValue) {
       if (searchRoleType === targetValue) {

@@ -31,7 +31,6 @@ function SelectedRoleUserList({
   const pagesButtonArray = Array(Math.ceil(userData.data.totalCount / 10.0))
     .fill(0)
     .map((_, index) => index + 1);
-  console.log('pagesArray', pagesButtonArray);
 
   return (
     <>

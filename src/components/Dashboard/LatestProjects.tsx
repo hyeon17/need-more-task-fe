@@ -14,7 +14,7 @@ function LatestProjects() {
         <div>
           <h5>Latest Projects</h5>
           <D.LatestProjectButtonWrapper>
-            <Button color="successColor" variant="outline" onClick={() => router.push('/task')}>
+            <Button color="successColor" variant="outline" onClick={() => router.push('/tasks')}>
               모든 Tasks
             </Button>
             <Button color="primary" variant="outline" onClick={() => onOpenCreate()}>
