@@ -126,7 +126,8 @@ function CreateTask() {
       setTaskStatus((prevState) => ({
         ...prevState,
         [key]: {
-          ...prevState[key],
+          // @ts-ignore
+          ...prevState[key as string],
           value,
         },
       }));
@@ -141,6 +142,7 @@ function CreateTask() {
       setTaskStatus((prevState) => ({
         ...prevState,
         [key]: {
+          // @ts-ignore
           ...prevState[key],
           value,
         },
@@ -184,9 +186,7 @@ function CreateTask() {
                   <Heading fontSize="1rem">지정된 사람 목록</Heading>
                   <div className="avatar">
                     {taskStatus.ASSIGNEE.value?.length === 0 && <Text fontSize="1rem">지정된 사람이 없습니다</Text>}
-                    {taskStatus.ASSIGNEE.value?.map((item) => (
-                      <CommonAvatar assignee={item} key={item.userId} size="sm" max={9} />
-                    ))}
+                    <CommonAvatar assignee={taskStatus.ASSIGNEE.value!} size="sm" max={9} />
                   </div>
                 </div>
                 <div className="desc">
