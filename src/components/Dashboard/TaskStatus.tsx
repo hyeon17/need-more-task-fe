@@ -7,13 +7,12 @@ import { ITaskStatus } from '@/type/dashBoardTypes';
 function TaskStatus({ title, graph, totalCount }: ITaskStatus) {
   return (
     <D.TaskDoneContainer>
-      <D.StatusLeft>
-        <ProfileImage />
-      </D.StatusLeft>
+      {/* <D.StatusLeft><ProfileImage /></D.StatusLeft> */}
       <D.StatusRight>
         <D.StatusNumber>
           <h5>{totalCount}</h5>
           <span>{title}</span>
+          <span>최근 7일 동안 끝낸 Task입니다.</span>
         </D.StatusNumber>
         {/* Task Status Graph */}
         <TaskStatusGraph data={graph} />

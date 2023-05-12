@@ -6,19 +6,18 @@ import TaskStatus from '@/components/Dashboard/TaskStatus';
 
 function TaskStatusList() {
   const { data: taskData, isLoading } = getTaskProgressAPI();
+  console.log('taskData>>>', taskData);
 
   return (
     <D.TaskStatusContainer>
       {taskData && (
         <>
           <TaskStatus title="Task Done" graph={taskData.data.done.graph} totalCount={taskData.data.done.totalCount} />
-
           <TaskStatus
             title="Avg. Progress"
             graph={taskData.data.inProgress.graph}
             totalCount={taskData.data.inProgress.totalCount}
           />
-
           <TaskStatus title="Todo" graph={taskData.data.todo.graph} totalCount={taskData.data.todo.totalCount} />
         </>
       )}
