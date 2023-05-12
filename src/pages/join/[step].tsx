@@ -24,7 +24,6 @@ function JoinPage() {
   const router = useRouter();
   const step = (router.query?.step ?? '1') as TStep;
 
-  const { userInfo } = useUserInfo();
   const { getAccessToken } = useAccessTokenStore();
   const accessToken = getAccessToken();
   const toast = useToast();
