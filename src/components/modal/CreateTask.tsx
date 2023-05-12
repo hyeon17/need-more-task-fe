@@ -11,6 +11,7 @@ import {
   Tag,
   Text,
   Textarea,
+  useToast,
 } from '@chakra-ui/react';
 import * as S from '@/styles/modal.styles';
 import React, { useEffect, useState } from 'react';
@@ -81,11 +82,24 @@ function CreateTask() {
       value: 'Create Task',
     },
   };
-
+  const toast = useToast();
   const [title, setTitle] = useState('');
   const [modalAction, setModalAction] = useState<actionType | null>(null);
   const [taskStatus, setTaskStatus] = useState<CreateTaskProps>(createActionConstant);
-  const { mutate } = useMutation(postTaskDetail);
+  const { mutate } = useMutation(postTaskDetail, {
+    onSuccess: () => {
+      window.location.reload();
+    },
+    onError: (error) => {
+      toast({
+        title: 'Error',
+        description: 'Task를 생성 할 수 없습니다. 비어있는 항목이 있는지 확인해주세요',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    },
+  });
 
   const {
     register,
@@ -126,7 +140,7 @@ function CreateTask() {
       const { key, value } = e;
       if (key === 'ASSIGNEE') {
         // @ts-ignore
-        const { label, profileImage } = e;
+        const { label, profileImageUrl } = e;
         setTaskStatus((prevState) => ({
           ...prevState,
           [key]: {
@@ -138,7 +152,7 @@ function CreateTask() {
               {
                 userId: value,
                 name: label,
-                profileImage,
+                profileImageUrl,
               },
             ],
           },
