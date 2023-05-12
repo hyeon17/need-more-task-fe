@@ -294,6 +294,7 @@ export const LatestProjectsListWrapper = styled.div`
 export const ProjectsListBodyWrapper = styled.div`
   padding: 16px 16px 32px;
   width: 348px;
+  cursor: pointer;
 `;
 export const ProjectsListBodyHeader = styled.div`
   display: flex;
@@ -319,6 +320,7 @@ export const ProjectsImageDiv = styled.div`
 `;
 export const ProjectTitleWrapper = styled.div`
   margin-left: 14px;
+
   & > h5 {
     font-weight: 700;
     line-height: 24px;
