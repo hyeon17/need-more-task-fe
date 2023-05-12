@@ -308,7 +308,6 @@ export const LatestProjectsListWrapper = styled.div`
 export const ProjectsListBodyWrapper = styled.div`
   padding: 16px 16px 32px;
   width: 348px;
-  cursor: pointer;
 `;
 export const ProjectsListBodyHeader = styled.div`
   display: flex;
@@ -323,8 +322,8 @@ export const ProjectsListBodyHeader = styled.div`
 `;
 export const ProjectsListBody = styled.div`
   margin-top: 25px;
-
   display: flex;
+  cursor: pointer;
 `;
 export const ProjectsImageDiv = styled.div`
   width: 54px;

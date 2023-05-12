@@ -30,7 +30,7 @@ function LatestProjectsList() {
 
             return (
               <D.LatestProjectsListWrapper key={`latestProject${taskId}`}>
-                <D.ProjectsListBodyWrapper onClick={() => handleOpenTaskOverview(taskId)}>
+                <D.ProjectsListBodyWrapper>
                   <D.ProjectsListBodyHeader>
                     <span>
                       프로젝트 담당자: <strong>{taskOwner.fullname}</strong>
@@ -38,7 +38,7 @@ function LatestProjectsList() {
                     <CommonAvatar assignee={assignee} />
                   </D.ProjectsListBodyHeader>
                   {/* body */}
-                  <D.ProjectsListBody>
+                  <D.ProjectsListBody onClick={() => handleOpenTaskOverview(taskId)}>
                     <ProfileImage width={54} height={54} src={taskOwner.profileImageUrl} />
                     {/* <D.ProjectsImageDiv></D.ProjectsImageDiv> */}
                     <D.ProjectTitleWrapper>
