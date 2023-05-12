@@ -1,8 +1,9 @@
-import React from 'react';
+import React,{useState} from 'react';
 import * as S from '@/styles/overview.styles';
 import { useOverViewState } from '@/store/overViewStore';
 import { OverViewProps, TaskOverviewProps } from '@/type/componentProps';
 import { useRouter } from 'next/router';
+import { CardSkeletons } from '@/components/Skeleton';
 
 function Content({ content, isLoading, totalCount }: OverViewProps) {
   const { displayedData } = useOverViewState();
@@ -17,13 +18,7 @@ function Content({ content, isLoading, totalCount }: OverViewProps) {
   return (
     <S.OverViewContent>
       {isLoading ? (
-        <>
-          <S.CardSkeleton></S.CardSkeleton>
-          <S.CardSkeleton></S.CardSkeleton>
-          <S.CardSkeleton></S.CardSkeleton>
-          <S.CardSkeleton></S.CardSkeleton>
-          <S.CardSkeleton></S.CardSkeleton>
-        </>
+        <CardSkeletons />
       ) : (
         <>
           {data ? (
