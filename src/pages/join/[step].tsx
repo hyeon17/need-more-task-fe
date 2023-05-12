@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 
@@ -8,6 +8,9 @@ import StepTwo from '@/components/Auth/Join/StepTwo';
 import Layout from '@/components/Layout';
 import JoinLayout from '@/components/Auth/Join/JoinLayout';
 import Head from 'next/head';
+import { useUserInfo } from '@/store/userInfoStore';
+import { useAccessTokenStore } from '@/store/acceessTokenStore';
+import { useToast } from '@chakra-ui/react';
 
 type TStep = '1' | '2' | '3';
 
@@ -20,6 +23,23 @@ const StepSection = {
 function JoinPage() {
   const router = useRouter();
   const step = (router.query?.step ?? '1') as TStep;
+
+  const { userInfo } = useUserInfo();
+  const { getAccessToken } = useAccessTokenStore();
+  const accessToken = getAccessToken();
+  const toast = useToast();
+
+  useEffect(() => {
+    if (accessToken) {
+      toast({
+        title: '현재 로그인 중입니다. 로그아웃 후 다시 시도해주세요',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      router.back();
+    }
+  }, [accessToken]);
 
   return (
     <Layout>
