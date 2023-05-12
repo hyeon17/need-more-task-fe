@@ -7,6 +7,8 @@ import { useQuery } from '@tanstack/react-query';
 import { getTaskDetail } from '@/apis/task';
 import { getKeyByValue, setActionTextToKorean, setTagColor, setTagTextToKorean } from '@/utils';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
+import ModalEditComponent from '@/components/modal/ModalEditComponent';
+import { useUserInfo } from '@/store/userInfoStore';
 
 const variants: Variants = {
   initial: {
@@ -27,9 +29,11 @@ function TaskOverview() {
   const { id } = useModalState();
   const { data } = useQuery(['task', id], () => getTaskDetail(Number(id)));
   const [modalAction, setModalAction] = useState<actionType | null>(null);
+  const [editMode, setEditMode] = useState<Boolean>(false);
+  const { userInfo } = useUserInfo();
 
   if (!data) return null;
-  const { title, desc, assignee, endAt, progress, priority } = data.data;
+  const { title, desc, assignee, endAt, progress, priority, taskOwner } = data.data;
 
   const actionConstants: actionConstantsType = {
     END_AT: {
@@ -47,19 +51,21 @@ function TaskOverview() {
       key: 'SET_PRIORITY',
       value: priority as PriorityType,
     },
-    EDIT_TASK: {
-      key: 'EDIT_TASK',
-    },
-    DELETE_TASK: {
-      key: 'DELETE_TASK',
-    },
   };
+  if (userInfo?.userId === taskOwner.userId) {
+    actionConstants.DELETE_TASK = {
+      key: 'DELETE_TASK',
+    };
+    actionConstants.EDIT_TASK = {
+      key: 'EDIT_TASK',
+    };
+  }
 
   return (
     <S.ModalContentBox>
       <Stack>
-        <form>
-          <ModalHeader textAlign="center">{title}</ModalHeader>
+        <ModalHeader textAlign="center">{title}</ModalHeader>
+        {!editMode && (
           <ModalBody
             display="flex"
             width="100%"
@@ -74,7 +80,7 @@ function TaskOverview() {
                 <Text fontSize="1rem">Assigned to</Text>
                 <div className="avatar">
                   {assignee.map((item) => (
-                    <Avatar size="xs" key={item.userID} src={item.profileImageURL} />
+                    <Avatar size="xs" key={item.userId} src={item.profileImageUrl} />
                   ))}
                 </div>
               </div>
@@ -94,7 +100,7 @@ function TaskOverview() {
                   <AnimatePresence>
                     {modalAction === item.key ? (
                       <motion.div initial="initial" animate="animate" exit="exit" variants={variants}>
-                        {/*<ModalActionComponent action={modalAction!} />*/}
+                        <ModalEditComponent action={modalAction!} onEditMode={setEditMode} />
                       </motion.div>
                     ) : null}
                   </AnimatePresence>
@@ -107,7 +113,9 @@ function TaskOverview() {
               ))}
             </S.ModalTaskActionBox>
           </ModalBody>
-        </form>
+        )}
+
+        {editMode && <span>edit</span>}
       </Stack>
     </S.ModalContentBox>
   );

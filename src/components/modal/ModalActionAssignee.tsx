@@ -8,7 +8,7 @@ export interface AssigneeOption {
   key: string;
   label: string;
   value: Number;
-  profileImage: string;
+  profileImageUrl: string;
 }
 
 function ModalActionAssignee({ setTaskAssigneeHandler }: ModalActionAssigneeProps) {
@@ -17,7 +17,7 @@ function ModalActionAssignee({ setTaskAssigneeHandler }: ModalActionAssigneeProp
       key: 'ASSIGNEE',
       label: '표시할 사용자가 없습니다.',
       value: 0,
-      profileImage: '',
+      profileImageUrl: '',
     },
   ]);
   const { data } = useQuery(['users'], getUsers);
@@ -33,7 +33,7 @@ function ModalActionAssignee({ setTaskAssigneeHandler }: ModalActionAssigneeProp
           key: 'ASSIGNEE',
           label: user.fullName,
           value: user.userId,
-          profileImage: user.profileImageUrl,
+          profileImageUrl: user.profileImageUrl,
         };
       }),
     );
@@ -47,7 +47,7 @@ function ModalActionAssignee({ setTaskAssigneeHandler }: ModalActionAssigneeProp
             key: 'ASSIGNEE',
             label: user.fullName,
             value: user.userId,
-            profileImage: user.profileImageUrl,
+            profileImageUrl: user.profileImageUrl,
           };
         }),
       );
