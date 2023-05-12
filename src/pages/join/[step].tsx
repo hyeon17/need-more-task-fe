@@ -7,6 +7,7 @@ import StepThree from '@/components/Auth/Join/StepThree';
 import StepTwo from '@/components/Auth/Join/StepTwo';
 import Layout from '@/components/Layout';
 import JoinLayout from '@/components/Auth/Join/JoinLayout';
+import Head from 'next/head';
 
 type TStep = '1' | '2' | '3';
 
@@ -22,6 +23,9 @@ function JoinPage() {
 
   return (
     <Layout>
+      <Head>
+        <title>Need More Task · 회원가입</title>
+      </Head>
       <JoinLayout step={step}>{StepSection[step]}</JoinLayout>
     </Layout>
   );

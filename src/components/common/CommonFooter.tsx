@@ -32,7 +32,7 @@ const footerList = [
   },
 ];
 
-function DashboardFooter() {
+function CommonFooter() {
   return (
     <D.FooterContainer>
       <D.FooterLeft>
@@ -52,4 +52,4 @@ function DashboardFooter() {
   );
 }
 
-export default DashboardFooter;
+export default CommonFooter;

@@ -2,6 +2,7 @@ import React from 'react';
 import Layout from '@/components/Layout';
 import * as P from '@/styles/profile.styles';
 import ProfileImage from '@/components/CommonHeader/ProfileImage';
+import CommonFooter from '@/components/common/CommonFooter';
 import { useUserInfo } from '@/store/userInfoStore';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import ProfileAccountInfo from '@/components/Profile/ProfileAccountInfo';
@@ -12,18 +13,24 @@ import { useRouter } from 'next/router';
 import { getUserInfoAPI } from '@/apis/user';
 import { useAccessTokenStore } from '@/store/acceessTokenStore';
 import { Box, Skeleton, SkeletonCircle, SkeletonText, Stack } from '@chakra-ui/react';
+import Head from 'next/head';
 
-function ProfilePage({ id }: { id: string }) {
-  const router = useRouter();
+interface IProfilePage {
+  id: string;
+}
+
+function ProfilePage({ id }: IProfilePage) {
   const { userInfo: currentLoginUserInfo } = useUserInfo();
   const { getAccessToken } = useAccessTokenStore();
   const accessToken = getAccessToken();
 
   const { data: userInfo } = accessToken && id ? getUserInfoAPI(id) : { data: null };
-  console.log('userInfo>>>', userInfo);
 
   return (
     <Layout hasHeader>
+      <Head>
+        <title>Need More Task · {userInfo?.data.fullName} 프로필</title>
+      </Head>
       <P.Container>
         <P.LeftContainer>
           <P.AsideWrapper>
@@ -70,6 +77,9 @@ function ProfilePage({ id }: { id: string }) {
           )}
         </P.RightContainer>
       </P.Container>
+
+      {/* common footer */}
+      <CommonFooter />
     </Layout>
   );
 }

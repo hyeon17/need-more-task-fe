@@ -2,18 +2,14 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useUserJoinStore } from '@/store/userJoinStore';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
-// import UploadImage from '@/components/Auth/UploadImage';
 import * as A from '@/styles/auth.styles';
 import useInput from '@/hooks/useInput';
-import AuthInput from '../AuthInput';
-import { FormControl, FormErrorMessage, FormLabel, Input, useToast } from '@chakra-ui/react';
-import Image from 'next/image';
-import JoinBackButton from '@/components/Auth/Join/JoinBackButton';
+import { Button, FormControl, FormErrorMessage, FormLabel, Input, useToast } from '@chakra-ui/react';
 
+import JoinBackButton from '@/components/Auth/Join/JoinBackButton';
 import { joinAPI, useUpdateProfileImageAPI } from '@/apis/user';
 import { AxiosError } from 'axios';
 import { IJoin } from '@/type/authTypes';
-import { axiosInstance } from '@/apis/configs';
 import ProfileImage from '@/components/CommonHeader/ProfileImage';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -28,22 +24,15 @@ function StepThree() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const toast = useToast();
   const router = useRouter();
-  const { me, onSaveSignup, onResetSignup } = useUserJoinStore();
-  // const {} = me
-  const [phone, setPhone] = useState(me?.phone ?? '');
+  const { me, onSaveSignup } = useUserJoinStore();
+  console.log('me>>', me);
 
-  const [firstNum, onChangeFirstNum] = useInput('');
-  const [secondNum, onChangeSecondNum] = useInput('');
-  const [thirdNum, onChangeThirdNum] = useInput('');
+  // const [phone, setPhone] = useState(me?.phone ?? '');
 
-  const [values, setValues] = useState({ profileIMG: '' });
+  // const [firstNum, onChangeFirstNum] = useInput('');
+  // const [secondNum, onChangeSecondNum] = useInput('');
+  // const [thirdNum, onChangeThirdNum] = useInput('');
   const [profileImage, setProfileImage] = useState('');
-
-  const [profileImageUrl, setProfileImageUrl] = useState('');
-
-  const [profileUrl, setProfileUrl] = useState('');
-
-  console.log('me', me);
 
   const onError = (error: AxiosError) => {
     toast({
@@ -55,8 +44,7 @@ function StepThree() {
     });
   };
 
-  const onSuccess = (data: any) => {
-    // console.log(data);
+  const onSuccess = () => {
     toast({
       title: '회원가입 성공.',
       status: 'success',
@@ -69,12 +57,12 @@ function StepThree() {
 
   const { mutate: joinMutate, isLoading } = joinAPI({ onSuccess, onError });
 
-  useEffect(() => {
-    const combinedPhone = `${firstNum}-${secondNum}-${thirdNum}`;
-    setPhone(combinedPhone);
-  }, [firstNum, secondNum, thirdNum]);
+  // useEffect(() => {
+  //   const combinedPhone = `${firstNum}-${secondNum}-${thirdNum}`;
+  //   setPhone(combinedPhone);
+  // }, [firstNum, secondNum, thirdNum]);
 
-  const isDisabled = useMemo(() => Boolean(!phone), [phone]);
+  // const isDisabled = useMemo(() => Boolean(!phone), [phone]);
 
   interface IFormInput {
     phone1: string;
@@ -83,11 +71,13 @@ function StepThree() {
   }
 
   const onClickNext = (data: IFormInput) => {
+    console.log('phone>>>', data);
+
     const { phone1, phone2, phone3 } = data;
     const phone = `${phone1}-${phone2}-${phone3}`;
 
     if (Object.keys(errors).length === 0) {
-      onSaveSignup({ ...me, phone });
+      onSaveSignup({ ...me, phone, profileId: me?.profileId || 1 });
 
       joinMutate({ ...me } as IJoin);
     }
@@ -109,28 +99,7 @@ function StepThree() {
     return true;
   };
 
-  const handleProfileIMG = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('e', e.target.value);
-    if (e.target.files) {
-      const file = e.target.files[0];
-      setProfileImageUrl(file.name);
-
-      if (!isProfileOversize(file.size)) return;
-
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-
-      reader.onload = () => {
-        if (typeof reader.result === 'string') {
-          setValues({ profileIMG: reader.result.toString() });
-        }
-      };
-    }
-  };
-  console.log('profileImageUrl>>>', profileImageUrl);
-
   const onSuccessUploadImage = (data: any) => {
-    console.log('data>>', data);
     const { profileId } = data.data;
     setProfileImage(data.data.profileImageUrl);
     onSaveSignup({ ...me, profileId });
@@ -152,7 +121,6 @@ function StepThree() {
     if (e.target.files === null) return;
 
     const file = e.target.files[0];
-    console.log('file', file);
 
     const formData = new FormData();
 
@@ -160,12 +128,9 @@ function StepThree() {
     formData.append('type', fileInputRef.current!.name);
 
     try {
-      // await axiosInstance.post(`/user/profile`, formData, {
-      //   headers: { 'Context-Type': 'multipart/form-data' },
-      // });
       uploadImageMutate(formData);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -179,12 +144,21 @@ function StepThree() {
           {/* {values['profileIMG'] && <Image width={150} height={150} src={values['profileIMG']} alt="프로필" />} */}
         </A.ProfileFigures>
         <A.ProfileIMGWrapper>
-          <Input
-            type="file"
-            ref={fileInputRef}
-            onChange={uploadImage}
+          <Button
+            as="label" // 버튼으로 사용하기 위해 <label> 요소로 지정
+            htmlFor="profileImageInput" // 파일 입력 필드와 연결
             colorScheme="teal"
             variant="outline"
+            cursor="pointer" // 마우스 커서를 포인터로 변경하여 클릭 가능한 모양으로 만듦
+          >
+            프로필 이미지 업로드
+          </Button>
+          <Input
+            type="file"
+            id="profileImageInput" // label의 htmlFor 속성과 연결
+            ref={fileInputRef}
+            onChange={uploadImage}
+            display="none" // 실제 파일 입력 필드는 보이지 않도록 함
             accept=".jpg, .jpeg, .webp, .png, .gif, .svg"
           />
         </A.ProfileIMGWrapper>
@@ -244,7 +218,7 @@ function StepThree() {
               })}
             />
           </A.PhoneNumWrapper>
-          <FormErrorMessage>{errors.phone && errors.phone?.message?.toString()}</FormErrorMessage>
+          <FormErrorMessage>{errors.phone1 && errors.phone1?.message?.toString()}</FormErrorMessage>
         </FormControl>
       </A.InputContainer>
 

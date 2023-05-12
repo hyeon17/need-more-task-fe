@@ -12,8 +12,6 @@ interface IDashboardBody {
 }
 
 function DashboardBody({ userInfo }: IDashboardBody) {
-  // console.log('userInfo>>>', userInfo);
-
   return (
     <D.BodyContainer>
       <header>

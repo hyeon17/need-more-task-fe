@@ -36,6 +36,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     register,
     formState: { errors },
     setValue,
+    reset,
   } = useForm<any>();
 
   const queryClient = useQueryClient();
@@ -124,8 +125,8 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
 
   // 버튼
   const handleEditProfile = () => {
-    // || userInfo?.userId == 1
     if (userInfo?.userId !== currentLoginUserInfo?.userId) {
+      // onCloseCheckPassword()
       toast({
         title: '수정 권한이 없습니다.',
         status: 'error',
@@ -137,6 +138,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
   };
 
   const handleCancelProfileSave = () => {
+    reset();
     setFullNameValue(null);
     setEmailValue(null);
     setEdit(false);
@@ -216,8 +218,8 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
         department,
         joinCompanyYear,
         profileId: newProfileId,
-        password: data.password,
-        passwordCheck: data.passwordCheck,
+        password: data.password ? data.password : '',
+        passwordCheck: data.passwordCheck ? data.passwordCheck : '',
         phone: `${data.phone1}-${data.phone2}-${data.phone3}`,
       });
     }
@@ -257,15 +259,24 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
           <FormLabel>프로필</FormLabel>
           <A.ProfileFigures>
             <ProfileImage src={profileImage || userInfo?.profileImageUrl} width={150} height={150} />
-            {/* {values['profileIMG'] && <Image width={150} height={150} src={values['profileIMG']} alt="프로필" />} */}
           </A.ProfileFigures>
           <A.ProfileIMGWrapper>
-            <Input
-              type="file"
-              ref={fileInputRef}
-              onChange={uploadImage}
+            <Button
+              as="label" // 버튼으로 사용하기 위해 <label> 요소로 지정
+              htmlFor="profileImageInput" // 파일 입력 필드와 연결
               colorScheme="teal"
               variant="outline"
+              cursor="pointer" // 마우스 커서를 포인터로 변경하여 클릭 가능한 모양으로 만듦
+              isDisabled={!edit}
+            >
+              프로필 이미지 업로드
+            </Button>
+            <Input
+              type="file"
+              id="profileImageInput" // label의 htmlFor 속성과 연결
+              ref={fileInputRef}
+              onChange={uploadImage}
+              display="none" // 실제 파일 입력 필드는 보이지 않도록 함
               accept=".jpg, .jpeg, .webp, .png, .gif, .svg"
               isDisabled={!edit}
             />
@@ -359,7 +370,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
                 focusBorderColor="inputFocusColor"
                 type={showPassword ? 'text' : 'password'}
                 {...register('password', {
-                  required: '필수 입력사항 입니다.',
+                  // required: '필수 입력사항 입니다.',
                   pattern: {
                     value: /^[a-zA-Z0-9.\-]{6,16}$/,
                     message: '영어 소문자 6자~16자, (특수문자 . - 만 허용)',
@@ -392,7 +403,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
                 focusBorderColor="inputFocusColor"
                 type={showConfirmPassword ? 'text' : 'password'}
                 {...register('passwordCheck', {
-                  required: '필수 입력사항 입니다.',
+                  // required: '필수 입력사항 입니다.',
                   validate: (val: string) => {
                     if (watch('password') !== val) {
                       return '입력하신 비밀번호/비밀번호 확인이 일치하지 않습니다.';
@@ -477,7 +488,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
       </A.InputContainer>
 
       {/* Edit 버튼 */}
-      {(userInfo?.userId === currentLoginUserInfo?.userId || userInfo?.userId === 1) && (
+      {userInfo?.userId === currentLoginUserInfo?.userId && (
         <P.ButtonWrapper>
           {edit ? (
             <P.UpdateButton
