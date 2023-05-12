@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import * as AD from '@/styles/admin.styles';
 import { Popover, PopoverTrigger, Portal } from '@chakra-ui/react';
-import { CheckIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import ProfileImage from '@/components/CommonHeader/ProfileImage';
 import { IUserRole } from '@/type/authTypes';
 import Link from 'next/link';

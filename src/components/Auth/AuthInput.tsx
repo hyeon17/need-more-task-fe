@@ -25,8 +25,6 @@ interface IAuthInput {
 // });
 
 function AuthInput({ label, inputProps, ...props }: IAuthInput) {
-  // console.log(props);
-
   return (
     <A.InputContainer>
       <FormLabel>{label}</FormLabel>

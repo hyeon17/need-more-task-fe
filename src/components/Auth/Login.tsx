@@ -19,6 +19,7 @@ import { useAccessTokenStore } from '@/store/acceessTokenStore';
 
 function Login() {
   const router = useRouter();
+  const toast = useToast();
   const { onSaveAccessToken } = useAccessTokenStore();
 
   const [show, setShow] = useState(false);
@@ -32,8 +33,6 @@ function Login() {
     register,
     formState: { errors },
   } = useForm<any>();
-
-  const toast = useToast();
 
   const onError = (error: AxiosError) => {
     console.error('error>>', error);
@@ -55,7 +54,8 @@ function Login() {
       isClosable: true,
     });
     onSaveAccessToken(data.headers.authorization);
-    router.replace('/kanban');
+
+    router.push('/calendar').then(() => router.reload());
   };
 
   const { mutate, isLoading } = loginAPI({ onSuccess, onError });

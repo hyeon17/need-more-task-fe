@@ -18,7 +18,6 @@ function CommonHeader() {
   const overViewState = useOverViewState();
 
   const pathName = router.pathname;
-  const isDashboardActive = pathName === '/dashboard';
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
