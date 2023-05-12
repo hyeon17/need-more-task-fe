@@ -20,14 +20,14 @@ export interface Data {
 }
 
 export interface Assignee {
-  userID: number;
-  profileImageURL: string;
+  userId: number;
+  profileImageUrl: string;
 }
 
 export interface TaskOwner {
-  userID: number;
+  userId: number;
   fullName: string;
-  profileImageURL: string;
+  profileImageUrl: string;
 }
 
 export type TaskPostResponse = {
@@ -74,4 +74,9 @@ export const postTaskDetail = async (data: TaskPostData) => {
 export const getUsers = async () => {
   const res = await axiosWithToken.get<GetUsersResponse>(`/users`);
   return res.data.data.users;
+};
+
+export const deleteTask = async (taskID: number) => {
+  const res = await axiosWithToken.delete<TaskPostResponse>(`/task/${taskID}`);
+  return res.data;
 };
