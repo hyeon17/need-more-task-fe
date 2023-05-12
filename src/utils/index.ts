@@ -7,7 +7,7 @@ export function classnames(...args: string[]) {
 }
 
 export const taskTitle = (title: string) => {
-  return title.length > 30 ? title.substring(0, 30).concat(' ...' + '더보기') : title;
+  return title.length > 12 ? title.substring(0, 12).concat(' ...' + '더보기') : title;
 };
 
 export const setTagColor = (value: string) => {
