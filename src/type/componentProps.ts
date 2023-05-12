@@ -49,4 +49,5 @@ export interface TaskOverviewProps {
 export interface Assignee {
   userId: number;
   profileImageUrl: string;
+  name: string;
 }
