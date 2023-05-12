@@ -31,16 +31,15 @@ function CommonAvatar({
     onCloseModal();
     router.push(`/profile/${userId}`);
   };
-  console.log(assignee);
+  // console.log(assignee);
   return (
     <AvatarGroup size={size} max={max}>
       {assignee?.map((user: IAssignee) => {
         const { profileImageUrl, userId } = user;
         return (
-          <CommonToolTip toolTip={user.name}>
+          <CommonToolTip toolTip={user.name} key={`userId${userId}`}>
             <StyledAvatar
               src={profileImageUrl ? profileImageUrl : src}
-              key={`userId${userId}`}
               onClick={() => onClick(userId)}
               style={{ cursor: 'pointer' }}
               size={size}
