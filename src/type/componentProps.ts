@@ -23,11 +23,17 @@ export interface ModalActionLayoutProps {
 
 export interface ModalActionComponentProps {
   action: actionType;
-  setTaskStatusHandler: (e: unknown) => void;
+  setTaskStatusHandler?: (e: unknown) => void;
+  id?: number;
+}
+
+export interface ModalActionEditProps {
+  action: actionType;
+  onEditMode: (mode: boolean) => void;
 }
 
 export interface ModalActionAssigneeProps {
-  setTaskAssigneeHandler: (e: unknown) => void;
+  setTaskAssigneeHandler?: (e: unknown) => void;
 }
 
 export interface OverViewProps {
