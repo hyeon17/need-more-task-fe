@@ -29,7 +29,7 @@ function Header({ date, content, isLoading }: OverViewProps) {
             <S.DateSkeleton></S.DateSkeleton>
           </>
         ) : (
-          <>{date}</>
+          <>{Array.isArray(date) ? `${date[0]} ~ ${date[1]}` : date}</>
         )}
       </S.OverViewDate>
       <S.OverViewSorted>

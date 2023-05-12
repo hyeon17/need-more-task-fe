@@ -57,7 +57,7 @@ function CalendarView() {
 
   const useHandleDateClick = (info: any) => {
     setDateStore(info.dateStr);
-    router.push(`/task?date=${info.dateStr}`);
+    router.push(`/tasks?date=${info.dateStr}`);
   };
 
   const renderEventContent = (eventContent: EventContentArg) => {
