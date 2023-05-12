@@ -11,7 +11,7 @@ import { TaskOverviewProps } from '@/type/componentProps';
 function DailyOverview() {
   const { getDateStore } = useCalendarState();
   const allEvents: TaskOverviewProps[] = [];
-  const { data: res, isLoading, refetch } = useGetDailyTasksAPI(getDateStore(),0);
+  const { data: res, isLoading } = useGetDailyTasksAPI(getDateStore(),0);
 
   if (res) {
     const datas: TaskOverviewProps[] = res.data.tasks.map((event: TaskOverviewProps) => ({
@@ -22,6 +22,7 @@ function DailyOverview() {
       start: event.startAt,
       end: event.endAt,
     }));
+    console.log(datas);
     allEvents.push(...datas);
   }
   return (
