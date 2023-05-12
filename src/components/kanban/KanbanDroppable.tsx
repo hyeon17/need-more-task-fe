@@ -20,7 +20,7 @@ function KanbanDroppable({ provided, status, data }: KanbanDroppableItemProps) {
         <Text fontWeight="bold" mb="4" align="center">
           {setStatusToKorean(status)}
         </Text>
-        <Stack spacing="4">
+        <Stack spacing="4" maxHeight="65vh" overflowY="auto">
           {data.length === 0 && (
             <S.KanbanTaskItem>
               <Text align="center">지금은 {setStatusToKorean(status)}이 없습니다.</Text>
@@ -28,7 +28,7 @@ function KanbanDroppable({ provided, status, data }: KanbanDroppableItemProps) {
           )}
           {data &&
             data.map((item, index) => (
-              <Draggable draggableId={item.taskId + status} index={index} key={index}>
+              <Draggable draggableId={index + status} index={index} key={index}>
                 {(provided) => <KanbanDraggable task={item} index={index} provided={provided} />}
               </Draggable>
             ))}

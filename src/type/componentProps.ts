@@ -26,6 +26,10 @@ export interface ModalActionComponentProps {
   setTaskStatusHandler: (e: unknown) => void;
 }
 
+export interface ModalActionAssigneeProps {
+  setTaskAssigneeHandler: (e: unknown) => void;
+}
+
 export interface OverViewProps {
   date?: any;
   content: any;

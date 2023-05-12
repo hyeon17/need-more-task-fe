@@ -45,6 +45,22 @@ export type TaskPostData = {
   progress: string;
 };
 
+export interface GetUsersResponse {
+  status: number;
+  msg: string;
+  data: Data;
+}
+
+export interface Data {
+  users: User[];
+}
+
+export interface User {
+  userId: number;
+  fullName: string;
+  profileImageUrl: string;
+}
+
 export const getTaskDetail = async (taskID: number) => {
   const res = await axiosWithToken.get<TaskDetailResponse>(`/task/${taskID}`);
   return res.data;
@@ -56,6 +72,6 @@ export const postTaskDetail = async (data: TaskPostData) => {
 };
 
 export const getUsers = async () => {
-  const res = await axiosWithToken.get(`/users`);
-  return res.data;
+  const res = await axiosWithToken.get<GetUsersResponse>(`/users`);
+  return res.data.data.users;
 };

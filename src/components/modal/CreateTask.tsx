@@ -13,11 +13,11 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import * as S from '@/styles/modal.styles';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { actionConstantsType, actionType } from '@/constant/TaskOverview';
 import { useForm } from 'react-hook-form';
 import CommonAvatar from '@/components/CommonAvatar/CommonAvatar';
-import { getKeyByValue, setActionTextToKorean, setTagColor } from '@/utils';
+import { getKeyByValue, setActionTextToKorean, setTagColor, setTagTextToKorean } from '@/utils';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
 import ModalActionComponent from '@/components/modal/ModalActionComponent';
 import { postTaskDetail } from '@/apis/task';
@@ -95,11 +95,12 @@ function CreateTask() {
 
   const onSubmit = (data: CreateTaskForm) => {
     const { title, description: desc } = data;
-    const { SET_STATUS, SET_PRIORITY, START_AT, END_AT } = taskStatus;
+    const { SET_STATUS, SET_PRIORITY, START_AT, END_AT, ASSIGNEE } = taskStatus;
     const progress = SET_STATUS.value;
     const priority = SET_PRIORITY.value;
     const startAt = START_AT.value;
     const endAt = END_AT.value;
+    const assignee = ASSIGNEE.value?.map((assignee) => assignee.userId);
     const payload = {
       title,
       desc,
@@ -107,10 +108,9 @@ function CreateTask() {
       priority,
       startAt,
       endAt,
-      assignee: [{ userId: 1 }],
+      assignee,
     };
-    console.log(taskStatus);
-    console.log(payload);
+
     // @ts-ignore
     mutate(payload);
   };
@@ -119,18 +119,39 @@ function CreateTask() {
   };
 
   const setTaskStatusHandler = (e: unknown) => {
+    console.log(e);
     // @ts-ignore
     if (e.key) {
       // @ts-ignore
       const { key, value } = e;
-      setTaskStatus((prevState) => ({
-        ...prevState,
-        [key]: {
-          // @ts-ignore
-          ...prevState[key as string],
-          value,
-        },
-      }));
+      if (key === 'ASSIGNEE') {
+        // @ts-ignore
+        const { label, profileImage } = e;
+        setTaskStatus((prevState) => ({
+          ...prevState,
+          [key]: {
+            // @ts-ignore
+            ...prevState[key],
+            value: [
+              // @ts-ignore
+              ...prevState[key].value,
+              {
+                userId: value,
+                name: label,
+                profileImage,
+              },
+            ],
+          },
+        }));
+      } else
+        setTaskStatus((prevState) => ({
+          ...prevState,
+          [key]: {
+            // @ts-ignore
+            ...prevState[key as string],
+            value,
+          },
+        }));
     }
 
     // @ts-ignore
@@ -149,6 +170,10 @@ function CreateTask() {
       }));
     }
   };
+
+  useEffect(() => {
+    console.log(taskStatus);
+  }, [taskStatus]);
 
   return (
     <S.ModalContentBox>
@@ -173,6 +198,7 @@ function CreateTask() {
                     type="text"
                     id="title"
                     variant="flushed"
+                    onFocus={() => setModalAction(null)}
                     {...register('title', {
                       required: '제목은 반드시 있어야 합니다',
                       onChange: onTitleInputChange,
@@ -197,6 +223,7 @@ function CreateTask() {
                     id="description"
                     variant="flushed"
                     placeholder="설명을 입력해 주세요"
+                    onFocus={() => setModalAction(null)}
                     {...register('description', {
                       required: '설명은 반드시 있어야 합니다',
                       maxLength: {
@@ -237,7 +264,7 @@ function CreateTask() {
                       </AnimatePresence>
                       {typeof item.value !== 'object' && item.value && (
                         <Tag size="lg" backgroundColor={setTagColor(item.value)} color="white">
-                          {item.value}
+                          {setTagTextToKorean(item.value)}
                         </Tag>
                       )}
                     </div>
