@@ -11,19 +11,19 @@ import { TaskOverviewProps } from '@/type/componentProps';
 function DailyOverview() {
   const { getDateStore } = useCalendarState();
   const allEvents: TaskOverviewProps[] = [];
+  const { data: res, isLoading, refetch } = useGetDailyTasksAPI(getDateStore(),0);
 
-  const { data: tasks, isLoading } = useGetDailyTasksAPI(getDateStore());
-
-  if (tasks) {
-    const datas: TaskOverviewProps[] = tasks.data.map((event: TaskOverviewProps) => ({
+  if (res) {
+    const datas: TaskOverviewProps[] = res.data.tasks.map((event: TaskOverviewProps) => ({
       title: event.title,
       progress: event.progress,
       id: event.taskId.toString(),
       assignee: event.assignee,
+      start: event.startAt,
+      end: event.endAt,
     }));
     allEvents.push(...datas);
   }
-
   return (
     <>
       <Head>
@@ -32,11 +32,10 @@ function DailyOverview() {
       <Layout hasHeader>
         <S.OverviewWrapper>
           <Header date={getDateStore()} content={allEvents} isLoading={isLoading} />
-          <Content content={allEvents} isLoading={isLoading} />
+          <Content content={allEvents} isLoading={isLoading} totalCount={res?.data?.totalCount} />
         </S.OverviewWrapper>
       </Layout>
     </>
   );
 }
-
 export default DailyOverview;
