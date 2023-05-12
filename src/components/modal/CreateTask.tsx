@@ -90,7 +90,7 @@ function CreateTask() {
     onSuccess: () => {
       window.location.reload();
     },
-    onError: (error) => {
+    onError: () => {
       toast({
         title: 'Error',
         description: 'Task를 생성 할 수 없습니다. 비어있는 항목이 있는지 확인해주세요',
