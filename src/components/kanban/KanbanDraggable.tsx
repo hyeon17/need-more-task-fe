@@ -27,7 +27,7 @@ function KanbanDraggable({ task, provided, index }: KanbanDraggableItemProps) {
             <S.KanbanTaskItemDot color="red.500" />
             {task.title}
           </Flex>
-          <Avatar width="26px" height="26px" src={task.taskOwner.profileImageURL} />
+          <Avatar width="26px" height="26px" src={task.taskOwner.profileImageUrl} />
         </S.KanbanTaskItemCardBody>
         <S.KanbanTaskItemCardBody p="0" fontWeight="bold"></S.KanbanTaskItemCardBody>
         <CardFooter p="0">
