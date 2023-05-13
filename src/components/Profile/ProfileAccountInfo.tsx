@@ -137,6 +137,15 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     }
   };
 
+  const formatPhoneNumber = (value: any) => {
+    let cleaned = ('' + value).replace(/\D/g, '');
+    let match = cleaned.match(/^(\d{3})(\d{4})(\d{4})$/);
+    if (match) {
+      return `${match[1]}-${match[2]}-${match[3]}`;
+    }
+    return value;
+  };
+
   const handleCancelProfileSave = () => {
     reset();
     setFullNameValue(null);
@@ -154,7 +163,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
       title: '비밀번호 확인 성공.',
       description: '프로필 수정이 가능합니다.',
       status: 'success',
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
     });
   };
@@ -163,7 +172,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     toast({
       title: '비밀번호 확인 실패.',
       status: 'error',
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
     });
   };
@@ -182,7 +191,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     toast({
       title: '프로필 업데이트 성공.',
       status: 'success',
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
     });
     setShowPassword(false);
@@ -196,7 +205,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     toast({
       title: '프로필 업데이트 실패.',
       status: 'error',
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
     });
   };
@@ -220,7 +229,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
         profileId: newProfileId,
         password: data.password ? data.password : '',
         passwordCheck: data.passwordCheck ? data.passwordCheck : '',
-        phone: `${data.phone1}-${data.phone2}-${data.phone3}`,
+        phone: data.phone,
       });
     }
   };
@@ -426,61 +435,26 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
       {/* 연락처 */}
       <A.InputContainer>
         <FormControl isInvalid={Boolean(errors.phone)}>
-          <FormLabel htmlFor="phone1">연락처</FormLabel>
+          <FormLabel htmlFor="phone">연락처</FormLabel>
           <A.PhoneNumWrapper>
             <Input
               isDisabled={!edit}
-              id="phone1"
-              placeholder="010"
+              id="phone"
+              type="tel"
+              placeholder="010-xxxx-xxxx"
               variant="flushed"
               borderColor="outlineColor"
               focusBorderColor="inputFocusColor"
-              type="number"
-              maxLength={3}
-              defaultValue={userInfo?.phone.slice(0, 3) || watch('phon1')}
-              {...register('phone1', {
+              {...register('phone', {
                 required: '필수 입력사항 입니다.',
                 pattern: {
-                  value: /^\d{3}$/,
-                  message: '3자리 숫자만 입력 가능합니다.',
+                  value: /^[0-9]{3}-[0-9]{4}-[0-9]{4}$/,
+                  message: '올바른 형식으로 입력해주세요. 예) 010-0000-0000',
                 },
               })}
-            />
-            <Input
-              isDisabled={!edit}
-              id="phone2"
-              placeholder="xxxx"
-              variant="flushed"
-              borderColor="outlineColor"
-              focusBorderColor="inputFocusColor"
-              type="number"
-              maxLength={4}
-              defaultValue={userInfo?.phone.slice(4, 8) || watch('phon2')}
-              {...register('phone2', {
-                required: '필수 입력사항 입니다.',
-                pattern: {
-                  value: /^\d{4}$/,
-                  message: '4자리 숫자만 입력 가능합니다.',
-                },
-              })}
-            />
-            <Input
-              isDisabled={!edit}
-              id="phone3"
-              placeholder="xxxx"
-              variant="flushed"
-              borderColor="outlineColor"
-              focusBorderColor="inputFocusColor"
-              type="number"
-              maxLength={4}
-              defaultValue={userInfo?.phone.slice(9, 13) || watch('phon3')}
-              {...register('phone3', {
-                required: '필수 입력사항 입니다.',
-                pattern: {
-                  value: /^\d{4}$/,
-                  message: '4자리 숫자만 입력 가능합니다.',
-                },
-              })}
+              onChange={(e) => {
+                e.target.value = formatPhoneNumber(e.target.value);
+              }}
             />
           </A.PhoneNumWrapper>
           <FormErrorMessage>{errors.phone && errors.phone?.message?.toString()}</FormErrorMessage>
