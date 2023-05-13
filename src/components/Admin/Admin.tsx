@@ -71,7 +71,6 @@ function Admin() {
   const onSuccessRoleChange = (data: any) => {
     toast({
       title: '권한 수정 성공',
-
       status: 'success',
       duration: 3000,
       isClosable: true,
