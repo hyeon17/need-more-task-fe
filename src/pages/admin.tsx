@@ -25,7 +25,7 @@ function AdminPage() {
       toast({
         title: '관리자 외에는 접근할 수 없습니다.',
         status: 'error',
-        duration: 9000,
+        duration: 3000,
         isClosable: true,
       });
       router.back();

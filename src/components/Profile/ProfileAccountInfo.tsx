@@ -130,7 +130,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
       toast({
         title: '수정 권한이 없습니다.',
         status: 'error',
-        duration: 9000,
+        duration: 3000,
         isClosable: true,
       });
       return;
