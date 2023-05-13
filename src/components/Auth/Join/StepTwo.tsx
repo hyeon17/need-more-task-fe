@@ -17,7 +17,6 @@ import {
 import useInput from '@/hooks/useInput';
 
 import { useForm } from 'react-hook-form';
-import { AxiosError } from 'axios';
 import { isDuplicatedEmailAPI } from '@/apis/user';
 
 export const inputProps = {
@@ -50,9 +49,8 @@ function StepTwo() {
 
     toast({
       title: `${error?.response?.data?.data?.value}`,
-      // description: '알 수 없는 오류가 발생했습니다.',
       status: 'error',
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
     });
   };
@@ -62,7 +60,7 @@ function StepTwo() {
     toast({
       title: '사용 가능한 이메일 입니다.',
       status: 'success',
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
     });
   };
@@ -81,14 +79,6 @@ function StepTwo() {
     passwordCheck: string;
   }
 
-  // const onClickNext = (data: IFormInput) => {
-  //   if (Object.keys(errors).length === 0) {
-  //     const { passwordCheck, ...rest } = data;
-
-  //     onSaveSignup({ ...me, ...rest, passwordCheck });
-  //     router.push('/join/3');
-  //   }
-  // };
   const onClickNext = (data: IFormInput) => {
     if (Object.keys(errors).length === 0) {
       if (emailValue !== me?.email) {

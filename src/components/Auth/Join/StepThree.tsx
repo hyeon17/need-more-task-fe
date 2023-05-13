@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
+import * as A from '@/styles/auth.styles';
 import { useUserJoinStore } from '@/store/userJoinStore';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
-import * as A from '@/styles/auth.styles';
 import { Button, FormControl, FormErrorMessage, FormLabel, Input, useToast } from '@chakra-ui/react';
 
 import JoinBackButton from '@/components/Auth/Join/JoinBackButton';
@@ -24,13 +24,7 @@ function StepThree() {
   const toast = useToast();
   const router = useRouter();
   const { me, onSaveSignup } = useUserJoinStore();
-  console.log('me>>', me);
 
-  // const [phone, setPhone] = useState(me?.phone ?? '');
-
-  // const [firstNum, onChangeFirstNum] = useInput('');
-  // const [secondNum, onChangeSecondNum] = useInput('');
-  // const [thirdNum, onChangeThirdNum] = useInput('');
   const [profileImage, setProfileImage] = useState('');
 
   const onError = (error: AxiosError) => {
@@ -56,29 +50,19 @@ function StepThree() {
 
   const { mutate: joinMutate, isLoading } = joinAPI({ onSuccess, onError });
 
-  // useEffect(() => {
-  //   const combinedPhone = `${firstNum}-${secondNum}-${thirdNum}`;
-  //   setPhone(combinedPhone);
-  // }, [firstNum, secondNum, thirdNum]);
-
-  // const isDisabled = useMemo(() => Boolean(!phone), [phone]);
-
   interface IFormInput {
-    phone1: string;
-    phone2: string;
-    phone3: string;
+    phone: string | undefined;
   }
 
   const onClickNext = (data: IFormInput) => {
-    console.log('phone>>>', data);
-
-    const { phone1, phone2, phone3 } = data;
-    const phone = `${phone1}-${phone2}-${phone3}`;
+    const { phone } = data;
 
     if (Object.keys(errors).length === 0) {
-      onSaveSignup({ ...me, phone, profileId: me?.profileId || 1 });
+      onSaveSignup({ ...me });
 
-      // joinMutate({ ...me } as IJoin);
+      // console.log('me>>>', me);
+
+      joinMutate({ ...me, phone: watch('phone'), profileId: me?.profileId || 1 } as IJoin);
     }
   };
 
@@ -88,7 +72,6 @@ function StepThree() {
     register,
     formState: { errors },
   } = useForm<any>();
-  console.log('errors>>>', errors);
 
   const isProfileOversize = (size: number) => {
     // 2MB
@@ -140,6 +123,15 @@ function StepThree() {
     }
   };
 
+  const formatPhoneNumber = (value: any) => {
+    let cleaned = ('' + value).replace(/\D/g, '');
+    let match = cleaned.match(/^(\d{3})(\d{4})(\d{4})$/);
+    if (match) {
+      return `${match[1]}-${match[2]}-${match[3]}`;
+    }
+    return value;
+  };
+
   return (
     <form onSubmit={handleSubmit(onClickNext)}>
       {/* 프로필 이미지 */}
@@ -173,58 +165,28 @@ function StepThree() {
       {/* 연락처 */}
       <A.InputContainer>
         <FormControl isInvalid={Boolean(errors.phone)}>
-          <FormLabel htmlFor="phone1">연락처</FormLabel>
+          <FormLabel htmlFor="phone">연락처</FormLabel>
           <A.PhoneNumWrapper>
             <Input
-              id="phone1"
-              placeholder="010"
+              id="phone"
+              type="tel"
+              placeholder="010-xxxx-xxxx"
               variant="flushed"
               borderColor="outlineColor"
               focusBorderColor="inputFocusColor"
-              type="number"
-              maxLength={3}
-              {...register('phone1', {
+              {...register('phone', {
                 required: '필수 입력사항 입니다.',
                 pattern: {
-                  value: /^\d{3}$/,
-                  message: '3자리 숫자만 입력 가능합니다.',
+                  value: /^[0-9]{3}-[0-9]{4}-[0-9]{4}$/,
+                  message: '올바른 형식으로 입력해주세요. 예) 010-0000-0000',
                 },
               })}
-            />
-            <Input
-              id="phone2"
-              placeholder="xxxx"
-              variant="flushed"
-              borderColor="outlineColor"
-              focusBorderColor="inputFocusColor"
-              type="number"
-              maxLength={4}
-              {...register('phone2', {
-                required: '필수 입력사항 입니다.',
-                pattern: {
-                  value: /^\d{4}$/,
-                  message: '4자리 숫자만 입력 가능합니다.',
-                },
-              })}
-            />
-            <Input
-              id="phone3"
-              placeholder="xxxx"
-              variant="flushed"
-              borderColor="outlineColor"
-              focusBorderColor="inputFocusColor"
-              type="number"
-              maxLength={4}
-              {...register('phone3', {
-                required: '필수 입력사항 입니다.',
-                pattern: {
-                  value: /^\d{4}$/,
-                  message: '4자리 숫자만 입력 가능합니다.',
-                },
-              })}
+              onChange={(e) => {
+                e.target.value = formatPhoneNumber(e.target.value);
+              }}
             />
           </A.PhoneNumWrapper>
-          <FormErrorMessage>{errors.phone1 && errors.phone1?.message?.toString()}</FormErrorMessage>
+          <FormErrorMessage>{errors.phone && errors.phone?.message?.toString()}</FormErrorMessage>
         </FormControl>
       </A.InputContainer>
 
