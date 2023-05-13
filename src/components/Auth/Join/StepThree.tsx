@@ -1,9 +1,8 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useUserJoinStore } from '@/store/userJoinStore';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import * as A from '@/styles/auth.styles';
-import useInput from '@/hooks/useInput';
 import { Button, FormControl, FormErrorMessage, FormLabel, Input, useToast } from '@chakra-ui/react';
 
 import JoinBackButton from '@/components/Auth/Join/JoinBackButton';
@@ -39,7 +38,7 @@ function StepThree() {
       title: '회원가입 실패.',
       description: '알 수 없는 오류가 발생했습니다.',
       status: 'error',
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
     });
   };
@@ -48,7 +47,7 @@ function StepThree() {
     toast({
       title: '회원가입 성공.',
       status: 'success',
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
     });
 
@@ -79,7 +78,7 @@ function StepThree() {
     if (Object.keys(errors).length === 0) {
       onSaveSignup({ ...me, phone, profileId: me?.profileId || 1 });
 
-      joinMutate({ ...me } as IJoin);
+      // joinMutate({ ...me } as IJoin);
     }
   };
 
@@ -89,6 +88,7 @@ function StepThree() {
     register,
     formState: { errors },
   } = useForm<any>();
+  console.log('errors>>>', errors);
 
   const isProfileOversize = (size: number) => {
     // 2MB
@@ -102,7 +102,7 @@ function StepThree() {
   const onSuccessUploadImage = (data: any) => {
     const { profileId } = data.data;
     setProfileImage(data.data.profileImageUrl);
-    onSaveSignup({ ...me, profileId });
+    onSaveSignup({ ...me, profileId, profileImageUrl: data.data.profileImageUrl });
 
     // /user/profile
     queryClient.invalidateQueries([`/user/profile`]);
@@ -110,6 +110,12 @@ function StepThree() {
 
   const onErrorUploadImage = (error: AxiosError) => {
     console.error(error);
+    toast({
+      title: '이미지 업로드에 문제가 발생했습니다. 다시 시도해주세요.',
+      status: 'error',
+      duration: 3000,
+      isClosable: true,
+    });
   };
 
   const { mutate: uploadImageMutate, isLoading: isLoadingUploadImage } = useUpdateProfileImageAPI({
@@ -140,7 +146,7 @@ function StepThree() {
       <A.ProfileWrapper>
         <FormLabel>프로필</FormLabel>
         <A.ProfileFigures>
-          <ProfileImage src={profileImage} width={150} height={150} />
+          <ProfileImage src={profileImage || me?.profileImageUrl} width={150} height={150} />
           {/* {values['profileIMG'] && <Image width={150} height={150} src={values['profileIMG']} alt="프로필" />} */}
         </A.ProfileFigures>
         <A.ProfileIMGWrapper>
