@@ -27,7 +27,20 @@ function StepThree() {
 
   const [profileImage, setProfileImage] = useState('');
 
-  const onError = (error: AxiosError) => {
+  const onError = (error: any) => {
+    const errorValue = error?.response?.data.data.value;
+
+    if (errorValue === '공백일 수 없습니다') {
+      toast({
+        title: '회원가입 실패.',
+        description: '입력하지 않은 사항이 있습니다. 다시 한 번 확인해주세요.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
     toast({
       title: '회원가입 실패.',
       description: '알 수 없는 오류가 발생했습니다.',
