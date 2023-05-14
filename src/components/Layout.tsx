@@ -1,8 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import CommonHeader from './CommonHeader/CommonHeader';
+import { useModalState } from '@/store/modalStore';
+import { AnimatePresence } from 'framer-motion';
+import ModalLayout from '@/components/modal/ModalLayout';
 
 const LayoutComponent = styled.div`
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,10 +15,12 @@ const LayoutComponent = styled.div`
 `;
 
 function Layout({ children, hasHeader }: { children: React.ReactNode; hasHeader?: boolean }) {
+  const { modal } = useModalState();
   return (
     <LayoutComponent>
-      {hasHeader && <header>Header</header>}
+      {hasHeader && <CommonHeader />}
       <main>{children}</main>
+      <AnimatePresence>{modal && <ModalLayout />}</AnimatePresence>
     </LayoutComponent>
   );
 }

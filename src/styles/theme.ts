@@ -4,6 +4,7 @@ const theme: Theme = {
   mainBg: '#FBFBFF',
   secondaryBg: '#F5F5F5',
   gray50: '#F5F5FA',
+  gray100: '#F6F8FA',
   textColor: '#171721',
   primary: '#3E7EFF',
   warningColor: '#EF8354',

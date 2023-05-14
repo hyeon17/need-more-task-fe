@@ -1,23 +1,23 @@
-import { Image } from '@chakra-ui/next-js';
-import { Button, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
-import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import React from 'react';
+import * as A from '@/styles/auth.styles';
+import { FormControl } from '@chakra-ui/react';
+import { teamOptions } from '@/utils';
 
 function SelectDepartment() {
   return (
-    <Menu>
-      <MenuButton as={Button} rightIcon={<KeyboardArrowDownOutlinedIcon />}>
-        Your Cats
-      </MenuButton>
-      <MenuList>
-        <MenuItem minH="48px">
-          <span>Fluffybuns the Destroyer</span>
-        </MenuItem>
-        <MenuItem minH="40px">
-          <span>Simon the pensive</span>
-        </MenuItem>
-      </MenuList>
-    </Menu>
+    <A.InputContainer>
+      <FormControl isRequired>
+        <label>현재 소속 팀은 어디인가요?</label>
+        <A.StyledSelect
+          id="team-select"
+          name="teams"
+          options={teamOptions}
+          placeholder="팀 선택"
+          closeMenuOnSelect={false}
+          size="sm"
+        />
+      </FormControl>
+    </A.InputContainer>
   );
 }
 

@@ -1,7 +1,6 @@
 import Head from 'next/head';
-import Button from '@/components/common/CommonButton';
 import Layout from '@/components/Layout';
-import CalendarPage from './CalendarPage';
+import CalendarPage from './calendar/index';
 
 export default function Home() {
   return (
