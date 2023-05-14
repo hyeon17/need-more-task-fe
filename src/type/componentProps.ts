@@ -32,9 +32,10 @@ export interface ModalActionAssigneeProps {
 
 export interface OverViewProps {
   date?: any;
-  content: any;
-  isLoading: boolean;
-  totalCount?: number;
+  content?: any;
+  isLoading?: boolean;
+  isFetching?: any;
+  fetchNextPage?: any;
 }
 
 export interface TaskOverviewProps {

@@ -1,34 +1,31 @@
 import React from 'react';
 import Layout from '@/components/Layout';
 import { useCalendarState } from '@/store/calendarStore';
-import { useGetDailyTasksAPI } from '@/apis/overview';
 import Header from '@/components/OverView/Header';
 import Content from '@/components/OverView/Content';
 import * as S from '@/styles/overview.styles';
 import Head from 'next/head';
 import { TaskOverviewProps } from '@/type/componentProps';
-import { useQuery, UseQueryOptions, useInfiniteQuery, UseInfiniteQueryOptions } from '@tanstack/react-query';
+import { useOverViewState } from '@/store/overViewStore';
+import { useDailyTasks } from '@/apis/overview';
 
 function DailyOverview() {
+  const { currentPage, setCurrentPage } = useOverViewState();
   const { getDateStore } = useCalendarState();
   const allEvents: TaskOverviewProps[] = [];
-  const { data, error, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status } = useInfiniteQuery(
-    [`/tasks?date=${getDateStore()}&page=${0}`],
-    useGetDailyTasksAPI,
-    {
-      getNextPageParam: (lastPage) => {
-        const { next } = lastPage;
-        if (!next) return false;
 
-        const offset = new URL(next).searchParams.get('page');
-        return Number(offset);
-      },
-    },
-  );
+  const { data, fetchNextPage, hasNextPage, isFetching, isLoading, isError, isSuccess, error } = useDailyTasks();
+
+  const handleFetchNextPage = () => {
+    setCurrentPage(currentPage + 1);
+    if (hasNextPage) {
+      fetchNextPage({ pageParam: currentPage + 1 });
+    }
+  };
 
   if (data) {
-    const pages = data.pages;
-    pages.forEach((page) => {
+    console.log(data);
+    data.pages.forEach((page) => {
       const datas: TaskOverviewProps[] = page.data.tasks.map((event: TaskOverviewProps) => ({
         title: event.title,
         progress: event.progress,
@@ -40,6 +37,7 @@ function DailyOverview() {
       allEvents.push(...datas);
     });
   }
+
   return (
     <>
       <Head>
@@ -47,15 +45,17 @@ function DailyOverview() {
       </Head>
       <Layout hasHeader>
         <S.OverviewWrapper>
-          <Header date={getDateStore()} content={allEvents} isLoading={isFetching || isFetchingNextPage} />
+          <Header date={getDateStore()} content={allEvents} isLoading={isLoading} />
           <Content
             content={allEvents}
-            isLoading={isFetching || isFetchingNextPage}
-            totalCount={data?.pages[0]?.data?.totalCount}
+            isLoading={isLoading}
+            isFetching={isFetching}
+            fetchNextPage={handleFetchNextPage}
           />
         </S.OverviewWrapper>
       </Layout>
     </>
   );
 }
+
 export default DailyOverview;
