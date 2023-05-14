@@ -31,7 +31,7 @@ function CommonAvatar({
     onCloseModal();
     router.push(`/profile/${userId}`);
   };
-  console.log(assignee);
+
   return (
     <AvatarGroup size={size} max={max}>
       {assignee?.map((user: IAssignee) => {
