@@ -7,23 +7,38 @@ import Content from '@/components/OverView/Content';
 import * as S from '@/styles/overview.styles';
 import Head from 'next/head';
 import { TaskOverviewProps } from '@/type/componentProps';
+import { useQuery, UseQueryOptions, useInfiniteQuery, UseInfiniteQueryOptions } from '@tanstack/react-query';
 
 function DailyOverview() {
   const { getDateStore } = useCalendarState();
   const allEvents: TaskOverviewProps[] = [];
-  const { data: res, isLoading } = useGetDailyTasksAPI(getDateStore(),0);
+  const { data, error, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status } = useInfiniteQuery(
+    [`/tasks?date=${getDateStore()}&page=${0}`],
+    useGetDailyTasksAPI,
+    {
+      getNextPageParam: (lastPage) => {
+        const { next } = lastPage;
+        if (!next) return false;
 
-  if (res) {
-    const datas: TaskOverviewProps[] = res.data.tasks.map((event: TaskOverviewProps) => ({
-      title: event.title,
-      progress: event.progress,
-      id: event.taskId.toString(),
-      assignee: event.assignee,
-      start: event.startAt,
-      end: event.endAt,
-    }));
-    console.log(datas);
-    allEvents.push(...datas);
+        const offset = new URL(next).searchParams.get('page');
+        return Number(offset);
+      },
+    },
+  );
+
+  if (data) {
+    const pages = data.pages;
+    pages.forEach((page) => {
+      const datas: TaskOverviewProps[] = page.data.tasks.map((event: TaskOverviewProps) => ({
+        title: event.title,
+        progress: event.progress,
+        id: event.taskId.toString(),
+        assignee: event.assignee,
+        start: event.startAt,
+        end: event.endAt,
+      }));
+      allEvents.push(...datas);
+    });
   }
   return (
     <>
@@ -32,8 +47,12 @@ function DailyOverview() {
       </Head>
       <Layout hasHeader>
         <S.OverviewWrapper>
-          <Header date={getDateStore()} content={allEvents} isLoading={isLoading} />
-          <Content content={allEvents} isLoading={isLoading} totalCount={res?.data?.totalCount} />
+          <Header date={getDateStore()} content={allEvents} isLoading={isFetching || isFetchingNextPage} />
+          <Content
+            content={allEvents}
+            isLoading={isFetching || isFetchingNextPage}
+            totalCount={data?.pages[0]?.data?.totalCount}
+          />
         </S.OverviewWrapper>
       </Layout>
     </>
