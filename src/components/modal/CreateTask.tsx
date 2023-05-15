@@ -34,7 +34,7 @@ export interface CreateTaskProps extends actionConstantsType {
     key: string;
     value?: Date;
   };
-  CREATE_TASK: {
+  CREATE_TASK?: {
     key: string;
     value: string;
   };

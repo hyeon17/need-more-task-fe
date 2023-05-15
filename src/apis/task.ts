@@ -36,8 +36,8 @@ export type TaskPostResponse = {
 };
 
 export type TaskPostData = {
-  startAt: string;
-  endAt: string;
+  startAt: Date;
+  endAt: Date;
   title: string;
   desc: string;
   assignee: any[];
@@ -68,6 +68,11 @@ export const getTaskDetail = async (taskID: number) => {
 
 export const postTaskDetail = async (data: TaskPostData) => {
   const res = await axiosWithToken.post<TaskPostResponse>(`/task`, data);
+  return res.data;
+};
+
+export const putTaskDetail = async ({ taskId, data }: { taskId: number; data: TaskPostData }) => {
+  const res = await axiosWithToken.put<TaskPostResponse>(`/task/${taskId}`, data);
   return res.data;
 };
 

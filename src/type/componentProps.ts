@@ -1,6 +1,7 @@
 import { DraggableProvided, DroppableProvided } from 'react-beautiful-dnd';
 import { TaskData } from '@/apis/kanban';
 import { actionType, StatusType } from '@/constant/TaskOverview';
+import { TaskPostData } from '@/apis/task';
 
 export interface KanbanDroppableItemProps {
   status: string;
@@ -29,7 +30,9 @@ export interface ModalActionComponentProps {
 
 export interface ModalActionEditProps {
   action: actionType;
-  onEditMode: (mode: boolean) => void;
+  id: number;
+  taskData: TaskPostData;
+  refetch: any;
 }
 
 export interface ModalActionAssigneeProps {

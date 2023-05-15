@@ -47,13 +47,7 @@ const setPriorityConstants = [
   },
 ];
 
-function ModalActionComponent({ action, setTaskStatusHandler, id }: ModalActionComponentProps) {
-  const { mutate } = useMutation(deleteTask, {
-    onSuccess: () => {
-      // window.location.reload();
-    },
-  });
-
+function ModalActionComponent({ action, setTaskStatusHandler }: ModalActionComponentProps) {
   switch (action) {
     case 'START_AT':
       return <Input type="date" id="START_AT" onChange={setTaskStatusHandler} onChangeCapture={setTaskStatusHandler} />;
@@ -65,8 +59,6 @@ function ModalActionComponent({ action, setTaskStatusHandler, id }: ModalActionC
       return <ModalTaskActionSelectBox id="SET_STATUS" options={setStatusConstants} onChange={setTaskStatusHandler} />;
     case 'SET_PRIORITY':
       return <ModalTaskActionSelectBox options={setPriorityConstants} onChange={setTaskStatusHandler} />;
-    case 'DELETE_TASK':
-      return <ModalTaskDeleteButton onClick={() => mutate(Number(id))}>Delete Task</ModalTaskDeleteButton>;
     case 'EDIT_TASK':
       return <div>Edit Task</div>;
     default:
