@@ -73,7 +73,6 @@ function LatestProjectsList() {
         {latestProjectsData && latestProjectsData.data.length > 0
           ? latestProjectsData.data.map((data: any) => {
               const { taskId, taskOwner, createdAt, startAt, endAt, title, assignee, priority, progress } = data;
-              // console.log('data>>>', data);
 
               return (
                 <D.LatestProjectsListWrapper key={`latestProject${taskId}`}>

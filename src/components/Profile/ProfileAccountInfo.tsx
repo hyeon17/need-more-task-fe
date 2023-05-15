@@ -61,15 +61,10 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
 
   const { isOpen: isOpenCheckPassword, onOpen: onOpenCheckPassword, onClose: onCloseCheckPassword } = useDisclosure();
 
-  // const [department, setDepartment] = useState('');
-  // const [joinCompanyYear, setJoinCompanyYear] = useState('');
   const [department, setDepartment] = useState(userInfo?.department || '');
   const [joinCompanyYear, setJoinCompanyYear] = useState(userInfo?.joinCompanyYear?.toString() || '');
 
-  // console.log('profileImageUrl>>>', profileImageUrl);
-
   const onSuccessUploadImage = (data: any) => {
-    console.log('data>>', data);
     const { profileId } = data.data;
     setProfileImage(data.data.profileImageUrl);
     setNewProfileId(profileId);
@@ -91,7 +86,6 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     if (e.target.files === null) return;
 
     const file = e.target.files[0];
-    console.log('file', file);
 
     const formData = new FormData();
 
@@ -104,7 +98,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
       // });
       uploadImageMutate(formData);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -181,8 +175,6 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
   });
 
   const onSuccessUpdateProfile = (data: any) => {
-    console.log('data', data);
-
     queryClient.invalidateQueries([`/user/${userInfo?.userId}`]);
     queryClient.invalidateQueries([`/auth/me`]);
 
@@ -216,7 +208,6 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     if (Object.keys(errors).length === 0) {
       setFullNameValue(watch('fullName'));
       setEmailValue(watch('email'));
-      console.log('newProfileId>>', newProfileId);
 
       updateProfileMutate({
         ...data,

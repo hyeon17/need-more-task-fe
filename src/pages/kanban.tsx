@@ -83,7 +83,7 @@ function Kanban() {
         ...kanban,
         [source.droppableId as TaskProgress]: currentKanban,
       };
-      console.log('newKanban>>', newKanban);
+
       return onAddKanban(newKanban);
     }
     if (result.destination !== result.source) {
@@ -97,7 +97,7 @@ function Kanban() {
       return mutate(newTask);
     }
   };
-  console.log('kanban>>', kanban);
+
   return (
     <>
       <Head>
