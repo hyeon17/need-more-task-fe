@@ -58,7 +58,7 @@ function Login() {
     router
       .push('/calendar')
       .then(() => router.reload())
-      .then(() => router.push('calendar'));
+      .then(() => router.push('/'));
 
     // router.reload().then(() => router.push('calendar'))
   };
