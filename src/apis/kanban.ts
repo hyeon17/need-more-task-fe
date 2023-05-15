@@ -31,7 +31,7 @@ export interface Assignee {
 export interface TaskOwner {
   userId: number;
   fullName: string;
-  profileImageURL: string;
+  profileImageUrl: string;
 }
 
 export type MoveTaskToDifferentKanban = {

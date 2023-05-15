@@ -1,7 +1,7 @@
 import React from 'react';
 import { ModalActionComponentProps } from '@/type/componentProps';
 import { Input } from '@chakra-ui/react';
-import { ModalTaskActionSelectBox, ModalTaskDeleteButton } from '@/styles/modal.styles';
+import { ModalTaskActionSelectBox } from '@/styles/modal.styles';
 import ModalActionAssignee from '@/components/modal/ModalActionAssignee';
 
 const setStatusConstants = [
@@ -57,8 +57,6 @@ function ModalActionComponent({ action, setTaskStatusHandler }: ModalActionCompo
       return <ModalTaskActionSelectBox id="SET_STATUS" options={setStatusConstants} onChange={setTaskStatusHandler} />;
     case 'SET_PRIORITY':
       return <ModalTaskActionSelectBox options={setPriorityConstants} onChange={setTaskStatusHandler} />;
-    case 'DELETE_TASK':
-      return <ModalTaskDeleteButton>Delete Task</ModalTaskDeleteButton>;
     case 'EDIT_TASK':
       return <div>Edit Task</div>;
     default:
