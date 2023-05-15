@@ -154,8 +154,6 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
   };
 
   const onSuccessCheckPassword = (data: any) => {
-    console.log('checkpassword', data);
-
     onCloseCheckPassword();
     setEdit(true);
 
@@ -215,8 +213,6 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
   });
 
   const onClickSave = (data: any) => {
-    console.log('data>>', data);
-
     if (Object.keys(errors).length === 0) {
       setFullNameValue(watch('fullName'));
       setEmailValue(watch('email'));
@@ -243,7 +239,12 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
   return (
     <form onSubmit={onSubmit}>
       <P.AccountWrapper>
-        <h1>계정 정보</h1>
+        <P.AccountHeader>
+          <h1>계정 정보</h1>
+          {userInfo?.userId === currentLoginUserInfo?.userId && (
+            <Button isDisabled={true}>프로필 업데이트 버튼은 아래에 있습니다.</Button>
+          )}
+        </P.AccountHeader>
         {/* 이메일 */}
         <A.InputContainer>
           <FormLabel htmlFor="email">
@@ -270,16 +271,20 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
             <ProfileImage src={profileImage || userInfo?.profileImageUrl} width={150} height={150} />
           </A.ProfileFigures>
           <A.ProfileIMGWrapper>
-            <Button
-              as="label" // 버튼으로 사용하기 위해 <label> 요소로 지정
-              htmlFor="profileImageInput" // 파일 입력 필드와 연결
-              colorScheme="teal"
-              variant="outline"
-              cursor="pointer" // 마우스 커서를 포인터로 변경하여 클릭 가능한 모양으로 만듦
-              isDisabled={!edit}
-            >
-              프로필 이미지 업로드
-            </Button>
+            {edit ? (
+              <Button
+                as="label" // 버튼으로 사용하기 위해 <label> 요소로 지정
+                htmlFor="profileImageInput" // 파일 입력 필드와 연결
+                colorScheme="teal"
+                variant="outline"
+                cursor="pointer" // 마우스 커서를 포인터로 변경하여 클릭 가능한 모양으로 만듦
+                isDisabled={!edit}
+              >
+                프로필 이미지 업로드
+              </Button>
+            ) : (
+              ''
+            )}
             <Input
               type="file"
               id="profileImageInput" // label의 htmlFor 속성과 연결
@@ -344,7 +349,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
             <Input
               isDisabled={!edit}
               // value={fullNameValue === null ? userInfo?.fullName || '' : fullNameValue}
-              // value={watch('fullName')}
+              // value={watch('fullName') || userInfo?.fullName}
               defaultValue={userInfo?.fullName || watch('fullName')}
               id="fullName"
               placeholder="이름을 입력하세요"
@@ -445,6 +450,8 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
               variant="flushed"
               borderColor="outlineColor"
               focusBorderColor="inputFocusColor"
+              // value={watch('phone') || userInfo?.phone}
+              defaultValue={userInfo?.phone || watch('phone')}
               {...register('phone', {
                 required: '필수 입력사항 입니다.',
                 pattern: {
