@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ModalActionComponentProps } from '@/type/componentProps';
 import { Input } from '@chakra-ui/react';
-import { ModalTaskActionSelectBox, ModalTaskDeleteButton } from '@/styles/modal.styles';
-import { useQuery } from '@tanstack/react-query';
-import { getUsers } from '@/apis/task';
+import { ModalTaskActionSelectBox } from '@/styles/modal.styles';
 import ModalActionAssignee from '@/components/modal/ModalActionAssignee';
 
 const setStatusConstants = [
@@ -48,24 +46,17 @@ const setPriorityConstants = [
 ];
 
 function ModalActionComponent({ action, setTaskStatusHandler }: ModalActionComponentProps) {
-  const [str, setStr] = useState<string>('');
-  const { data, error } = useQuery(['users'], getUsers);
-
-  console.log(data, error);
-
   switch (action) {
     case 'START_AT':
       return <Input type="date" id="START_AT" onChange={setTaskStatusHandler} onChangeCapture={setTaskStatusHandler} />;
     case 'END_AT':
       return <Input type="date" id="END_AT" onChange={setTaskStatusHandler} onChangeCapture={setTaskStatusHandler} />;
     case 'ASSIGNEE':
-      return <ModalActionAssignee />;
+      return <ModalActionAssignee setTaskAssigneeHandler={setTaskStatusHandler} />;
     case 'SET_STATUS':
       return <ModalTaskActionSelectBox id="SET_STATUS" options={setStatusConstants} onChange={setTaskStatusHandler} />;
     case 'SET_PRIORITY':
       return <ModalTaskActionSelectBox options={setPriorityConstants} onChange={setTaskStatusHandler} />;
-    case 'DELETE_TASK':
-      return <ModalTaskDeleteButton>Delete Task</ModalTaskDeleteButton>;
     case 'EDIT_TASK':
       return <div>Edit Task</div>;
     default:

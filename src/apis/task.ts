@@ -20,14 +20,15 @@ export interface Data {
 }
 
 export interface Assignee {
-  userID: number;
-  profileImageURL: string;
+  fullName: string;
+  userId: number;
+  profileImageUrl: string;
 }
 
 export interface TaskOwner {
-  userID: number;
+  userId: number;
   fullName: string;
-  profileImageURL: string;
+  profileImageUrl: string;
 }
 
 export type TaskPostResponse = {
@@ -36,14 +37,30 @@ export type TaskPostResponse = {
 };
 
 export type TaskPostData = {
-  startAt: string;
-  endAt: string;
+  startAt: Date;
+  endAt: Date;
   title: string;
   desc: string;
   assignee: any[];
   priority: string;
   progress: string;
 };
+
+export interface GetUsersResponse {
+  status: number;
+  msg: string;
+  data: Data;
+}
+
+export interface Data {
+  users: User[];
+}
+
+export interface User {
+  userId: number;
+  fullName: string;
+  profileImageUrl: string;
+}
 
 export const getTaskDetail = async (taskID: number) => {
   const res = await axiosWithToken.get<TaskDetailResponse>(`/task/${taskID}`);
@@ -55,7 +72,17 @@ export const postTaskDetail = async (data: TaskPostData) => {
   return res.data;
 };
 
+export const putTaskDetail = async ({ taskId, data }: { taskId: number; data: TaskPostData }) => {
+  const res = await axiosWithToken.put<TaskPostResponse>(`/task/${taskId}`, data);
+  return res.data;
+};
+
 export const getUsers = async () => {
-  const res = await axiosWithToken.get(`/users`);
+  const res = await axiosWithToken.get<GetUsersResponse>(`/users`);
+  return res.data.data.users;
+};
+
+export const deleteTask = async (taskID: number) => {
+  const res = await axiosWithToken.delete<TaskPostResponse>(`/task/${taskID}`);
   return res.data;
 };

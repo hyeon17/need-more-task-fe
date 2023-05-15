@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { EventContentArg, EventInput, DatesSetArg } from '@fullcalendar/core';
+import { EventContentArg, EventInput } from '@fullcalendar/core';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -16,6 +16,7 @@ import { useCalendarState } from '@/store/calendarStore';
 function CalendarView() {
   const calendarRef = useRef<FullCalendar>(null);
   const { setYearStore, setMonthStore, setDateStore, getYearStore, getMonthStore } = useCalendarState();
+  const router = useRouter();
 
   const headerToolbar = {
     left: 'dayGridMonth,timeGridWeek,timeGridDay',
@@ -23,17 +24,9 @@ function CalendarView() {
     right: 'prev,next today',
   };
   const plugins = [dayGridPlugin, timeGridPlugin, interactionPlugin, bootstrap5Plugin];
-  const router = useRouter();
+
   const allEvents: EventInput[] = [];
 
-  const handleDatesSet = (eventInfo: DatesSetArg) => {
-    const calendarApi = eventInfo.view.calendar;
-    const currentDate = calendarApi.getDate();
-    const years: number = Number(dayjs(currentDate).format('YYYY'));
-    const months: number = Number(dayjs(currentDate).format('MM'));
-    setYearStore(years);
-    setMonthStore(months);
-  };
 
   const { data: events, isLoading } = useGetCalendarAPI(getYearStore(), getMonthStore());
 
@@ -57,7 +50,7 @@ function CalendarView() {
 
   const useHandleDateClick = (info: any) => {
     setDateStore(info.dateStr);
-    router.push(`/task?date=${info.dateStr}`);
+    router.push(`/tasks?date=${info.dateStr}&page=0`);
   };
 
   const renderEventContent = (eventContent: EventContentArg) => {
@@ -97,7 +90,6 @@ function CalendarView() {
             dateClick={useHandleDateClick}
             navLinks={true}
             events={allEvents}
-            datesSet={handleDatesSet}
           />
         </S.CalendarWrapper>
       )}

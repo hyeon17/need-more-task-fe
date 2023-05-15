@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import theme from './theme';
-import { Skeleton } from '@chakra-ui/react';
+import { Skeleton, Button, Input, DrawerCloseButton } from '@chakra-ui/react';
+import { CalendarIcon } from '@chakra-ui/icons';
 
 export const Container = styled.div`
   width: 1100px;
@@ -43,6 +44,7 @@ export const EventTitle = styled.div`
 
 export const EventWrapper = styled.div`
   display: flex;
+  cursor: auto;
   flex-direction: column;
   justify-content: center;
   margin: 1px 0 1px 5px;
@@ -60,9 +62,9 @@ export const EventWrapper = styled.div`
       case 'HIGH':
         return theme.warningColor;
       case 'MEDIUM':
-        return theme.inputWarningColor;
-      case 'LOW':
         return theme.successColor;
+      case 'LOW':
+        return theme.primary;
       default:
         return theme.primary;
     }
@@ -73,4 +75,53 @@ export const EventWrapper = styled.div`
 export const SkeletonWrapper = styled(Skeleton)`
   width: inherit;
   height: inherit;
+`;
+
+export const PeriodButton = styled(Button)`
+  position: fixed;
+  z-index: 2;
+  right: 20px;
+  bottom: 20px;
+  width: 60px;
+  height: 50px;
+  background-color: ${({ theme }) => theme.primary};
+  &:hover {
+    background-color: ${({ theme }) => theme.successColor};
+  }
+`;
+
+export const CalendarIcons = styled(CalendarIcon)`
+  color: ${({ theme }) => theme.white};
+  width: 80%;
+  height: 80%;
+`;
+
+export const SaveButton = styled(Button)`
+  background-color: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.white};
+  &:hover {
+    background-color: ${({ theme }) => theme.successColor};
+  }
+`;
+
+export const CancelButton = styled(Button)`
+  &:hover {
+    background-color: ${({ theme }) => theme.errorColor};
+    color: ${({ theme }) => theme.white};
+  }
+`;
+
+export const InputWrapper = styled(Input)`
+  margin-bottom: 30px;
+  &:hover,
+  &:focus{
+    border-color: ${({ theme }) => theme.primary};
+  }
+`;
+
+export const CloseButton = styled(DrawerCloseButton)`
+  &:hover {
+    background-color: ${({ theme }) => theme.white};
+    color: ${({ theme }) => theme.errorColor};
+  }
 `;

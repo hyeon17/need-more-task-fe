@@ -2,13 +2,15 @@ import { ReactNode, useEffect } from 'react';
 import { authMeAPI } from '@/apis/user';
 import { useAccessTokenStore } from '@/store/acceessTokenStore';
 import { useUserInfo } from '@/store/userInfoStore';
+import { useRouter } from 'next/router';
+import { AxiosError } from 'axios';
 
 interface AuthUserProps {
   children: ReactNode;
 }
 
 const AuthUser = ({ children }: AuthUserProps) => {
-  const { userInfo, setUserInfo } = useUserInfo();
+  const { setUserInfo } = useUserInfo();
   const { getAccessToken } = useAccessTokenStore();
   const accessToken = getAccessToken();
 

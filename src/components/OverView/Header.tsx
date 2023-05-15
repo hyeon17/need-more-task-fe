@@ -1,47 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import * as S from '@/styles/overview.styles';
 import { Tabs, TabList } from '@chakra-ui/react';
 import { useOverViewState } from '@/store/overViewStore';
 import { OverViewProps, TaskOverviewProps } from '@/type/componentProps';
+import { TabSkeletons, DateSkeletons } from '@/components/Skeleton';
 
-function Header({ date, content, isLoading }: OverViewProps) {
-  const allCount:number = content.length;
-  const todoCount:number = getCountByProgress('TODO');
-  const inProgressCount:number = getCountByProgress('IN_PROGRESS');
-  const doneCount:number = getCountByProgress('DONE');
-
-  function getCountByProgress(progress: string) {
-    return content.filter((event: TaskOverviewProps) => event.progress === progress).length;
-  }
-  const { selectedProgress, setSelectedProgress, setDisplayedData } = useOverViewState();
+function Header({ date, content, isLoading, totalCount, todoCount, inProgressCount, doneCount }: OverViewProps) {
+  const { setDisplayedData } = useOverViewState();
+  const [selectedProgress, setSelectedProgress] = useState('All');
 
   const handleTabClick = (progress: string) => {
     setSelectedProgress(progress);
-    const filteredData = progress === 'All' ? content : content.filter((event: TaskOverviewProps) => event.progress === progress);
+    const filteredData =
+      progress === 'All' ? content : content.filter((event: TaskOverviewProps) => event.progress === progress);
     setDisplayedData(filteredData);
   };
 
   return (
     <S.OverViewHeader>
       <S.OverViewDate>
-        {isLoading ? (
-          <>
-            <S.DateSkeleton></S.DateSkeleton>
-          </>
-        ) : (
-          <>{date}</>
-        )}
+        {isLoading ? <DateSkeletons /> : <>{Array.isArray(date) ? `${date[0]} ~ ${date[1]}` : date}</>}
       </S.OverViewDate>
       <S.OverViewSorted>
         <Tabs variant="soft-rounded">
           <TabList>
             {isLoading ? (
-              <>
-                <S.TabSkeleton></S.TabSkeleton>
-                <S.TabSkeleton></S.TabSkeleton>
-                <S.TabSkeleton></S.TabSkeleton>
-                <S.TabSkeleton></S.TabSkeleton>
-              </>
+              <TabSkeletons />
             ) : (
               <>
                 {['All', 'TODO', 'IN_PROGRESS', 'DONE'].map((progress) => (
@@ -53,7 +37,7 @@ function Header({ date, content, isLoading }: OverViewProps) {
                     {progress}
                     <S.IndexCount>
                       {progress === 'All'
-                        ? allCount
+                        ? totalCount
                         : progress === 'TODO'
                         ? todoCount
                         : progress === 'IN_PROGRESS'

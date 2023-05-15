@@ -36,6 +36,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     register,
     formState: { errors },
     setValue,
+    reset,
   } = useForm<any>();
 
   const queryClient = useQueryClient();
@@ -124,27 +125,35 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
 
   // 버튼
   const handleEditProfile = () => {
-    // || userInfo?.userId == 1
     if (userInfo?.userId !== currentLoginUserInfo?.userId) {
+      // onCloseCheckPassword()
       toast({
         title: '수정 권한이 없습니다.',
         status: 'error',
-        duration: 9000,
+        duration: 3000,
         isClosable: true,
       });
       return;
     }
   };
 
+  const formatPhoneNumber = (value: any) => {
+    let cleaned = ('' + value).replace(/\D/g, '');
+    let match = cleaned.match(/^(\d{3})(\d{4})(\d{4})$/);
+    if (match) {
+      return `${match[1]}-${match[2]}-${match[3]}`;
+    }
+    return value;
+  };
+
   const handleCancelProfileSave = () => {
+    reset();
     setFullNameValue(null);
     setEmailValue(null);
     setEdit(false);
   };
 
   const onSuccessCheckPassword = (data: any) => {
-    console.log('checkpassword', data);
-
     onCloseCheckPassword();
     setEdit(true);
 
@@ -152,7 +161,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
       title: '비밀번호 확인 성공.',
       description: '프로필 수정이 가능합니다.',
       status: 'success',
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
     });
   };
@@ -161,7 +170,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     toast({
       title: '비밀번호 확인 실패.',
       status: 'error',
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
     });
   };
@@ -180,7 +189,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     toast({
       title: '프로필 업데이트 성공.',
       status: 'success',
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
     });
     setShowPassword(false);
@@ -194,7 +203,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
     toast({
       title: '프로필 업데이트 실패.',
       status: 'error',
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
     });
   };
@@ -204,8 +213,6 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
   });
 
   const onClickSave = (data: any) => {
-    console.log('data>>', data);
-
     if (Object.keys(errors).length === 0) {
       setFullNameValue(watch('fullName'));
       setEmailValue(watch('email'));
@@ -216,9 +223,9 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
         department,
         joinCompanyYear,
         profileId: newProfileId,
-        password: data.password,
-        passwordCheck: data.passwordCheck,
-        phone: `${data.phone1}-${data.phone2}-${data.phone3}`,
+        password: data.password ? data.password : '',
+        passwordCheck: data.passwordCheck ? data.passwordCheck : '',
+        phone: data.phone,
       });
     }
   };
@@ -232,7 +239,12 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
   return (
     <form onSubmit={onSubmit}>
       <P.AccountWrapper>
-        <h1>계정 정보</h1>
+        <P.AccountHeader>
+          <h1>계정 정보</h1>
+          {userInfo?.userId === currentLoginUserInfo?.userId && (
+            <Button isDisabled={true}>프로필 업데이트 버튼은 아래에 있습니다.</Button>
+          )}
+        </P.AccountHeader>
         {/* 이메일 */}
         <A.InputContainer>
           <FormLabel htmlFor="email">
@@ -257,15 +269,28 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
           <FormLabel>프로필</FormLabel>
           <A.ProfileFigures>
             <ProfileImage src={profileImage || userInfo?.profileImageUrl} width={150} height={150} />
-            {/* {values['profileIMG'] && <Image width={150} height={150} src={values['profileIMG']} alt="프로필" />} */}
           </A.ProfileFigures>
           <A.ProfileIMGWrapper>
+            {edit ? (
+              <Button
+                as="label" // 버튼으로 사용하기 위해 <label> 요소로 지정
+                htmlFor="profileImageInput" // 파일 입력 필드와 연결
+                colorScheme="teal"
+                variant="outline"
+                cursor="pointer" // 마우스 커서를 포인터로 변경하여 클릭 가능한 모양으로 만듦
+                isDisabled={!edit}
+              >
+                프로필 이미지 업로드
+              </Button>
+            ) : (
+              ''
+            )}
             <Input
               type="file"
+              id="profileImageInput" // label의 htmlFor 속성과 연결
               ref={fileInputRef}
               onChange={uploadImage}
-              colorScheme="teal"
-              variant="outline"
+              display="none" // 실제 파일 입력 필드는 보이지 않도록 함
               accept=".jpg, .jpeg, .webp, .png, .gif, .svg"
               isDisabled={!edit}
             />
@@ -324,7 +349,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
             <Input
               isDisabled={!edit}
               // value={fullNameValue === null ? userInfo?.fullName || '' : fullNameValue}
-              // value={watch('fullName')}
+              // value={watch('fullName') || userInfo?.fullName}
               defaultValue={userInfo?.fullName || watch('fullName')}
               id="fullName"
               placeholder="이름을 입력하세요"
@@ -359,7 +384,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
                 focusBorderColor="inputFocusColor"
                 type={showPassword ? 'text' : 'password'}
                 {...register('password', {
-                  required: '필수 입력사항 입니다.',
+                  // required: '필수 입력사항 입니다.',
                   pattern: {
                     value: /^[a-zA-Z0-9.\-]{6,16}$/,
                     message: '영어 소문자 6자~16자, (특수문자 . - 만 허용)',
@@ -392,7 +417,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
                 focusBorderColor="inputFocusColor"
                 type={showConfirmPassword ? 'text' : 'password'}
                 {...register('passwordCheck', {
-                  required: '필수 입력사항 입니다.',
+                  // required: '필수 입력사항 입니다.',
                   validate: (val: string) => {
                     if (watch('password') !== val) {
                       return '입력하신 비밀번호/비밀번호 확인이 일치하지 않습니다.';
@@ -415,61 +440,28 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
       {/* 연락처 */}
       <A.InputContainer>
         <FormControl isInvalid={Boolean(errors.phone)}>
-          <FormLabel htmlFor="phone1">연락처</FormLabel>
+          <FormLabel htmlFor="phone">연락처</FormLabel>
           <A.PhoneNumWrapper>
             <Input
               isDisabled={!edit}
-              id="phone1"
-              placeholder="010"
+              id="phone"
+              type="tel"
+              placeholder="010-xxxx-xxxx"
               variant="flushed"
               borderColor="outlineColor"
               focusBorderColor="inputFocusColor"
-              type="number"
-              maxLength={3}
-              defaultValue={userInfo?.phone.slice(0, 3) || watch('phon1')}
-              {...register('phone1', {
+              // value={watch('phone') || userInfo?.phone}
+              defaultValue={userInfo?.phone || watch('phone')}
+              {...register('phone', {
                 required: '필수 입력사항 입니다.',
                 pattern: {
-                  value: /^\d{3}$/,
-                  message: '3자리 숫자만 입력 가능합니다.',
+                  value: /^[0-9]{3}-[0-9]{4}-[0-9]{4}$/,
+                  message: '올바른 형식으로 입력해주세요. 예) 010-0000-0000',
                 },
               })}
-            />
-            <Input
-              isDisabled={!edit}
-              id="phone2"
-              placeholder="xxxx"
-              variant="flushed"
-              borderColor="outlineColor"
-              focusBorderColor="inputFocusColor"
-              type="number"
-              maxLength={4}
-              defaultValue={userInfo?.phone.slice(4, 8) || watch('phon2')}
-              {...register('phone2', {
-                required: '필수 입력사항 입니다.',
-                pattern: {
-                  value: /^\d{4}$/,
-                  message: '4자리 숫자만 입력 가능합니다.',
-                },
-              })}
-            />
-            <Input
-              isDisabled={!edit}
-              id="phone3"
-              placeholder="xxxx"
-              variant="flushed"
-              borderColor="outlineColor"
-              focusBorderColor="inputFocusColor"
-              type="number"
-              maxLength={4}
-              defaultValue={userInfo?.phone.slice(9, 13) || watch('phon3')}
-              {...register('phone3', {
-                required: '필수 입력사항 입니다.',
-                pattern: {
-                  value: /^\d{4}$/,
-                  message: '4자리 숫자만 입력 가능합니다.',
-                },
-              })}
+              onChange={(e) => {
+                e.target.value = formatPhoneNumber(e.target.value);
+              }}
             />
           </A.PhoneNumWrapper>
           <FormErrorMessage>{errors.phone && errors.phone?.message?.toString()}</FormErrorMessage>
@@ -477,7 +469,7 @@ function ProfileAccountInfo({ userInfo, currentLoginUserInfo }: IAccountInfo) {
       </A.InputContainer>
 
       {/* Edit 버튼 */}
-      {(userInfo?.userId === currentLoginUserInfo?.userId || userInfo?.userId === 1) && (
+      {userInfo?.userId === currentLoginUserInfo?.userId && (
         <P.ButtonWrapper>
           {edit ? (
             <P.UpdateButton

@@ -1,6 +1,7 @@
 import { DraggableProvided, DroppableProvided } from 'react-beautiful-dnd';
 import { TaskData } from '@/apis/kanban';
 import { actionType, StatusType } from '@/constant/TaskOverview';
+import { TaskPostData } from '@/apis/task';
 
 export interface KanbanDroppableItemProps {
   status: string;
@@ -23,13 +24,31 @@ export interface ModalActionLayoutProps {
 
 export interface ModalActionComponentProps {
   action: actionType;
-  setTaskStatusHandler: (e: unknown) => void;
+  setTaskStatusHandler?: (e: unknown) => void;
+  id?: number;
+}
+
+export interface ModalActionEditProps {
+  action: actionType;
+  id: number;
+  taskData: TaskPostData;
+  refetch: any;
+}
+
+export interface ModalActionAssigneeProps {
+  setTaskAssigneeHandler?: (e: unknown) => void;
 }
 
 export interface OverViewProps {
   date?: any;
-  content: any;
-  isLoading: boolean;
+  content?: any;
+  isLoading?: boolean;
+  isFetching?: any;
+  fetchNextPage?: any;
+  totalCount?: number;
+  todoCount?: number;
+  inProgressCount?: number;
+  doneCount?: number;
 }
 
 export interface TaskOverviewProps {
@@ -38,8 +57,11 @@ export interface TaskOverviewProps {
   progress: string;
   id: number;
   assignee: Assignee[];
+  startAt: string;
+  endAt: string;
 }
 export interface Assignee {
   userId: number;
   profileImageUrl: string;
+  name: string;
 }

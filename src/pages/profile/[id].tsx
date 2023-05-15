@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '@/components/Layout';
 import * as P from '@/styles/profile.styles';
 import ProfileImage from '@/components/CommonHeader/ProfileImage';
+import CommonFooter from '@/components/common/CommonFooter';
 import { useUserInfo } from '@/store/userInfoStore';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import ProfileAccountInfo from '@/components/Profile/ProfileAccountInfo';
@@ -11,19 +12,44 @@ import { axiosInstance } from '@/apis/configs';
 import { useRouter } from 'next/router';
 import { getUserInfoAPI } from '@/apis/user';
 import { useAccessTokenStore } from '@/store/acceessTokenStore';
-import { Box, Skeleton, SkeletonCircle, SkeletonText, Stack } from '@chakra-ui/react';
+import { Box, Skeleton, SkeletonCircle, SkeletonText, Stack, useToast } from '@chakra-ui/react';
+import Head from 'next/head';
+import ProfileRoleInfo from '@/components/Profile/ProfileRoleInfo';
 
-function ProfilePage({ id }: { id: string }) {
+interface IProfilePage {
+  id: string;
+}
+
+function ProfilePage({ id }: IProfilePage) {
+  const toast = useToast();
   const router = useRouter();
   const { userInfo: currentLoginUserInfo } = useUserInfo();
+
   const { getAccessToken } = useAccessTokenStore();
   const accessToken = getAccessToken();
 
+  const [tab, setTab] = useState('UserInfoTab');
+
   const { data: userInfo } = accessToken && id ? getUserInfoAPI(id) : { data: null };
-  console.log('userInfo>>>', userInfo);
+
+  useEffect(() => {
+    if (!accessToken) {
+      toast({
+        title: '인증되지 않은 사용자는 접근할 수 없습니다.',
+        description: '로그인 페이지로 이동합니다.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      router.push('/login');
+    }
+  }, [accessToken]);
 
   return (
     <Layout hasHeader>
+      <Head>
+        <title>Need More Task · {userInfo?.data.fullName} 프로필</title>
+      </Head>
       <P.Container>
         <P.LeftContainer>
           <P.AsideWrapper>
@@ -43,20 +69,23 @@ function ProfilePage({ id }: { id: string }) {
             <P.NavWrapper>
               <nav>
                 <ul>
-                  <li>
+                  <li onClick={() => setTab('UserInfoTab')} className={tab === 'UserInfoTab' ? 'selected' : ''}>
                     <AccountCircleOutlinedIcon />
                     <div>
                       <h4>계정 정보</h4>
                       <span>프로필 사진, 이름</span>
                     </div>
                   </li>
-                  {/* <li>
-                    <AccountCircleOutlinedIcon />
-                    <div>
-                      <h4>계정 정보</h4>
-                      <span>프로필 사진, 이름</span>
-                    </div>
-                  </li> */}
+
+                  {currentLoginUserInfo?.role === 'ADMIN' && (
+                    <li onClick={() => setTab('UserRoleTab')} className={tab === 'UserRoleTab' ? 'selected' : ''}>
+                      <AccountCircleOutlinedIcon />
+                      <div>
+                        <h4>사용자 권한 설정</h4>
+                        {/* <span>프로필 사진, 이름</span> */}
+                      </div>
+                    </li>
+                  )}
                 </ul>
               </nav>
             </P.NavWrapper>
@@ -64,12 +93,28 @@ function ProfilePage({ id }: { id: string }) {
         </P.LeftContainer>
 
         {/* 개인정보 */}
-        <P.RightContainer>
-          {userInfo && currentLoginUserInfo && (
-            <ProfileAccountInfo userInfo={userInfo.data} currentLoginUserInfo={currentLoginUserInfo} />
-          )}
-        </P.RightContainer>
+
+        {userInfo && currentLoginUserInfo && (
+          <P.RightContainer>
+            {tab === 'UserInfoTab' && (
+              <ProfileAccountInfo userInfo={userInfo.data} currentLoginUserInfo={currentLoginUserInfo} />
+            )}
+
+            {currentLoginUserInfo.role === 'ADMIN' ? (
+              <>
+                {tab === 'UserRoleTab' && (
+                  <ProfileRoleInfo userInfo={userInfo.data} currentLoginUserInfo={currentLoginUserInfo} />
+                )}
+              </>
+            ) : (
+              ''
+            )}
+          </P.RightContainer>
+        )}
       </P.Container>
+
+      {/* common footer */}
+      <CommonFooter />
     </Layout>
   );
 }

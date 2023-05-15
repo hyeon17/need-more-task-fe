@@ -19,6 +19,7 @@ import { useAccessTokenStore } from '@/store/acceessTokenStore';
 
 function Login() {
   const router = useRouter();
+  const toast = useToast();
   const { onSaveAccessToken } = useAccessTokenStore();
 
   const [show, setShow] = useState(false);
@@ -33,8 +34,6 @@ function Login() {
     formState: { errors },
   } = useForm<any>();
 
-  const toast = useToast();
-
   const onError = (error: AxiosError) => {
     console.error('error>>', error);
 
@@ -42,7 +41,7 @@ function Login() {
       title: '로그인에 실패하였습니다.',
       description: '이메일과 비밀번호를 다시 한 번 확인해 주세요.',
       status: 'error',
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
     });
   };
@@ -51,11 +50,12 @@ function Login() {
     toast({
       title: '로그인 성공!',
       status: 'success',
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
     });
     onSaveAccessToken(data.headers.authorization);
-    router.replace('/kanban');
+
+    router.push('/calendar').then(() => router.reload());
   };
 
   const { mutate, isLoading } = loginAPI({ onSuccess, onError });

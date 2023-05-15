@@ -15,7 +15,6 @@ const TaskStatusGraph = ({ data }: ITaskStatusGraph) => {
   const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number } | null>(null);
 
   const taskDoneData: taskDoneData[] = [];
-  // console.log(taskDoneData);
 
   for (let i = 0; i < 7; i++) {
     taskDoneData.push({
@@ -23,7 +22,6 @@ const TaskStatusGraph = ({ data }: ITaskStatusGraph) => {
       y: data[i].count,
     });
   }
-  // console.log('taskDoneData>>', taskDoneData);
 
   const svgRefA = useRef<SVGSVGElement>(null);
 

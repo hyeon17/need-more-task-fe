@@ -131,6 +131,9 @@ export const ProfileWrapper = styled.div`
 
 export const ProfileIMGWrapper = styled.div`
   margin-bottom: 30px;
+
+  display: flex;
+  justify-content: center;
 `;
 
 export const ProfileFigure = styled.figure`

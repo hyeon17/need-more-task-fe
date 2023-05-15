@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import dayjs from 'dayjs';
 
 type CalendarState = {
   year: number;
@@ -21,7 +22,7 @@ const today = new Date();
 const calendarState = create<CalendarStore>((set, get) => ({
   year: today.getFullYear(),
   month: today.getMonth() + 1,
-  date: '',
+  date: dayjs(today).format('YYYY-MM-DD'),
   getYearStore: () => get().year,
   getMonthStore: () => get().month,
   getDateStore: () => get().date,

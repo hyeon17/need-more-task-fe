@@ -1,5 +1,5 @@
 import { axiosWithToken } from '@/apis/configs';
-import { PriorityType, StatusType } from '@/constant/TaskOverview';
+import { PriorityType } from '@/constant/TaskOverview';
 
 export interface KanbanBoardDataInterface {
   status: number;
@@ -20,7 +20,7 @@ export interface TaskData {
   desc: string;
   assignee: Assignee[];
   priority: PriorityType;
-  progress: StatusType;
+  progress: TaskProgress;
 }
 
 export interface Assignee {
@@ -31,10 +31,21 @@ export interface Assignee {
 export interface TaskOwner {
   userId: number;
   fullName: string;
-  profileImageURL: string;
+  profileImageUrl: string;
 }
+
+export type MoveTaskToDifferentKanban = {
+  status: number;
+  msg: string;
+  data: '';
+};
 
 export const getKanbanBoard = async () => {
   const res = await axiosWithToken.get<KanbanBoardDataInterface>(`/kanbans`);
+  return res.data;
+};
+
+export const moveTaskToDifferentKanban = async (data: TaskData) => {
+  const res = await axiosWithToken.put<MoveTaskToDifferentKanban>(`/task/${data.taskId}`, { ...data });
   return res.data;
 };

@@ -8,13 +8,8 @@ import {
   InputRightElement,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
-  ModalFooter,
-  ModalHeader,
   ModalOverlay,
-  Text,
-  useDisclosure,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -57,7 +52,6 @@ function CheckPasswordModal({
   const onClickSave = (data: any) => {
     if (Object.keys(errors).length === 0) {
       // 저장 api
-      console.log('비밀번호 검증 api');
       validatePasswordMutate({ password: watch('password'), passwordCheck: watch('confirmPassword') });
     }
   };

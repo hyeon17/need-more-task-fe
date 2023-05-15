@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Tab, Card, CardBody, Badge, Skeleton } from '@chakra-ui/react';
+import { Tab, Card, CardBody, Badge, Skeleton, Button } from '@chakra-ui/react';
 import CommonAvatar from '@/components/CommonAvatar/CommonAvatar';
 import theme from './theme';
 
@@ -73,6 +73,7 @@ export const OverViewContent = styled.div`
 `;
 export const Cards = styled(Card)`
   margin: 15px;
+  cursor: pointer;
 `;
 export const CardWrapper = styled(CardBody)`
   display: flex;
@@ -94,6 +95,7 @@ export const AvatarWrapper = styled.div`
   justify-content: end;
   align-items: center;
   margin: 0 20px;
+  pointer-events: none;
 `;
 export const CardAvatar = styled(CommonAvatar)`
   display: flex;
@@ -149,4 +151,42 @@ export const CardSkeleton = styled(Skeleton)`
   width: 1168px;
   height: 90px;
   margin: 10px auto;
+`;
+
+export const NoneWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 80px;
+  font-size: 20px;
+  font-weight: bold;
+  color: ${({ theme }) => theme.textColor};
+`;
+
+export const NoneButton = styled(Button)`
+  width: 200px;
+  height: 40px;
+  margin-top: 30px;
+  background-color: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.white};
+  &:hover {
+    background-color: ${({ theme }) => theme.successColor};
+    color: ${({ theme }) => theme.white};
+  }
+`;
+
+export const SpanWord = styled.span`
+  color: ${({ theme }) => theme.errorColor};
+`;
+
+export const LoadMoreWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0;
+`;
+export const LoadMoreButton = styled(Button)`
 `;

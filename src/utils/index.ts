@@ -7,7 +7,7 @@ export function classnames(...args: string[]) {
 }
 
 export const taskTitle = (title: string) => {
-  return title.length > 30 ? title.substring(0, 30).concat(' ...' + '더보기') : title;
+  return title.length > 12 ? title.substring(0, 12).concat(' ...' + '더보기') : title;
 };
 
 export const setTagColor = (value: string) => {
@@ -113,7 +113,7 @@ export const teamOptions = [
   { label: '경영', value: 'MANAGEMENT' },
   { label: '무역', value: 'TRADE' },
   { label: '영업', value: 'SALES' },
-  { label: '서비스', value: 'SERVICES' },
+  { label: '서비스', value: 'SERVICE' },
   { label: '생산', value: 'PRODUCTION' },
   { label: '교육', value: 'EDUCATION' },
   { label: '마케팅', value: 'MARKETING' },
@@ -131,7 +131,7 @@ export const TeamEnum = (value: string | undefined) => {
       return '무역';
     case TeamType.SALES:
       return '영업';
-    case TeamType.SERVICES:
+    case TeamType.SERVICE:
       return '서비스';
     case TeamType.PRODUCTION:
       return '생산';
