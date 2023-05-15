@@ -1,25 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '@/components/Layout';
-import { Heading, Skeleton, Stack } from '@chakra-ui/react';
+import { Heading, Skeleton, Stack, useToast } from '@chakra-ui/react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import KanbanDroppable from '@/components/kanban/KanbanDroppable';
 import { getKanbanBoard, moveTaskToDifferentKanban, TaskData, TaskProgress } from '@/apis/kanban';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { StatusType } from '@/constant/TaskOverview';
 import { useKanbanBoardState } from '@/store/kanbanBoardStore';
+import { useRouter } from 'next/router';
+import { useUserInfo } from '@/store/userInfoStore';
+import { useAccessTokenStore } from '@/store/acceessTokenStore';
+import Head from 'next/head';
 
 export type KanbanDataType = {
   [key in TaskProgress as string]: TaskData[];
 };
 
 function Kanban() {
+  const router = useRouter();
   const { data, isLoading, refetch } = useQuery(['kanban'], getKanbanBoard);
+  const { kanban, onAddKanban } = useKanbanBoardState();
+  const { getAccessToken } = useAccessTokenStore();
+  const accessToken = getAccessToken();
+  const toast = useToast();
   const { mutate } = useMutation(moveTaskToDifferentKanban, {
     onSuccess: async () => {
       await refetch();
     },
   });
-  const { kanban, onAddKanban } = useKanbanBoardState();
+
+  useEffect(() => {
+    if (!accessToken) {
+      toast({
+        title: '인증되지 않은 사용자는 접근할 수 없습니다.',
+        description: '로그인 페이지로 이동합니다.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      router.push('/login');
+    }
+  }, [accessToken]);
 
   const reorderByStatus = (data: TaskData[]): KanbanDataType => {
     const result: KanbanDataType = {
@@ -78,23 +99,28 @@ function Kanban() {
   };
   console.log('kanban>>', kanban);
   return (
-    <Layout hasHeader>
-      <Heading size="xl" mb="4" padding="0 2rem">
-        Kanban Board
-      </Heading>
-      <Stack direction="row" alignItems="start" spacing="6" maxHeight="80vh" minWidth="1200px">
-        {data && (
-          <DragDropContext onDragEnd={onDragEnd}>
-            {Object.keys(kanban).map((progress) => (
-              <Droppable droppableId={progress} key={progress}>
-                {(provided) => <KanbanDroppable status={progress} provided={provided} data={kanban[progress]} />}
-              </Droppable>
-            ))}
-          </DragDropContext>
-        )}
-        {isLoading && [1, 2, 3].map((item) => <Skeleton key={item} height="400px" width="100%" />)}
-      </Stack>
-    </Layout>
+    <>
+      <Head>
+        <title>Kanban Board</title>
+      </Head>
+      <Layout hasHeader>
+        <Heading size="xl" mb="4" padding="0 2rem">
+          Kanban Board
+        </Heading>
+        <Stack direction="row" alignItems="start" spacing="6" maxHeight="80vh" minWidth="1200px">
+          {data && (
+            <DragDropContext onDragEnd={onDragEnd}>
+              {Object.keys(kanban).map((progress) => (
+                <Droppable droppableId={progress} key={progress}>
+                  {(provided) => <KanbanDroppable status={progress} provided={provided} data={kanban[progress]} />}
+                </Droppable>
+              ))}
+            </DragDropContext>
+          )}
+          {isLoading && [1, 2, 3].map((item) => <Skeleton key={item} height="400px" width="100%" />)}
+        </Stack>
+      </Layout>
+    </>
   );
 }
 
