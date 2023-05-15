@@ -40,7 +40,6 @@ function StepThree() {
   };
 
   const onError = (error: any) => {
-    // console.log('error>>>', error?.response?.data.data.key);
     const errorKey = error?.response?.data.data.key;
 
     // const errorValue = error?.response?.data.data.value;
@@ -82,8 +81,6 @@ function StepThree() {
 
     if (Object.keys(errors).length === 0) {
       onSaveSignup({ ...me });
-
-      // console.log('me>>>', me);
 
       joinMutate({ ...me, phone: watch('phone'), profileId: me?.profileId || 1 } as IJoin);
     }

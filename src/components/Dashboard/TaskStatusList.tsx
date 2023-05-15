@@ -7,7 +7,6 @@ import { TaskStatusTitle } from '@/type/enum/TaskStatusEnum';
 
 function TaskStatusList() {
   const { data: taskData, isLoading } = getTaskProgressAPI();
-  console.log('taskData>>>', taskData);
 
   return (
     <D.TaskStatusContainer>
