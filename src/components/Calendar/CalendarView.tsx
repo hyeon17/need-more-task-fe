@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { EventContentArg, EventInput, DatesSetArg } from '@fullcalendar/core';
+import { EventContentArg, EventInput } from '@fullcalendar/core';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -27,14 +27,6 @@ function CalendarView() {
 
   const allEvents: EventInput[] = [];
 
-  const handleDatesSet = (eventInfo: DatesSetArg) => {
-    const calendarApi = eventInfo.view.calendar;
-    const currentDate = calendarApi.getDate();
-    const years: number = Number(dayjs(currentDate).format('YYYY'));
-    const months: number = Number(dayjs(currentDate).format('MM'));
-    setYearStore(years);
-    setMonthStore(months);
-  };
 
   const { data: events, isLoading } = useGetCalendarAPI(getYearStore(), getMonthStore());
 
@@ -98,7 +90,6 @@ function CalendarView() {
             dateClick={useHandleDateClick}
             navLinks={true}
             events={allEvents}
-            datesSet={handleDatesSet}
           />
         </S.CalendarWrapper>
       )}

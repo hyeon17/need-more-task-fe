@@ -4,12 +4,13 @@ import { useOverViewState } from '@/store/overViewStore';
 import { OverViewProps, TaskOverviewProps } from '@/type/componentProps';
 import { useRouter } from 'next/router';
 import { CardSkeletons } from '@/components/Skeleton';
+import { useModalState } from '@/store/modalStore';
 
 function Content({ content, isLoading, isFetching, fetchNextPage }: OverViewProps) {
   const { displayedData } = useOverViewState();
   const data = displayedData ? displayedData : content;
   const router = useRouter();
-  
+  const { onSetModalId, onOpenOverView } = useModalState();
   // 무한 스크롤
   const bottom = useRef(null);
   useEffect(() => {
@@ -41,6 +42,12 @@ function Content({ content, isLoading, isFetching, fetchNextPage }: OverViewProp
     router.push(`/kanban`);
   };
 
+  const handleOpenTaskOverview = (taskId: string) => {
+    onSetModalId(taskId);
+    onOpenOverView();
+  };
+
+
   return (
     <S.OverViewContent>
       {isLoading ? (
@@ -49,7 +56,7 @@ function Content({ content, isLoading, isFetching, fetchNextPage }: OverViewProp
         <>
           {data ? (
             data.map((event: TaskOverviewProps) => (
-              <S.Cards variant={'outline'} key={event.id}>
+              <S.Cards variant={'outline'} key={event.id} onClick={() => handleOpenTaskOverview(event.id.toString())}>
                 <S.CardWrapper>
                   <S.CardTitle>{event.title}</S.CardTitle>
                   <S.AvatarWrapper>

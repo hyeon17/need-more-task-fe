@@ -44,8 +44,8 @@ function CommonHeader() {
                 Kanban
               </li>
             </Link>
-            <Link href={`/calendar`}>
-              <li className={pathName === '/calendar' ? 'selected' : ''} onClick={storeInit}>
+            <Link href={`/`}>
+              <li className={pathName === '/' ? 'selected' : ''} onClick={storeInit}>
                 Calendar
               </li>
             </Link>

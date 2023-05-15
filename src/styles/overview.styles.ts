@@ -73,6 +73,7 @@ export const OverViewContent = styled.div`
 `;
 export const Cards = styled(Card)`
   margin: 15px;
+  cursor: pointer;
 `;
 export const CardWrapper = styled(CardBody)`
   display: flex;
@@ -94,6 +95,7 @@ export const AvatarWrapper = styled.div`
   justify-content: end;
   align-items: center;
   margin: 0 20px;
+  pointer-events: none;
 `;
 export const CardAvatar = styled(CommonAvatar)`
   display: flex;

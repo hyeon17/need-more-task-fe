@@ -22,8 +22,8 @@ function Sidebar() {
   const router = useRouter();
 
   const handleSave = () => {
-    startAt === endAt
-      ? alert('시작일과 종료일이 같습니다.')
+    startAt > endAt
+      ? alert('시작일이 종료일보다 늦습니다.')
       : (setStartAtStore(startAt),
         setEndAtStore(endAt),
         onClose(),

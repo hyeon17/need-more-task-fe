@@ -44,6 +44,7 @@ export const EventTitle = styled.div`
 
 export const EventWrapper = styled.div`
   display: flex;
+  cursor: auto;
   flex-direction: column;
   justify-content: center;
   margin: 1px 0 1px 5px;
@@ -61,9 +62,9 @@ export const EventWrapper = styled.div`
       case 'HIGH':
         return theme.warningColor;
       case 'MEDIUM':
-        return theme.inputWarningColor;
-      case 'LOW':
         return theme.successColor;
+      case 'LOW':
+        return theme.primary;
       default:
         return theme.primary;
     }
