@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Layout from '@/components/Layout';
 import { useGetPeriodTasks } from '@/apis/overview';
 import Header from '@/components/OverView/Header';
@@ -8,22 +8,43 @@ import Head from 'next/head';
 import { TaskOverviewProps } from '@/type/componentProps';
 import { useSideBarState } from '@/store/sideBarStore';
 import { useOverViewState } from '@/store/overViewStore';
+import { useRouter } from 'next/router';
+import { useAccessTokenStore } from '@/store/acceessTokenStore';
+import { useToast } from '@chakra-ui/react';
 
 function PeriodOverview() {
   const { getStartAtStore, getEndAtStore } = useSideBarState();
-  const { currentPage, setCurrentPage } = useOverViewState();
+  const { currentPage, setCurrentPage, getTotalPage } = useOverViewState();
   const allEvents: TaskOverviewProps[] = [];
+  const router = useRouter();
+  const { getAccessToken } = useAccessTokenStore();
+  const accessToken = getAccessToken();
+  const toast = useToast();
+
+  useEffect(() => {
+    if (!accessToken) {
+      toast({
+        title: '인증되지 않은 사용자는 접근할 수 없습니다.',
+        description: '로그인 페이지로 이동합니다.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      router.push('/login');
+    }
+  }, [accessToken]);
 
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading, isError, isSuccess, error } = useGetPeriodTasks();
+
   const handleFetchNextPage = () => {
-    setCurrentPage(currentPage + 1);
-    if (hasNextPage) {
+    console.log(currentPage, getTotalPage(), hasNextPage);
+    if (hasNextPage && currentPage !== getTotalPage()) {
+      setCurrentPage(currentPage + 1);
       fetchNextPage({ pageParam: currentPage + 1 });
     }
   };
 
   if (data) {
-    console.log(data);
     data.pages.forEach((page) => {
       const datas: TaskOverviewProps[] = page.data.tasks.map((event: TaskOverviewProps) => ({
         title: event.title,
