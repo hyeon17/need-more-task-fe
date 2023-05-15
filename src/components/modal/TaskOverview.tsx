@@ -1,4 +1,4 @@
-import React, { LegacyRef, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Avatar, Button, Heading, ModalBody, ModalHeader, Stack, Tag, Text } from '@chakra-ui/react';
 import { useModalState } from '@/store/modalStore';
 import * as S from '@/styles/modal.styles';

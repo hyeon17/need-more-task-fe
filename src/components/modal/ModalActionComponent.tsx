@@ -1,10 +1,8 @@
 import React from 'react';
 import { ModalActionComponentProps } from '@/type/componentProps';
 import { Input } from '@chakra-ui/react';
-import { ModalTaskActionSelectBox, ModalTaskDeleteButton } from '@/styles/modal.styles';
+import { ModalTaskActionSelectBox } from '@/styles/modal.styles';
 import ModalActionAssignee from '@/components/modal/ModalActionAssignee';
-import { useMutation } from '@tanstack/react-query';
-import { deleteTask } from '@/apis/task';
 
 const setStatusConstants = [
   {
