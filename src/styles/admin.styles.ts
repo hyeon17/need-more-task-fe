@@ -1,11 +1,15 @@
-import { Button, Checkbox, Input, PopoverBody, PopoverContent } from '@chakra-ui/react';
+import { Button, Input, PopoverBody, PopoverContent } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { Select } from 'chakra-react-select';
 
-export const Container = styled.div`
+interface ContainerProps {
+  minWidth?: boolean;
+  padding?: boolean;
+}
+
+export const Container = styled.div<ContainerProps>`
   width: 100%;
-  min-width: 1200px;
-  padding: 0 60px;
+  min-width: ${(props) => (props.minWidth ? '1200px' : 'auto')};
+  padding: ${(props) => (props.padding ? '0 60px' : '0')};
 `;
 export const ManageRoleContainer = styled.div`
   margin-top: 24px;
@@ -37,10 +41,10 @@ export const AdminH5 = styled.div`
 
 // select header
 export const SelectHeaderWrapper = styled.div`
-  /* border: 1px solid; */
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
+  height: 42px;
 
   & > span {
     margin-right: 20px;
