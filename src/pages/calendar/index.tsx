@@ -8,7 +8,7 @@ import { useAccessTokenStore } from '@/store/acceessTokenStore';
 import { useToast } from '@chakra-ui/react';
 import { useEffect } from 'react';
 
-const ComponentsWithNoSSR = dynamic(() => import('@/components/Calendar/CalendarView'), { ssr: false });
+const CalendarView = dynamic(() => import('@/components/Calendar/CalendarView'), { ssr: false });
 
 function CalendarPage() {
   const router = useRouter();
@@ -35,8 +35,8 @@ function CalendarPage() {
         <title>Need More Task · Calendar</title>
       </Head>
       <Layout hasHeader>
-        <ComponentsWithNoSSR />
-        <Sidebar/>
+        <CalendarView />
+        <Sidebar />
       </Layout>
     </>
   );

@@ -15,6 +15,7 @@ import { useOverViewState } from '@/store/overViewStore';
 function CommonHeader() {
   const router = useRouter();
   const { userInfo } = useUserInfo();
+
   const overViewState = useOverViewState();
 
   const pathName = router.pathname;
