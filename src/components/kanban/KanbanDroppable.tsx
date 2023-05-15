@@ -8,10 +8,11 @@ import { setStatusToKorean } from '@/utils';
 import * as S from '@/styles/kanban.styles';
 
 function KanbanDroppable({ provided, status, data }: KanbanDroppableItemProps) {
-  const { onOpenCreate, onSetModalId } = useModalState();
-
+  const { onOpenCreate, onSetModalId, onOpenCreateProgress } = useModalState();
+  console.log(status);
   const handelCreateModal = () => {
     onSetModalId(status);
+    onOpenCreateProgress(status as 'TODO' | 'IN_PROGRESS' | 'DONE' | null);
     onOpenCreate();
   };
   return (
