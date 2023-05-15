@@ -17,8 +17,6 @@ interface IAdmin {
 }
 
 function Admin({ userInfo }: IAdmin) {
-  console.log('userInfo>>>', userInfo);
-
   const toast = useToast();
   const queryClient = useQueryClient();
 
