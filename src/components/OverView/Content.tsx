@@ -1,14 +1,41 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import * as S from '@/styles/overview.styles';
 import { useOverViewState } from '@/store/overViewStore';
 import { OverViewProps, TaskOverviewProps } from '@/type/componentProps';
 import { useRouter } from 'next/router';
+import { CardSkeletons } from '@/components/Skeleton';
 
-function Content({ content, isLoading, totalCount }: OverViewProps) {
+function Content({ content, isLoading, isFetching, fetchNextPage }: OverViewProps) {
   const { displayedData } = useOverViewState();
   const data = displayedData ? displayedData : content;
   const router = useRouter();
-  console.log(totalCount, content);
+  
+  // 무한 스크롤
+  // const bottom = useRef(null);
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver(
+  //     (entries) => {
+  //       if (entries[0].isIntersecting && !isFetching) {
+  //         fetchNextPage();
+  //       }
+  //     },
+  //     {
+  //       root: null,
+  //       rootMargin: '0px',
+  //       threshold: 1.0,
+  //     },
+  //   );
+
+  //   if (bottom.current) {
+  //     observer.observe(bottom.current);
+  //   }
+
+  //   return () => {
+  //     if (bottom.current) {
+  //       observer.unobserve(bottom.current);
+  //     }
+  //   };
+  // }, [bottom.current, isFetching, fetchNextPage]);
 
   const handleMoveTask = () => {
     router.push(`/kanban`);
@@ -17,13 +44,7 @@ function Content({ content, isLoading, totalCount }: OverViewProps) {
   return (
     <S.OverViewContent>
       {isLoading ? (
-        <>
-          <S.CardSkeleton></S.CardSkeleton>
-          <S.CardSkeleton></S.CardSkeleton>
-          <S.CardSkeleton></S.CardSkeleton>
-          <S.CardSkeleton></S.CardSkeleton>
-          <S.CardSkeleton></S.CardSkeleton>
-        </>
+        <CardSkeletons />
       ) : (
         <>
           {data ? (
@@ -46,6 +67,12 @@ function Content({ content, isLoading, totalCount }: OverViewProps) {
               <S.NoneButton onClick={handleMoveTask}>일정 추가하러 가기</S.NoneButton>
             </S.NoneWrapper>
           )}
+          {/* <div ref={bottom} /> */}
+          <S.LoadMoreWrapper>
+            <S.LoadMoreButton onClick={() => fetchNextPage()} disabled={isFetching}>
+              {isFetching ? 'Loading...' : 'Load More'}
+            </S.LoadMoreButton>
+          </S.LoadMoreWrapper>
         </>
       )}
     </S.OverViewContent>

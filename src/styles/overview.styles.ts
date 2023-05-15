@@ -178,3 +178,13 @@ export const NoneButton = styled(Button)`
 export const SpanWord = styled.span`
   color: ${({ theme }) => theme.errorColor};
 `;
+
+export const LoadMoreWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0;
+`;
+export const LoadMoreButton = styled(Button)`
+`;
