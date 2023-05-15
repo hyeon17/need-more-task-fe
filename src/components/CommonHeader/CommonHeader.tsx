@@ -24,6 +24,7 @@ function CommonHeader() {
   function handleCalendarLinkClick() {
     overViewState.setSelectedProgress('All');
     overViewState.setDisplayedData(null);
+    overViewState.setCurrentPage(0);
   }
 
   return (

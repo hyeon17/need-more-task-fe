@@ -16,6 +16,7 @@ import { useCalendarState } from '@/store/calendarStore';
 function CalendarView() {
   const calendarRef = useRef<FullCalendar>(null);
   const { setYearStore, setMonthStore, setDateStore, getYearStore, getMonthStore } = useCalendarState();
+  const router = useRouter();
 
   const headerToolbar = {
     left: 'dayGridMonth,timeGridWeek,timeGridDay',
@@ -23,7 +24,7 @@ function CalendarView() {
     right: 'prev,next today',
   };
   const plugins = [dayGridPlugin, timeGridPlugin, interactionPlugin, bootstrap5Plugin];
-  const router = useRouter();
+
   const allEvents: EventInput[] = [];
 
   const handleDatesSet = (eventInfo: DatesSetArg) => {
@@ -57,7 +58,7 @@ function CalendarView() {
 
   const useHandleDateClick = (info: any) => {
     setDateStore(info.dateStr);
-    router.push(`/tasks?date=${info.dateStr}`);
+    router.push(`/tasks?date=${info.dateStr}&page=0`);
   };
 
   const renderEventContent = (eventContent: EventContentArg) => {
