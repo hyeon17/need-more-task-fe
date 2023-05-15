@@ -101,7 +101,7 @@ function Kanban() {
   return (
     <>
       <Head>
-        <title>Kanban Board</title>
+        <title>Need More Task · 칸반 보드</title>
       </Head>
       <Layout hasHeader>
         <Heading size="xl" mb="4" padding="0 2rem">

@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import * as S from '@/styles/modal.styles';
 import React, { useState } from 'react';
-import { actionConstantsType, actionType } from '@/constant/TaskOverview';
+import { actionConstantsType, actionType, StatusType } from '@/constant/TaskOverview';
 import { useForm } from 'react-hook-form';
 import { getKeyByValue, setActionTextToKorean, setTagColor, setTagTextToKorean } from '@/utils';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
@@ -24,6 +24,8 @@ import ModalActionComponent from '@/components/modal/ModalActionComponent';
 import { postTaskDetail } from '@/apis/task';
 import { useMutation } from '@tanstack/react-query';
 import CommonToolTip from '@/components/common/CommonToolTip';
+import dayjs from 'dayjs';
+import { useModalState } from '@/store/modalStore';
 
 export interface CreateTaskForm {
   title: string;
@@ -73,19 +75,27 @@ const actionConstants: actionConstantsType = {
 };
 
 function CreateTask() {
+  const toast = useToast();
+  const { progressModal } = useModalState();
+  const [title, setTitle] = useState('');
+  const [modalAction, setModalAction] = useState<actionType | null>(null);
+
   const createActionConstant: CreateTaskProps = {
     START_AT: {
       key: 'START_AT',
+      value: dayjs().format('YYYY-MM-DD') as unknown as Date,
     },
     ...actionConstants,
     CREATE_TASK: {
       key: 'CREATE_TASK',
       value: 'Create Task',
     },
+    SET_STATUS: {
+      key: 'SET_STATUS',
+      value: progressModal !== null ? (progressModal as StatusType) : undefined,
+    },
   };
-  const toast = useToast();
-  const [title, setTitle] = useState('');
-  const [modalAction, setModalAction] = useState<actionType | null>(null);
+
   const [taskStatus, setTaskStatus] = useState<CreateTaskProps>(createActionConstant);
   const { mutate } = useMutation(postTaskDetail, {
     onSuccess: () => {
