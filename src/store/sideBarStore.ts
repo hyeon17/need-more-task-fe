@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import dayjs from 'dayjs';
 
 type SideBarState = {
   startAt: string;
@@ -14,10 +15,10 @@ type SideBarAction = {
 
 type SideBarStore = SideBarState & SideBarAction;
 
-
+const today = new Date();
 const sideBarState = create<SideBarStore>((set, get) => ({
-  startAt: '',
-  endAt: '',
+  startAt: dayjs(today).subtract(3, 'day').format('YYYY-MM-DD'),
+  endAt: dayjs(today).add(3, 'day').format('YYYY-MM-DD'),
   getStartAtStore: () => get().startAt,
   getEndAtStore: () => get().endAt,
   setStartAtStore: (startAt: string) => set({ startAt }),
