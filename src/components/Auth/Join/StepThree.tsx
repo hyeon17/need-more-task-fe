@@ -1,9 +1,8 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
+import * as A from '@/styles/auth.styles';
 import { useUserJoinStore } from '@/store/userJoinStore';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
-import * as A from '@/styles/auth.styles';
-import useInput from '@/hooks/useInput';
 import { Button, FormControl, FormErrorMessage, FormLabel, Input, useToast } from '@chakra-ui/react';
 
 import JoinBackButton from '@/components/Auth/Join/JoinBackButton';
@@ -25,30 +24,47 @@ function StepThree() {
   const toast = useToast();
   const router = useRouter();
   const { me, onSaveSignup } = useUserJoinStore();
-  console.log('me>>', me);
 
-  // const [phone, setPhone] = useState(me?.phone ?? '');
-
-  // const [firstNum, onChangeFirstNum] = useInput('');
-  // const [secondNum, onChangeSecondNum] = useInput('');
-  // const [thirdNum, onChangeThirdNum] = useInput('');
   const [profileImage, setProfileImage] = useState('');
 
-  const onError = (error: AxiosError) => {
+  const utilToast = (errorText: string) => {
     toast({
       title: '회원가입 실패.',
-      description: '알 수 없는 오류가 발생했습니다.',
+      description: `${errorText}`,
       status: 'error',
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
     });
+
+    // router.push(`/join/${routerPush}`);
+  };
+
+  const onError = (error: any) => {
+    // console.log('error>>>', error?.response?.data.data.key);
+    const errorKey = error?.response?.data.data.key;
+
+    // const errorValue = error?.response?.data.data.value;
+
+    if (
+      errorKey === 'joinCompanyYear' ||
+      errorKey === 'department' ||
+      errorKey === 'email' ||
+      errorKey === 'password' ||
+      errorKey === 'passwordCheck' ||
+      errorKey === 'phone'
+    ) {
+      utilToast('입력하지 않은 정보가 있습니다. 뒤로 가기 버튼을 클릭 후 다시 확인해 주세요.');
+      return;
+    } else {
+      utilToast('알 수 없는 오류가 발생했습니다. 다시 시도해주세요.');
+    }
   };
 
   const onSuccess = () => {
     toast({
       title: '회원가입 성공.',
       status: 'success',
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
     });
 
@@ -57,29 +73,19 @@ function StepThree() {
 
   const { mutate: joinMutate, isLoading } = joinAPI({ onSuccess, onError });
 
-  // useEffect(() => {
-  //   const combinedPhone = `${firstNum}-${secondNum}-${thirdNum}`;
-  //   setPhone(combinedPhone);
-  // }, [firstNum, secondNum, thirdNum]);
-
-  // const isDisabled = useMemo(() => Boolean(!phone), [phone]);
-
   interface IFormInput {
-    phone1: string;
-    phone2: string;
-    phone3: string;
+    phone: string | undefined;
   }
 
   const onClickNext = (data: IFormInput) => {
-    console.log('phone>>>', data);
-
-    const { phone1, phone2, phone3 } = data;
-    const phone = `${phone1}-${phone2}-${phone3}`;
+    const { phone } = data;
 
     if (Object.keys(errors).length === 0) {
-      onSaveSignup({ ...me, phone, profileId: me?.profileId || 1 });
+      onSaveSignup({ ...me });
 
-      joinMutate({ ...me } as IJoin);
+      // console.log('me>>>', me);
+
+      joinMutate({ ...me, phone: watch('phone'), profileId: me?.profileId || 1 } as IJoin);
     }
   };
 
@@ -102,7 +108,7 @@ function StepThree() {
   const onSuccessUploadImage = (data: any) => {
     const { profileId } = data.data;
     setProfileImage(data.data.profileImageUrl);
-    onSaveSignup({ ...me, profileId });
+    onSaveSignup({ ...me, profileId, profileImageUrl: data.data.profileImageUrl });
 
     // /user/profile
     queryClient.invalidateQueries([`/user/profile`]);
@@ -110,6 +116,12 @@ function StepThree() {
 
   const onErrorUploadImage = (error: AxiosError) => {
     console.error(error);
+    toast({
+      title: '이미지 업로드에 문제가 발생했습니다. 다시 시도해주세요.',
+      status: 'error',
+      duration: 3000,
+      isClosable: true,
+    });
   };
 
   const { mutate: uploadImageMutate, isLoading: isLoadingUploadImage } = useUpdateProfileImageAPI({
@@ -134,13 +146,22 @@ function StepThree() {
     }
   };
 
+  const formatPhoneNumber = (value: any) => {
+    let cleaned = ('' + value).replace(/\D/g, '');
+    let match = cleaned.match(/^(\d{3})(\d{4})(\d{4})$/);
+    if (match) {
+      return `${match[1]}-${match[2]}-${match[3]}`;
+    }
+    return value;
+  };
+
   return (
     <form onSubmit={handleSubmit(onClickNext)}>
       {/* 프로필 이미지 */}
       <A.ProfileWrapper>
         <FormLabel>프로필</FormLabel>
         <A.ProfileFigures>
-          <ProfileImage src={profileImage} width={150} height={150} />
+          <ProfileImage src={profileImage || me?.profileImageUrl} width={150} height={150} />
           {/* {values['profileIMG'] && <Image width={150} height={150} src={values['profileIMG']} alt="프로필" />} */}
         </A.ProfileFigures>
         <A.ProfileIMGWrapper>
@@ -167,58 +188,28 @@ function StepThree() {
       {/* 연락처 */}
       <A.InputContainer>
         <FormControl isInvalid={Boolean(errors.phone)}>
-          <FormLabel htmlFor="phone1">연락처</FormLabel>
+          <FormLabel htmlFor="phone">연락처</FormLabel>
           <A.PhoneNumWrapper>
             <Input
-              id="phone1"
-              placeholder="010"
+              id="phone"
+              type="tel"
+              placeholder="010-xxxx-xxxx"
               variant="flushed"
               borderColor="outlineColor"
               focusBorderColor="inputFocusColor"
-              type="number"
-              maxLength={3}
-              {...register('phone1', {
+              {...register('phone', {
                 required: '필수 입력사항 입니다.',
                 pattern: {
-                  value: /^\d{3}$/,
-                  message: '3자리 숫자만 입력 가능합니다.',
+                  value: /^[0-9]{3}-[0-9]{4}-[0-9]{4}$/,
+                  message: '올바른 형식으로 입력해주세요. 예) 010-0000-0000',
                 },
               })}
-            />
-            <Input
-              id="phone2"
-              placeholder="xxxx"
-              variant="flushed"
-              borderColor="outlineColor"
-              focusBorderColor="inputFocusColor"
-              type="number"
-              maxLength={4}
-              {...register('phone2', {
-                required: '필수 입력사항 입니다.',
-                pattern: {
-                  value: /^\d{4}$/,
-                  message: '4자리 숫자만 입력 가능합니다.',
-                },
-              })}
-            />
-            <Input
-              id="phone3"
-              placeholder="xxxx"
-              variant="flushed"
-              borderColor="outlineColor"
-              focusBorderColor="inputFocusColor"
-              type="number"
-              maxLength={4}
-              {...register('phone3', {
-                required: '필수 입력사항 입니다.',
-                pattern: {
-                  value: /^\d{4}$/,
-                  message: '4자리 숫자만 입력 가능합니다.',
-                },
-              })}
+              onChange={(e) => {
+                e.target.value = formatPhoneNumber(e.target.value);
+              }}
             />
           </A.PhoneNumWrapper>
-          <FormErrorMessage>{errors.phone1 && errors.phone1?.message?.toString()}</FormErrorMessage>
+          <FormErrorMessage>{errors.phone && errors.phone?.message?.toString()}</FormErrorMessage>
         </FormControl>
       </A.InputContainer>
 

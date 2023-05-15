@@ -4,11 +4,19 @@ import CommonAvatar from '@/components/CommonAvatar/CommonAvatar';
 import { getLatestProjectsAPI } from '@/apis/dashboard';
 import CommonEmptyProjects from '@/components/common/CommonEmptyProjects';
 import CommonSpinner from '@/components/common/CommonSpinner';
-import { formattedDate, setTagColor } from '@/utils';
+import { formattedDate, setTagColor, taskTitle } from '@/utils';
 import { Tag } from '@chakra-ui/react';
+import ProfileImage from '../CommonHeader/ProfileImage';
+import { useModalState } from '@/store/modalStore';
 
 function LatestProjectsList() {
   const { data: latestProjectsData, isLoading } = getLatestProjectsAPI();
+  const { onSetModalId, onOpenOverView } = useModalState();
+
+  const handleOpenTaskOverview = (taskId: string) => {
+    onSetModalId(taskId);
+    onOpenOverView();
+  };
 
   return (
     <D.LatestProjectsListContainer>
@@ -18,6 +26,7 @@ function LatestProjectsList() {
       {latestProjectsData && latestProjectsData.data.length > 0
         ? latestProjectsData.data.map((data: any) => {
             const { taskId, taskOwner, createdAt, startAt, endAt, title, assignee, priority, progress } = data;
+            // console.log('data>>>', data);
 
             return (
               <D.LatestProjectsListWrapper key={`latestProject${taskId}`}>
@@ -29,10 +38,11 @@ function LatestProjectsList() {
                     <CommonAvatar assignee={assignee} />
                   </D.ProjectsListBodyHeader>
                   {/* body */}
-                  <D.ProjectsListBody>
-                    <D.ProjectsImageDiv></D.ProjectsImageDiv>
+                  <D.ProjectsListBody onClick={() => handleOpenTaskOverview(taskId)}>
+                    <ProfileImage width={54} height={54} src={taskOwner.profileImageUrl} />
+                    {/* <D.ProjectsImageDiv></D.ProjectsImageDiv> */}
                     <D.ProjectTitleWrapper>
-                      <h5>{title}</h5>
+                      <h5>{taskTitle(title)}</h5>
                       <span>
                         <Tag size="sm" backgroundColor={setTagColor(priority)} color="white">
                           {priority}

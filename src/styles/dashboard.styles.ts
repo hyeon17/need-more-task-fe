@@ -98,7 +98,15 @@ export const StatusRight = styled.div`
     color: ${({ theme }) => theme.labelColor};
   }
 `;
-export const StatusNumber = styled.div``;
+export const StatusNumber = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  & span:nth-of-type(2) {
+    font-weight: 400;
+    font-size: 10px;
+  }
+`;
 export const StatusGraphWrapper = styled.div`
   /* border: 1px solid; */
 
@@ -146,6 +154,12 @@ export const DashboardH5 = styled.div`
   h5 {
     font-weight: 700;
     line-height: 24px;
+
+    & > span {
+      font-size: 12px;
+      font-weight: 400;
+      color: ${({ theme }) => theme.labelColor};
+    }
   }
 `;
 export const LatestProjectButtonWrapper = styled.div`
@@ -308,8 +322,8 @@ export const ProjectsListBodyHeader = styled.div`
 `;
 export const ProjectsListBody = styled.div`
   margin-top: 25px;
-
   display: flex;
+  cursor: pointer;
 `;
 export const ProjectsImageDiv = styled.div`
   width: 54px;
@@ -319,6 +333,7 @@ export const ProjectsImageDiv = styled.div`
 `;
 export const ProjectTitleWrapper = styled.div`
   margin-left: 14px;
+
   & > h5 {
     font-weight: 700;
     line-height: 24px;
