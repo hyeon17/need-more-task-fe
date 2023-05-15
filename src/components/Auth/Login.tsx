@@ -55,10 +55,8 @@ function Login() {
     });
     onSaveAccessToken(data.headers.authorization);
 
-    router
-      .push('/calendar')
-      .then(() => router.reload())
-      .then(() => router.push('/'));
+    router.push('/').then(() => router.reload());
+    // .then(() => router.push('/'));
 
     // router.reload().then(() => router.push('calendar'))
   };
