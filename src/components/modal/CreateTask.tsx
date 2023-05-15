@@ -134,7 +134,6 @@ function CreateTask() {
   };
 
   const setTaskStatusHandler = (e: unknown) => {
-    console.log(e);
     // @ts-ignore
     if (e.key) {
       // @ts-ignore

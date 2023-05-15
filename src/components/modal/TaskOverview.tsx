@@ -9,6 +9,8 @@ import { getKeyByValue, setActionTextToKorean, setTagColor, setTagTextToKorean }
 import { AnimatePresence, motion, Variants } from 'framer-motion';
 import ModalEditComponent from '@/components/modal/ModalEditComponent';
 import { useUserInfo } from '@/store/userInfoStore';
+import { useRouter } from 'next/router';
+import CommonToolTip from '@/components/common/CommonToolTip';
 
 const variants: Variants = {
   initial: {
@@ -26,16 +28,24 @@ const variants: Variants = {
 };
 
 function TaskOverview() {
-  const { id } = useModalState();
+  const { id, onCloseModal } = useModalState();
   const { data, refetch } = useQuery(['task', id], () => getTaskDetail(Number(id)));
   const [modalAction, setModalAction] = useState<actionType | null>(null);
   const [editTitle, setEditTitle] = useState(false);
   const [editDesc, setEditDesc] = useState(false);
+  const [editAssignee, setEditAssignee] = useState(false);
+
   const { userInfo } = useUserInfo();
-  const { mutate } = useMutation(putTaskDetail);
+  const { mutate } = useMutation(putTaskDetail, {
+    onSuccess: async () => {
+      await refetch();
+    },
+  });
 
   const titleRef = useRef<HTMLParagraphElement | null>(null);
   const descRef = useRef<HTMLParagraphElement | null>(null);
+
+  const router = useRouter();
 
   const toast = useToast();
 
@@ -60,7 +70,6 @@ function TaskOverview() {
       mutate({ taskId: Number(id), data: { ...copiedData, title } });
     } else {
       setEditTitle(true);
-      titleRef.current?.focus();
     }
   };
 
@@ -82,6 +91,30 @@ function TaskOverview() {
     } else {
       setEditDesc(true);
       descRef.current?.focus();
+    }
+  };
+
+  const handleAssigneeEdit = () => {
+    if (editAssignee) {
+      setEditAssignee(false);
+    } else {
+      setEditAssignee(true);
+      toast({
+        title: '할당 해제할 인원을 클릭해주세요.',
+        status: 'info',
+        duration: 1500,
+      });
+    }
+  };
+
+  const handleEditAssignee = (userId: number) => {
+    if (!editAssignee) {
+      onCloseModal();
+      router.push(`/profile/${userId}`);
+    } else {
+      const copiedData = { ...data.data };
+      const assignee = copiedData.assignee.filter((item) => item.userId !== userId);
+      mutate({ taskId: Number(id), data: { ...copiedData, assignee } });
     }
   };
 
@@ -120,23 +153,45 @@ function TaskOverview() {
           <S.ModalTaskContentBox>
             <div className="title">
               <Heading fontSize="1.4rem" display="flex" gap="10">
-                <Text contentEditable={editTitle} ref={titleRef} suppressContentEditableWarning>
+                <Text
+                  contentEditable={editTitle}
+                  ref={titleRef}
+                  suppressContentEditableWarning
+                  borderBottom={editTitle ? '2px solid #EF8354' : 'none'}
+                >
                   {title}
                 </Text>
                 <Button size="sm" onClick={handleTitleEdit}>
                   {editTitle ? '완료' : '수정'}
                 </Button>
               </Heading>
-              <Text fontSize="1rem">Assigned to</Text>
+              <Text fontSize="1rem">
+                할당된 사람
+                <Button size="sm" onClick={handleAssigneeEdit} marginLeft="5">
+                  {editAssignee ? '완료' : '수정'}
+                </Button>
+              </Text>
               <div className="avatar">
                 {assignee.map((item) => (
-                  <Avatar size="xs" key={item.userId} src={item.profileImageUrl} />
+                  <CommonToolTip toolTip={item.fullName} key={item.userId}>
+                    <Avatar
+                      size="sm"
+                      src={item.profileImageUrl}
+                      cursor={editAssignee ? 'pointer' : 'default'}
+                      onClick={() => handleEditAssignee(item.userId)}
+                    />
+                  </CommonToolTip>
                 ))}
               </div>
             </div>
             <div className="desc">
               <Heading fontSize="1.4rem">Description</Heading>
-              <Text ref={descRef} contentEditable={editDesc} suppressContentEditableWarning>
+              <Text
+                ref={descRef}
+                contentEditable={editDesc}
+                suppressContentEditableWarning
+                borderBottom={editDesc ? '2px solid #EF8354' : 'none'}
+              >
                 {desc}
               </Text>
               <Button size="sm" onClick={handleDescEdit}>

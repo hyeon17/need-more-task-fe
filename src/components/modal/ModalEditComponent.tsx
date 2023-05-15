@@ -4,6 +4,7 @@ import { Input } from '@chakra-ui/react';
 import { ModalTaskActionSelectBox, ModalTaskDeleteButton } from '@/styles/modal.styles';
 import { useMutation } from '@tanstack/react-query';
 import { deleteTask, putTaskDetail, TaskPostData } from '@/apis/task';
+import ModalActionAssignee from '@/components/modal/ModalActionAssignee';
 
 const setStatusConstants = [
   {
@@ -73,6 +74,18 @@ function ModalEditComponent({ action, id, taskData, refetch }: ModalActionEditPr
     } else {
       const { value, key } = e as { value: string; key: string };
       const taskId = id;
+      if (key === 'ASSIGNEE') {
+        // @ts-ignore
+        const data: TaskPostData = { ...taskData };
+        const newKey = 'assignee';
+        data[newKey] = [
+          ...taskData[newKey],
+          {
+            userId: value,
+          },
+        ];
+        return updateTask({ taskId, data });
+      }
       const data: TaskPostData = { ...taskData };
       // @ts-ignore
       data[key] = value;
@@ -86,8 +99,7 @@ function ModalEditComponent({ action, id, taskData, refetch }: ModalActionEditPr
     case 'END_AT':
       return <Input type="date" id="endAt" onChange={handleStatusChange} />;
     case 'ASSIGNEE':
-      // return <ModalActionAssignee setTaskAssigneeHandler={setTaskStatusHandler} />;
-      return <></>;
+      return <ModalActionAssignee setTaskAssigneeHandler={handleStatusChange} />;
     case 'SET_STATUS':
       return <ModalTaskActionSelectBox options={setStatusConstants} onChange={handleStatusChange} />;
     case 'SET_PRIORITY':

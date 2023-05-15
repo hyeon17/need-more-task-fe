@@ -20,6 +20,7 @@ export interface Data {
 }
 
 export interface Assignee {
+  fullName: string;
   userId: number;
   profileImageUrl: string;
 }
