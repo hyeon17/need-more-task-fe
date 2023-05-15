@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '@/components/Layout';
 import * as P from '@/styles/profile.styles';
 import ProfileImage from '@/components/CommonHeader/ProfileImage';
@@ -14,6 +14,7 @@ import { getUserInfoAPI } from '@/apis/user';
 import { useAccessTokenStore } from '@/store/acceessTokenStore';
 import { Box, Skeleton, SkeletonCircle, SkeletonText, Stack, useToast } from '@chakra-ui/react';
 import Head from 'next/head';
+import ProfileRoleInfo from '@/components/Profile/ProfileRoleInfo';
 
 interface IProfilePage {
   id: string;
@@ -23,8 +24,11 @@ function ProfilePage({ id }: IProfilePage) {
   const toast = useToast();
   const router = useRouter();
   const { userInfo: currentLoginUserInfo } = useUserInfo();
+
   const { getAccessToken } = useAccessTokenStore();
   const accessToken = getAccessToken();
+
+  const [tab, setTab] = useState('UserInfoTab');
 
   const { data: userInfo } = accessToken && id ? getUserInfoAPI(id) : { data: null };
 
@@ -65,20 +69,23 @@ function ProfilePage({ id }: IProfilePage) {
             <P.NavWrapper>
               <nav>
                 <ul>
-                  <li>
+                  <li onClick={() => setTab('UserInfoTab')} className={tab === 'UserInfoTab' ? 'selected' : ''}>
                     <AccountCircleOutlinedIcon />
                     <div>
                       <h4>계정 정보</h4>
                       <span>프로필 사진, 이름</span>
                     </div>
                   </li>
-                  {/* <li>
-                    <AccountCircleOutlinedIcon />
-                    <div>
-                      <h4>계정 정보</h4>
-                      <span>프로필 사진, 이름</span>
-                    </div>
-                  </li> */}
+
+                  {currentLoginUserInfo?.role === 'ADMIN' && (
+                    <li onClick={() => setTab('UserRoleTab')} className={tab === 'UserRoleTab' ? 'selected' : ''}>
+                      <AccountCircleOutlinedIcon />
+                      <div>
+                        <h4>사용자 권한 설정</h4>
+                        {/* <span>프로필 사진, 이름</span> */}
+                      </div>
+                    </li>
+                  )}
                 </ul>
               </nav>
             </P.NavWrapper>
@@ -86,11 +93,24 @@ function ProfilePage({ id }: IProfilePage) {
         </P.LeftContainer>
 
         {/* 개인정보 */}
-        <P.RightContainer>
-          {userInfo && currentLoginUserInfo && (
-            <ProfileAccountInfo userInfo={userInfo.data} currentLoginUserInfo={currentLoginUserInfo} />
-          )}
-        </P.RightContainer>
+
+        {userInfo && currentLoginUserInfo && (
+          <P.RightContainer>
+            {tab === 'UserInfoTab' && (
+              <ProfileAccountInfo userInfo={userInfo.data} currentLoginUserInfo={currentLoginUserInfo} />
+            )}
+
+            {currentLoginUserInfo.role === 'ADMIN' ? (
+              <>
+                {tab === 'UserRoleTab' && (
+                  <ProfileRoleInfo userInfo={userInfo.data} currentLoginUserInfo={currentLoginUserInfo} />
+                )}
+              </>
+            ) : (
+              ''
+            )}
+          </P.RightContainer>
+        )}
       </P.Container>
 
       {/* common footer */}

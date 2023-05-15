@@ -49,6 +49,13 @@ function CommonHeader() {
                 Calendar
               </li>
             </Link>
+            {userInfo?.userId === 1 && (
+              <Link href={`/admin`}>
+                <li className={pathName === '/admin' ? 'selected' : ''} onClick={storeInit}>
+                  User Role
+                </li>
+              </Link>
+            )}
           </ul>
           {/* <C.CreateTaskButton>New Task</C.CreateTaskButton> */}
           <MenuButton>

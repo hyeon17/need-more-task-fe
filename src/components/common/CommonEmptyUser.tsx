@@ -15,6 +15,7 @@ function CommonEmptyUser({ width = '200px', height = '200px' }: ICommonEmptyUser
   return (
     <StyledCommonEmptyUser style={customStyle}>
       <LottieAni aniName={noUsers} />
+      <span>찾으시는 사용자가 없네요</span>
     </StyledCommonEmptyUser>
   );
 }
@@ -22,8 +23,11 @@ function CommonEmptyUser({ width = '200px', height = '200px' }: ICommonEmptyUser
 export default CommonEmptyUser;
 
 const StyledCommonEmptyUser = styled.div<ICommonEmptyUser>`
-  /* border: 1px solid; */
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   width: ${(props) => props.width || '200px'};
   height: ${(props) => props.height || '200px'};
-  margin-left: 440px;
+  margin-left: 200px;
 `;

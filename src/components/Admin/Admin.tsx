@@ -7,21 +7,26 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { updateRoleAPI } from '@/apis/user';
 
-import UserRoleSelectPopover from './UserRoleSelectPopover';
+import UserRoleSelectPopover from '@/components/Admin/UserRoleSelectPopover';
 import SelectedRoleUserList from '@/components/Admin/SelectedRoleUserList';
 import useDebounce from '@/hooks/useDebounce';
+import { IUser } from '@/type/authTypes';
 
-function Admin() {
+interface IAdmin {
+  userInfo?: IUser | undefined;
+}
+
+function Admin({ userInfo }: IAdmin) {
+  console.log('userInfo>>>', userInfo);
+
   const toast = useToast();
   const queryClient = useQueryClient();
 
-  const [searchValue, setSearchValue] = useState('');
-  const [isShowSearchedUserList, setIsShowSearchedUserList] = useState(false);
+  const [searchValue, setSearchValue] = useState(userInfo?.fullName || '');
+
+  const [isShowSearchedUserList, setIsShowSearchedUserList] = useState(Boolean(userInfo?.fullName));
   const debouncedSearchValue = useDebounce(searchValue, 500);
 
-  // const [checkId, setCheckId] = useState<number[]>([]);
-  // const [checkedRole, setCheckedRole] = useState('');
-  // const [allCheckbox, setAllCheckbox] = useState(false);
   const [searchRoleType, setSearchRoleType] = useState('all');
 
   //
@@ -88,6 +93,11 @@ function Admin() {
     refetchSearchedUserData();
   }, [debouncedSearchValue, userSearchPage]);
 
+  useEffect(() => {
+    setSearchValue(userInfo?.fullName || '');
+    setIsShowSearchedUserList(Boolean(userInfo?.fullName));
+  }, [userInfo]);
+
   const { mutate: updateAdminMutate } = updateRoleAPI({ onSuccess: onSuccessRoleChange });
 
   const handleAdminRoleChange = (userId: number) => {
@@ -107,28 +117,6 @@ function Admin() {
   const handleUserRoleChange = (userId: number) => {
     updateAdminMutate({ userId, role: 'USER' });
   };
-
-  // const handleCheckChange = (userId: number, isChecked: boolean) => {
-  //   if (isChecked) {
-  //     if (!checkId.includes(userId)) {
-  //       setCheckId((prevId) => [...prevId, userId]);
-  //     }
-  //   } else {
-  //     setCheckId((prevId) => prevId.filter((id) => id !== userId)); // checkId 배열에서 해당 userId 값을 제거하여 상태를 업데이트
-  //   }
-
-  //   // if (userId) {
-  //   //   return false;
-  //   // }
-  // };
-
-  // const handleRememberCheck = (userId: number) => {
-  //   return checkId.includes(userId);
-  // };
-
-  // const handleAllCheckChange = (isChecked: boolean) => {
-  //   setAllCheckbox(!allCheckbox);
-  // };
 
   const handleSearchType = (e: React.MouseEvent<HTMLElement>) => {
     setUserSearchPage(1);
@@ -155,72 +143,63 @@ function Admin() {
   };
 
   return (
-    <AD.Container>
-      <AD.ManageRoleContainer>
-        <AD.AdminH5>
-          <h5>Manage role</h5>
+    <AD.ManageRoleContainer>
+      <AD.AdminH5>
+        <h5>유저 권한 정보</h5>
 
-          <AD.SelectHeaderWrapper>
-            {/* <Checkbox
-              size="lg"
-              colorScheme="orange"
-              // isDisabled={userId === 1 ? true : false}
-              isChecked={allCheckbox}
-              onChange={(e) => handleAllCheckChange(e.target.checked)}
-            /> */}
-            {isShowSearchedUserList && <span>검색 결과: {SearchedUserData?.data.totalCount} 명</span>}
-            {!isShowSearchedUserList && <span>사원 수: {SelectedRoleUserData?.data.totalCount}</span>}
-            {/* popover */}
-            {!isShowSearchedUserList && (
-              <UserRoleSelectPopover handleSearchType={handleSearchType} searchRoleType={searchRoleType} />
-            )}
-          </AD.SelectHeaderWrapper>
-        </AD.AdminH5>
-        <AD.ManageRoleSearchWrapper>
-          <AD.SearchInput
-            placeholder="팀원을 찾아보세요"
-            size="md"
-            backgroundColor="outlineColor"
-            borderColor="labelColor"
-            value={searchValue}
-            onChange={(e) => handleChangeInputValue(e)}
-          />
-        </AD.ManageRoleSearchWrapper>
-        {/* search user list */}
-        {isShowSearchedUserList ? (
-          <>
-            {SearchedUserData && (
-              <SelectedRoleUserList
-                userData={SearchedUserData}
-                handleAdminRoleChange={handleAdminRoleChange}
-                handleUserRoleChange={handleUserRoleChange}
-                isLoading={isLoadingSearchedUserData}
-                isFetching={isFetchingSearchedUserData}
-                isPreviousData={isPreviousSearchedUserData}
-                page={userSearchPage}
-                setPage={setUserSearchPage}
-              />
-            )}
-          </>
-        ) : (
-          <>
-            {SelectedRoleUserData && (
-              <SelectedRoleUserList
-                userData={SelectedRoleUserData}
-                handleAdminRoleChange={handleAdminRoleChange}
-                handleUserRoleChange={handleUserRoleChange}
-                isLoading={isLoadingSelectedRoleUser}
-                isFetching={isFetchingSelectedRoleUser}
-                isPreviousData={isPreviousSelectedRoleUserData}
-                page={userRolePage}
-                setPage={setUserRolePage}
-              />
-            )}
-          </>
-        )}
-        {/* user role tpe list */}
-      </AD.ManageRoleContainer>
-    </AD.Container>
+        <AD.SelectHeaderWrapper>
+          {isShowSearchedUserList && <span>검색 결과: {SearchedUserData?.data.totalCount} 명</span>}
+          {(!isShowSearchedUserList || searchValue) && <span>사원 수: {SelectedRoleUserData?.data.totalCount}</span>}
+          {/* popover */}
+          {!isShowSearchedUserList && (
+            <UserRoleSelectPopover handleSearchType={handleSearchType} searchRoleType={searchRoleType} />
+          )}
+        </AD.SelectHeaderWrapper>
+      </AD.AdminH5>
+      <AD.ManageRoleSearchWrapper>
+        <AD.SearchInput
+          placeholder="팀원을 찾아보세요"
+          size="md"
+          backgroundColor="outlineColor"
+          borderColor="labelColor"
+          value={searchValue}
+          onChange={(e) => handleChangeInputValue(e)}
+        />
+      </AD.ManageRoleSearchWrapper>
+      {/* search user list */}
+      {isShowSearchedUserList && searchValue ? (
+        <>
+          {SearchedUserData && (
+            <SelectedRoleUserList
+              userData={SearchedUserData}
+              handleAdminRoleChange={handleAdminRoleChange}
+              handleUserRoleChange={handleUserRoleChange}
+              isLoading={isLoadingSearchedUserData}
+              isFetching={isFetchingSearchedUserData}
+              isPreviousData={isPreviousSearchedUserData}
+              page={userSearchPage}
+              setPage={setUserSearchPage}
+            />
+          )}
+        </>
+      ) : (
+        <>
+          {SelectedRoleUserData && (
+            <SelectedRoleUserList
+              userData={SelectedRoleUserData}
+              handleAdminRoleChange={handleAdminRoleChange}
+              handleUserRoleChange={handleUserRoleChange}
+              isLoading={isLoadingSelectedRoleUser}
+              isFetching={isFetchingSelectedRoleUser}
+              isPreviousData={isPreviousSelectedRoleUserData}
+              page={userRolePage}
+              setPage={setUserRolePage}
+            />
+          )}
+        </>
+      )}
+      {/* user role tpe list */}
+    </AD.ManageRoleContainer>
   );
 }
 

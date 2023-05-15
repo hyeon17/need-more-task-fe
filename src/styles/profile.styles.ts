@@ -74,8 +74,14 @@ export const NavWrapper = styled.nav`
     width: 360px;
     height: 64px;
     padding: 20px 24px;
-    background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), #3e7eff;
     border-radius: 12px;
+    cursor: pointer;
+
+    &:hover,
+    &:active,
+    &.selected {
+      background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), #3e7eff;
+    }
 
     & > div {
       display: flex;
@@ -87,6 +93,11 @@ export const NavWrapper = styled.nav`
 export const AccountWrapper = styled.div`
   /* border: 1px solid; */
   height: 100%;
+`;
+
+export const AccountHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
 
   & h1 {
     margin-bottom: 33px;

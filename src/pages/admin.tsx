@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { useUserInfo } from '@/store/userInfoStore';
 import { useAccessTokenStore } from '@/store/acceessTokenStore';
 import { useToast } from '@chakra-ui/react';
+import * as AD from '@/styles/admin.styles';
 
 function AdminPage() {
   const router = useRouter();
@@ -14,7 +15,6 @@ function AdminPage() {
   const { getAccessToken } = useAccessTokenStore();
   const accessToken = getAccessToken();
   const toast = useToast();
-  console.log('userInfo>>>', userInfo);
 
   useEffect(() => {
     if (userInfo === null) {
@@ -37,7 +37,9 @@ function AdminPage() {
       <Head>
         <title>Need More Task · 관리자 페이지</title>
       </Head>
-      <Admin />
+      <AD.Container minWidth padding>
+        <Admin />
+      </AD.Container>
       <CommonFooter />
     </Layout>
   );

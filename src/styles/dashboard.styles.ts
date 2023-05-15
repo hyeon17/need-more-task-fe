@@ -278,8 +278,6 @@ export const CreateTaskButton = styled(Button)`
 `;
 
 export const LatestProjectsListContainer = styled.div`
-  /* border: 1px solid; */
-
   display: flex;
   /* justify-content: center;
   align-items: center; */
@@ -298,6 +296,22 @@ export const LatestProjectsListContainer = styled.div`
     background-color: ${({ theme }) => theme.outlineColor};
     border-radius: 6px;
   }
+`;
+export const LatestProjectsListContainerWithButton = styled.div`
+  /* border: 1px solid; */
+  position: relative;
+`;
+export const ScrollLeftButton = styled(Button)`
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+`;
+export const ScrollRightButton = styled(Button)`
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
 `;
 export const LatestProjectsListWrapper = styled.div`
   scroll-snap-align: start;
