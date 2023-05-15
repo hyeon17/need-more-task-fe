@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Button,
   FormControl,
   FormErrorMessage,
@@ -14,15 +15,15 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import * as S from '@/styles/modal.styles';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { actionConstantsType, actionType } from '@/constant/TaskOverview';
 import { useForm } from 'react-hook-form';
-import CommonAvatar from '@/components/CommonAvatar/CommonAvatar';
 import { getKeyByValue, setActionTextToKorean, setTagColor, setTagTextToKorean } from '@/utils';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
 import ModalActionComponent from '@/components/modal/ModalActionComponent';
 import { postTaskDetail } from '@/apis/task';
 import { useMutation } from '@tanstack/react-query';
+import CommonToolTip from '@/components/common/CommonToolTip';
 
 export interface CreateTaskForm {
   title: string;
@@ -133,7 +134,6 @@ function CreateTask() {
   };
 
   const setTaskStatusHandler = (e: unknown) => {
-    console.log(e);
     // @ts-ignore
     if (e.key) {
       // @ts-ignore
@@ -185,9 +185,15 @@ function CreateTask() {
     }
   };
 
-  useEffect(() => {
-    console.log(taskStatus);
-  }, [taskStatus]);
+  const handleAssigneeDelete = (userId: number) => {
+    setTaskStatus((prevState) => ({
+      ...prevState,
+      ASSIGNEE: {
+        ...prevState.ASSIGNEE,
+        value: prevState.ASSIGNEE.value?.filter((assignee) => assignee.userId !== userId),
+      },
+    }));
+  };
 
   return (
     <S.ModalContentBox>
@@ -223,10 +229,23 @@ function CreateTask() {
                     })}
                   />
                   <FormErrorMessage>{errors.title && errors?.title?.message}</FormErrorMessage>
-                  <Heading fontSize="1rem">지정된 사람 목록</Heading>
+                  <CommonToolTip toolTip="클릭으로 지정된 사람을 취소할 수 있습니다">
+                    <Heading fontSize="1rem">지정된 사람 목록</Heading>
+                  </CommonToolTip>
                   <div className="avatar">
                     {taskStatus.ASSIGNEE.value?.length === 0 && <Text fontSize="1rem">지정된 사람이 없습니다</Text>}
-                    <CommonAvatar assignee={taskStatus.ASSIGNEE.value!} size="sm" max={9} />
+                    {taskStatus.ASSIGNEE.value?.map((item) => (
+                      <CommonToolTip key={item.userId} toolTip={item.name}>
+                        <Avatar
+                          key={item.userId}
+                          name={item.name}
+                          src={item.profileImageUrl}
+                          size="sm"
+                          cursor="pointer"
+                          onClick={() => handleAssigneeDelete(item.userId)}
+                        />
+                      </CommonToolTip>
+                    ))}
                   </div>
                 </div>
                 <div className="desc">
