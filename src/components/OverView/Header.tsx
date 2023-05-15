@@ -5,32 +5,9 @@ import { useOverViewState } from '@/store/overViewStore';
 import { OverViewProps, TaskOverviewProps } from '@/type/componentProps';
 import { TabSkeletons, DateSkeletons } from '@/components/Skeleton';
 
-function Header({ date, content, isLoading }: OverViewProps) {
-  const {
-    setDisplayedData,
-  } = useOverViewState();
-  const [allCount, setAllCount] = useState(0);
-  const [todoCount, setTodoCount] = useState(0);
-  const [inProgressCount, setInProgressCount] = useState(0);
-  const [doneCount, setDoneCount] = useState(0);
+function Header({ date, content, isLoading, totalCount, todoCount, inProgressCount, doneCount }: OverViewProps) {
+  const { setDisplayedData } = useOverViewState();
   const [selectedProgress, setSelectedProgress] = useState('All');
-
-  useEffect(() => {
-    setAllCount(content.length);
-    setTodoCount(getCountByProgress('TODO'));
-    setInProgressCount(getCountByProgress('IN_PROGRESS'));
-    setDoneCount(getCountByProgress('DONE'));
-    return () => {
-      setAllCount(0);
-      setTodoCount(0);
-      setInProgressCount(0);
-      setDoneCount(0);
-    };
-  }, [content]);
-
-  function getCountByProgress(progress: string) {
-    return content.filter((event: TaskOverviewProps) => event.progress === progress).length;
-  }
 
   const handleTabClick = (progress: string) => {
     setSelectedProgress(progress);
@@ -60,7 +37,7 @@ function Header({ date, content, isLoading }: OverViewProps) {
                     {progress}
                     <S.IndexCount>
                       {progress === 'All'
-                        ? allCount
+                        ? totalCount
                         : progress === 'TODO'
                         ? todoCount
                         : progress === 'IN_PROGRESS'
