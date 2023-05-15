@@ -11,31 +11,31 @@ function Content({ content, isLoading, isFetching, fetchNextPage }: OverViewProp
   const router = useRouter();
   
   // 무한 스크롤
-  // const bottom = useRef(null);
-  // useEffect(() => {
-  //   const observer = new IntersectionObserver(
-  //     (entries) => {
-  //       if (entries[0].isIntersecting && !isFetching) {
-  //         fetchNextPage();
-  //       }
-  //     },
-  //     {
-  //       root: null,
-  //       rootMargin: '0px',
-  //       threshold: 1.0,
-  //     },
-  //   );
+  const bottom = useRef(null);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !isFetching) {
+          fetchNextPage();
+        }
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 1.0,
+      },
+    );
 
-  //   if (bottom.current) {
-  //     observer.observe(bottom.current);
-  //   }
+    if (bottom.current) {
+      observer.observe(bottom.current);
+    }
 
-  //   return () => {
-  //     if (bottom.current) {
-  //       observer.unobserve(bottom.current);
-  //     }
-  //   };
-  // }, [bottom.current, isFetching, fetchNextPage]);
+    return () => {
+      if (bottom.current) {
+        observer.unobserve(bottom.current);
+      }
+    };
+  }, [bottom.current, isFetching, fetchNextPage]);
 
   const handleMoveTask = () => {
     router.push(`/kanban`);
@@ -67,12 +67,7 @@ function Content({ content, isLoading, isFetching, fetchNextPage }: OverViewProp
               <S.NoneButton onClick={handleMoveTask}>일정 추가하러 가기</S.NoneButton>
             </S.NoneWrapper>
           )}
-          {/* <div ref={bottom} /> */}
-          <S.LoadMoreWrapper>
-            <S.LoadMoreButton onClick={() => fetchNextPage()} disabled={isFetching}>
-              {isFetching ? 'Loading...' : 'Load More'}
-            </S.LoadMoreButton>
-          </S.LoadMoreWrapper>
+          <div ref={bottom} />
         </>
       )}
     </S.OverViewContent>

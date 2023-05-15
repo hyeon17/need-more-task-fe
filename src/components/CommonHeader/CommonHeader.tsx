@@ -21,10 +21,10 @@ function CommonHeader() {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  function handleCalendarLinkClick() {
-    overViewState.setSelectedProgress('All');
+  function storeInit() {
     overViewState.setDisplayedData(null);
     overViewState.setCurrentPage(0);
+    overViewState.setTotalPage(0);
   }
 
   return (
@@ -34,13 +34,17 @@ function CommonHeader() {
         <C.Nav>
           <ul>
             <Link href={`/dashboard`}>
-              <li className={pathName === '/dashboard' ? 'selected' : ''}>Dashboard</li>
+              <li className={pathName === '/dashboard' ? 'selected' : ''} onClick={storeInit}>
+                Dashboard
+              </li>
             </Link>
             <Link href={`/kanban`}>
-              <li className={pathName === '/kanban' ? 'selected' : ''}>Kanban</li>
+              <li className={pathName === '/kanban' ? 'selected' : ''} onClick={storeInit}>
+                Kanban
+              </li>
             </Link>
             <Link href={`/calendar`}>
-              <li className={pathName === '/calendar' ? 'selected' : ''} onClick={handleCalendarLinkClick}>
+              <li className={pathName === '/calendar' ? 'selected' : ''} onClick={storeInit}>
                 Calendar
               </li>
             </Link>
