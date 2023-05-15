@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import * as S from '@/styles/overview.styles';
 import { Tabs, TabList } from '@chakra-ui/react';
 import { useOverViewState } from '@/store/overViewStore';
@@ -6,15 +6,31 @@ import { OverViewProps, TaskOverviewProps } from '@/type/componentProps';
 import { TabSkeletons, DateSkeletons } from '@/components/Skeleton';
 
 function Header({ date, content, isLoading }: OverViewProps) {
-  const allCount: number = content.length;
-  const todoCount: number = getCountByProgress('TODO');
-  const inProgressCount: number = getCountByProgress('IN_PROGRESS');
-  const doneCount: number = getCountByProgress('DONE');
+  const {
+    setDisplayedData,
+  } = useOverViewState();
+  const [allCount, setAllCount] = useState(0);
+  const [todoCount, setTodoCount] = useState(0);
+  const [inProgressCount, setInProgressCount] = useState(0);
+  const [doneCount, setDoneCount] = useState(0);
+  const [selectedProgress, setSelectedProgress] = useState('All');
+
+  useEffect(() => {
+    setAllCount(content.length);
+    setTodoCount(getCountByProgress('TODO'));
+    setInProgressCount(getCountByProgress('IN_PROGRESS'));
+    setDoneCount(getCountByProgress('DONE'));
+    return () => {
+      setAllCount(0);
+      setTodoCount(0);
+      setInProgressCount(0);
+      setDoneCount(0);
+    };
+  }, [content]);
 
   function getCountByProgress(progress: string) {
     return content.filter((event: TaskOverviewProps) => event.progress === progress).length;
   }
-  const { selectedProgress, setSelectedProgress, setDisplayedData } = useOverViewState();
 
   const handleTabClick = (progress: string) => {
     setSelectedProgress(progress);
