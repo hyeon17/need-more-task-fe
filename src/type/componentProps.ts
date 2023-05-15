@@ -45,6 +45,10 @@ export interface OverViewProps {
   isLoading?: boolean;
   isFetching?: any;
   fetchNextPage?: any;
+  totalCount?: number;
+  todoCount?: number;
+  inProgressCount?: number;
+  doneCount?: number;
 }
 
 export interface TaskOverviewProps {
