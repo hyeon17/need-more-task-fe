@@ -81,6 +81,8 @@ function ModalEditComponent({ action, id, taskData, refetch }: ModalActionEditPr
   };
 
   switch (action) {
+    case 'START_AT':
+      return <Input type="date" id="startAt" onChange={handleStatusChange} />;
     case 'END_AT':
       return <Input type="date" id="endAt" onChange={handleStatusChange} />;
     case 'ASSIGNEE':

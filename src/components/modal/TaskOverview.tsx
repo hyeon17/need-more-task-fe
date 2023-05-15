@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
-import { Avatar, Button, Heading, ModalBody, ModalHeader, Stack, Tag, Text } from '@chakra-ui/react';
+import { Avatar, Button, Heading, ModalBody, ModalHeader, Stack, Tag, Text, useToast } from '@chakra-ui/react';
 import { useModalState } from '@/store/modalStore';
 import * as S from '@/styles/modal.styles';
 import { actionConstantsType, actionType, PriorityType, StatusType } from '@/constant/TaskOverview';
-import { useQuery } from '@tanstack/react-query';
-import { getTaskDetail } from '@/apis/task';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { getTaskDetail, putTaskDetail } from '@/apis/task';
 import { getKeyByValue, setActionTextToKorean, setTagColor, setTagTextToKorean } from '@/utils';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
 import ModalEditComponent from '@/components/modal/ModalEditComponent';
@@ -32,18 +32,57 @@ function TaskOverview() {
   const [editTitle, setEditTitle] = useState(false);
   const [editDesc, setEditDesc] = useState(false);
   const { userInfo } = useUserInfo();
+  const { mutate } = useMutation(putTaskDetail);
 
   const titleRef = useRef<HTMLParagraphElement | null>(null);
   const descRef = useRef<HTMLParagraphElement | null>(null);
+
+  const toast = useToast();
+
   if (!data) return null;
 
   const { title, desc, assignee, endAt, progress, priority, taskOwner, startAt } = data.data;
 
   const handleTitleEdit = () => {
     if (editTitle) {
+      const title = titleRef.current?.innerText;
+      const copiedData = { ...data.data };
+      if (!title) {
+        titleRef.current!.textContent = data.data.title;
+        return toast({
+          title: '제목을 입력해주세요.',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
       setEditTitle(false);
-      console.log(titleRef.current?.innerText);
-    } else setEditTitle(true);
+      mutate({ taskId: Number(id), data: { ...copiedData, title } });
+    } else {
+      setEditTitle(true);
+      titleRef.current?.focus();
+    }
+  };
+
+  const handleDescEdit = () => {
+    if (editDesc) {
+      const desc = descRef.current?.innerText;
+      const copiedData = { ...data.data };
+      if (!desc) {
+        descRef.current!.textContent = data.data.desc;
+        return toast({
+          title: '내용을 입력해주세요.',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+      setEditDesc(false);
+      mutate({ taskId: Number(id), data: { ...copiedData, desc } });
+    } else {
+      setEditDesc(true);
+      descRef.current?.focus();
+    }
   };
 
   const actionConstants: actionConstantsType = {
@@ -97,10 +136,10 @@ function TaskOverview() {
             </div>
             <div className="desc">
               <Heading fontSize="1.4rem">Description</Heading>
-              <Text contentEditable={editDesc} suppressContentEditableWarning>
+              <Text ref={descRef} contentEditable={editDesc} suppressContentEditableWarning>
                 {desc}
               </Text>
-              <Button size="sm" onClick={() => setEditDesc(!editDesc)}>
+              <Button size="sm" onClick={handleDescEdit}>
                 {editDesc ? '완료' : '수정'}
               </Button>
             </div>
