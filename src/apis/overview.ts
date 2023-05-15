@@ -4,12 +4,8 @@ import { useCalendarState } from '@/store/calendarStore';
 import { useOverViewState } from '@/store/overViewStore';
 import { useSideBarState } from '@/store/sideBarStore';
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
 
 export function useDailyTasks() {
-  const router = useRouter();
-  const routerQuery = router.query;
-  console.log(routerQuery);
   const { getDateStore } = useCalendarState();
   const { currentPage, setTotalPage, getTotalPage } = useOverViewState();
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading, isError, isSuccess, error } = useInfiniteQuery(
