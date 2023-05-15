@@ -10,7 +10,9 @@ function TaskProjectsPerformance() {
   return (
     <D.PerformanceContainer>
       <D.DashboardH5>
-        <h5>Projects performance</h5>
+        <h5>
+          Projects performance <span>최근 14일 동안의 결과를 보여줍니다</span>
+        </h5>
       </D.DashboardH5>
       <D.PerformanceBodyWrapper>
         <D.PerformanceBodyHeader>

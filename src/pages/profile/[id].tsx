@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Layout from '@/components/Layout';
 import * as P from '@/styles/profile.styles';
 import ProfileImage from '@/components/CommonHeader/ProfileImage';
@@ -12,7 +12,7 @@ import { axiosInstance } from '@/apis/configs';
 import { useRouter } from 'next/router';
 import { getUserInfoAPI } from '@/apis/user';
 import { useAccessTokenStore } from '@/store/acceessTokenStore';
-import { Box, Skeleton, SkeletonCircle, SkeletonText, Stack } from '@chakra-ui/react';
+import { Box, Skeleton, SkeletonCircle, SkeletonText, Stack, useToast } from '@chakra-ui/react';
 import Head from 'next/head';
 
 interface IProfilePage {
@@ -20,11 +20,26 @@ interface IProfilePage {
 }
 
 function ProfilePage({ id }: IProfilePage) {
+  const toast = useToast();
+  const router = useRouter();
   const { userInfo: currentLoginUserInfo } = useUserInfo();
   const { getAccessToken } = useAccessTokenStore();
   const accessToken = getAccessToken();
 
   const { data: userInfo } = accessToken && id ? getUserInfoAPI(id) : { data: null };
+
+  useEffect(() => {
+    if (!accessToken) {
+      toast({
+        title: '인증되지 않은 사용자는 접근할 수 없습니다.',
+        description: '로그인 페이지로 이동합니다.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      router.push('/login');
+    }
+  }, [accessToken]);
 
   return (
     <Layout hasHeader>
