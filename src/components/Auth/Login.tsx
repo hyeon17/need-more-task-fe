@@ -55,7 +55,12 @@ function Login() {
     });
     onSaveAccessToken(data.headers.authorization);
 
-    router.push('/calendar').then(() => router.reload());
+    router
+      .push('/calendar')
+      .then(() => router.reload())
+      .then(() => router.push('calendar'));
+
+    // router.reload().then(() => router.push('calendar'))
   };
 
   const { mutate, isLoading } = loginAPI({ onSuccess, onError });
