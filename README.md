@@ -24,33 +24,38 @@
 ## 3. 프로젝트 구조
 
     ```
-    .
-    ├── components
-    │   ├── common
-    │   │   ├── commonComponents
-    │   ├── Page Components
-    │   │   ├── Component
-    ├── apis
-    │   ├── api
-    ├── pages
-    │   ├── _app.tsx
-    │   ├── _document.tsx
-    │   ├── index.tsx
-    │   ├── Other Pages
-    ├── hooks
-    │   ├── hook
-    ├── utils
-    │   ├── util
-    ├── styles
-    │   ├── global.ts
-    │   ├── theme.ts
-    │   ├── Style-Components
-    ├── constants
-    │   ├── constant
-    ├── stores
-    │   ├── store
-    ├── types
-    │   ├── type
+.
+├─apis
+│  └─configs
+├─components
+│  ├─Admin
+│  ├─Auth
+│  │  └─Join
+│  ├─Calendar
+│  ├─ChakraProviders
+│  ├─common
+│  ├─CommonAvatar
+│  ├─CommonHeader
+│  ├─Dashboard
+│  ├─Drawer
+│  ├─kanban
+│  ├─modal
+│  ├─OverView
+│  ├─Profile
+│  └─Skeleton
+├─constant
+├─hooks
+├─pages
+│  ├─api
+│  ├─dashboard
+│  ├─join
+│  ├─profile
+│  └─tasks
+├─store
+├─styles
+├─type
+│  └─enum
+└─utils
     ```
 
 ## 4. 프로젝트 기능
