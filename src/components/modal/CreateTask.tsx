@@ -101,14 +101,22 @@ function CreateTask() {
     onSuccess: () => {
       window.location.reload();
     },
-    onError: () => {
-      toast({
-        title: 'Error',
-        description: 'Task를 생성 할 수 없습니다. 비어있는 항목이 있는지 확인해주세요',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      });
+    onError: (error: any) => {
+      if (error.response.data.data.key === 'startAtBeforeEndAt') {
+        toast({
+          title: '시작일이 종료일보다 빠릅니다.',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: '테스크 생성에 실패했습니다. 비어있는 항목이 있는지 확인해주세요.',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
     },
   });
 

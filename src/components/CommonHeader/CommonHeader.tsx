@@ -31,7 +31,7 @@ function CommonHeader() {
   return (
     <C.Container>
       <Menu>
-        <Image src={Logo} alt="Logo" width={50} height={50} />
+        <C.StyledImage src={Logo} alt="Logo" width={50} height={50} onClick={() => router.push('/')} />
         <C.Nav>
           <ul>
             <Link href={`/dashboard`}>
@@ -47,6 +47,11 @@ function CommonHeader() {
             <Link href={`/`}>
               <li className={pathName === '/' ? 'selected' : ''} onClick={storeInit}>
                 Calendar
+              </li>
+            </Link>
+            <Link href={`/tasks`}>
+              <li className={pathName === '/tasks' ? 'selected' : ''} onClick={storeInit}>
+                Tasks
               </li>
             </Link>
             {userInfo?.userId === 1 && (

@@ -1,8 +1,7 @@
 
-import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { AxiosError, AxiosResponse } from 'axios';
-import { useRouter } from 'next/router';
-import { axiosInstance, axiosWithToken } from '@/apis/configs';
+import { axiosWithToken } from '@/apis/configs';
 
 export const useGetCalendarAPI = (
   year: number,

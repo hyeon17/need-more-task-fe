@@ -52,6 +52,7 @@ function TaskOverview() {
   if (!data) return null;
 
   const { title, desc, assignee, endAt, progress, priority, taskOwner, startAt } = data.data;
+  const isHeOwnerOrAdmin = userInfo?.userId === data.data.taskOwner.userId || userInfo?.role === 'ADMIN';
 
   const handleTitleEdit = () => {
     if (editTitle) {
@@ -139,7 +140,7 @@ function TaskOverview() {
       value: priority as PriorityType,
     },
   };
-  if (userInfo?.userId === taskOwner.userId) {
+  if (userInfo?.userId === taskOwner.userId || userInfo?.role === 'ADMIN') {
     actionConstants.DELETE_TASK = {
       key: 'DELETE_TASK',
     };
@@ -161,15 +162,19 @@ function TaskOverview() {
                 >
                   {title}
                 </Text>
-                <Button size="sm" onClick={handleTitleEdit}>
-                  {editTitle ? '완료' : '수정'}
-                </Button>
+                {isHeOwnerOrAdmin && (
+                  <Button size="sm" onClick={handleTitleEdit}>
+                    {editTitle ? '완료' : '수정'}
+                  </Button>
+                )}
               </Heading>
               <Text fontSize="1rem">
                 할당된 사람
-                <Button size="sm" onClick={handleAssigneeEdit} marginLeft="5">
-                  {editAssignee ? '완료' : '수정'}
-                </Button>
+                {isHeOwnerOrAdmin && (
+                  <Button size="sm" onClick={handleAssigneeEdit} marginLeft="5">
+                    {editAssignee ? '완료' : '수정'}
+                  </Button>
+                )}
               </Text>
               <div className="avatar">
                 {assignee.map((item) => (
@@ -194,9 +199,11 @@ function TaskOverview() {
               >
                 {desc}
               </Text>
-              <Button size="sm" onClick={handleDescEdit}>
-                {editDesc ? '완료' : '수정'}
-              </Button>
+              {isHeOwnerOrAdmin && (
+                <Button size="sm" onClick={handleDescEdit}>
+                  {editDesc ? '완료' : '수정'}
+                </Button>
+              )}
             </div>
           </S.ModalTaskContentBox>
           <S.ModalTaskActionBox>

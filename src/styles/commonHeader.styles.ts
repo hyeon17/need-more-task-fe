@@ -1,5 +1,6 @@
 import { Button, Menu, MenuGroup, MenuList } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export const Container = styled.header`
@@ -13,6 +14,10 @@ export const Container = styled.header`
   padding: 0 24px;
   margin-bottom: 30px;
   background-color: ${({ theme }) => theme.white};
+`;
+
+export const StyledImage = styled(Image)`
+  cursor: pointer;
 `;
 
 export const Nav = styled.nav`

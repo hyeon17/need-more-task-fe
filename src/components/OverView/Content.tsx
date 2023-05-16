@@ -8,8 +8,8 @@ import { useModalState } from '@/store/modalStore';
 
 function Content({ content, isLoading, isFetching, fetchNextPage }: OverViewProps) {
   const { displayedData } = useOverViewState();
-  const data = displayedData ? displayedData : content;
   const router = useRouter();
+  const tasks = displayedData? displayedData: content 
   const { onSetModalId, onOpenOverView } = useModalState();
   // 무한 스크롤
   const bottom = useRef(null);
@@ -47,15 +47,14 @@ function Content({ content, isLoading, isFetching, fetchNextPage }: OverViewProp
     onOpenOverView();
   };
 
-
   return (
     <S.OverViewContent>
       {isLoading ? (
         <CardSkeletons />
       ) : (
         <>
-          {data ? (
-            data.map((event: TaskOverviewProps) => (
+          {tasks ? (
+            tasks.map((event: TaskOverviewProps) => (
               <S.Cards variant={'outline'} key={event.id} onClick={() => handleOpenTaskOverview(event.id.toString())}>
                 <S.CardWrapper>
                   <S.CardTitle>{event.title}</S.CardTitle>
@@ -68,9 +67,9 @@ function Content({ content, isLoading, isFetching, fetchNextPage }: OverViewProp
             ))
           ) : (
             <S.NoneWrapper>
-              <div>
-                일정이 존재하지 않습니다. 일정을 <S.SpanWord>추가</S.SpanWord>해주세요
-              </div>
+              <S.NoneTitle>
+                일정이 존재하지 않습니다. 일정을&nbsp;<S.SpanWord>추가</S.SpanWord>&nbsp;해주세요
+              </S.NoneTitle>
               <S.NoneButton onClick={handleMoveTask}>일정 추가하러 가기</S.NoneButton>
             </S.NoneWrapper>
           )}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ModalActionEditProps } from '@/type/componentProps';
-import { Input } from '@chakra-ui/react';
+import { Input, useToast } from '@chakra-ui/react';
 import { ModalTaskActionSelectBox, ModalTaskDeleteButton } from '@/styles/modal.styles';
 import { useMutation } from '@tanstack/react-query';
 import { deleteTask, putTaskDetail, TaskPostData } from '@/apis/task';
@@ -48,6 +48,7 @@ const setPriorityConstants = [
 ];
 
 function ModalEditComponent({ action, id, taskData, refetch }: ModalActionEditProps) {
+  const toast = useToast();
   const { mutate } = useMutation(deleteTask, {
     onSuccess: () => {
       window.location.reload();
@@ -56,6 +57,16 @@ function ModalEditComponent({ action, id, taskData, refetch }: ModalActionEditPr
   const { mutate: updateTask } = useMutation(putTaskDetail, {
     onSuccess: () => {
       refetch();
+    },
+    onError: (error: any) => {
+      if (error.response.data.status === 403) {
+        toast({
+          title: '수정할 권한이 없습니다.',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
     },
   });
 

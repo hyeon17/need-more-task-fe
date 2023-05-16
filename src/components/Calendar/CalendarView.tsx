@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { EventContentArg, EventInput } from '@fullcalendar/core';
+import { EventContentArg, EventInput, DatesSetArg } from '@fullcalendar/core';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -15,20 +15,25 @@ import { useCalendarState } from '@/store/calendarStore';
 
 function CalendarView() {
   const calendarRef = useRef<FullCalendar>(null);
-  const { setYearStore, setMonthStore, setDateStore, getYearStore, getMonthStore } = useCalendarState();
+  const { setDateStore, getYearStore, getMonthStore, setYearStore, setMonthStore } = useCalendarState();
   const router = useRouter();
-
   const headerToolbar = {
     left: 'dayGridMonth,timeGridWeek,timeGridDay',
     center: 'title',
     right: 'prev,next today',
   };
   const plugins = [dayGridPlugin, timeGridPlugin, interactionPlugin, bootstrap5Plugin];
-
   const allEvents: EventInput[] = [];
-
-
   const { data: events, isLoading } = useGetCalendarAPI(getYearStore(), getMonthStore());
+
+  const handleDatesSet = (eventInfo: DatesSetArg) => {
+    const calendarApi = eventInfo.view.calendar;
+    const currentDate = calendarApi.getDate();
+    const years: number = Number(dayjs(currentDate).format('YYYY'));
+    const months: number = Number(dayjs(currentDate).format('MM'));
+    setYearStore(years);
+    setMonthStore(months);
+  };
 
   if (events) {
     const datas: EventInput[] = events.data.map((event: any) => {
@@ -47,7 +52,7 @@ function CalendarView() {
     });
     allEvents.push(...datas);
   }
-
+  //
   const useHandleDateClick = (info: any) => {
     setDateStore(info.dateStr);
     router.push(`/tasks?date=${info.dateStr}&page=0`);
@@ -71,7 +76,7 @@ function CalendarView() {
 
   return (
     <S.Container>
-      {isLoading ? (
+      {isLoading && !getYearStore() && !getMonthStore() ? (
         <S.SkeletonWrapper></S.SkeletonWrapper>
       ) : (
         <S.CalendarWrapper>
@@ -90,6 +95,7 @@ function CalendarView() {
             dateClick={useHandleDateClick}
             navLinks={true}
             events={allEvents}
+            datesSet={handleDatesSet}
           />
         </S.CalendarWrapper>
       )}
