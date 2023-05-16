@@ -9,8 +9,11 @@ import { useModalState } from '@/store/modalStore';
 function Content({ content, isLoading, isFetching, fetchNextPage }: OverViewProps) {
   const { displayedData } = useOverViewState();
   const router = useRouter();
-  const tasks = displayedData ? displayedData : content;
   const { onSetModalId, onOpenOverView } = useModalState();
+
+  // 일정 목록, 필터링 별 데이터
+  const tasks = displayedData ? displayedData : content;
+  
   // 무한 스크롤
   const bottom = useRef(null);
   useEffect(() => {
@@ -38,10 +41,12 @@ function Content({ content, isLoading, isFetching, fetchNextPage }: OverViewProp
     };
   }, [bottom.current, isFetching, fetchNextPage]);
 
+  // 칸반보드로 이동
   const handleMoveTask = () => {
     router.push(`/kanban`);
   };
 
+  // 해당 일정에 대한 모달 창 띄우기
   const handleOpenTaskOverview = (taskId: string) => {
     onSetModalId(taskId);
     onOpenOverView();

@@ -28,6 +28,7 @@ function CalendarView() {
   const allEvents: EventInput[] = [];
   const { data: events, isLoading } = useGetCalendarAPI(getYearStore(), getMonthStore());
 
+  // 이전, 다음 버튼 클릭시 year, month 저장
   const handleDatesSet = (eventInfo: DatesSetArg) => {
     const calendarApi = eventInfo.view.calendar;
     const currentDate = calendarApi.getDate();
@@ -37,6 +38,7 @@ function CalendarView() {
     setMonthStore(months);
   };
 
+  // 선택된 year, month에 대한 데이터 allEvents에 가공하여 저장
   if (events) {
     const datas: EventInput[] = events.data.map((event: any) => {
       const start = event.startAt;
@@ -55,6 +57,7 @@ function CalendarView() {
     allEvents.push(...datas);
   }
 
+  // 라우팅 및 페이지 수 초기화
   const useHandleDateClick = (info: any) => {
     setDateStore(info.dateStr);
     setTotalPage(0);
@@ -62,6 +65,7 @@ function CalendarView() {
     router.push(`/tasks?date=${info.dateStr}&page=0`);
   };
 
+  // 일정 렌더링
   const renderEventContent = (eventContent: EventContentArg) => {
     const event = allEvents.find((e) => e.id === eventContent.event.id);
     if (!event) return null;
