@@ -9,7 +9,7 @@
 
 **프론트엔드**
 - [최환석](https://github.com/BeeMOre32) : 칸반 보드, 할일 모달창, 할일 생성모달
-- [장현준](https://github.com/hyeon17) : 캘린더 페이지 및 모든 일 보기 페이지
+- [장현준](https://github.com/hyeon17) : 캘린더 페이지, 상세 일정 보기 페이지, NotFound 
 - [이재하](https://github.com/jaehafe) : 회원 가입 및 로그인 페이지, 마이페이지, 대시보드
 
 ## 2. 프로젝트 스택
