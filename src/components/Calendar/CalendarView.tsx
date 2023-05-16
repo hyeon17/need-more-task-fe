@@ -12,10 +12,12 @@ import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import { useRouter } from 'next/router';
 import { useGetCalendarAPI } from '@/apis/calendar';
 import { useCalendarState } from '@/store/calendarStore';
+import { useOverViewState } from '@/store/overViewStore';
 
 function CalendarView() {
   const calendarRef = useRef<FullCalendar>(null);
   const { setDateStore, getYearStore, getMonthStore, setYearStore, setMonthStore } = useCalendarState();
+  const { setCurrentPage, setTotalPage } = useOverViewState();
   const router = useRouter();
   const headerToolbar = {
     left: 'dayGridMonth,timeGridWeek,timeGridDay',
@@ -52,9 +54,11 @@ function CalendarView() {
     });
     allEvents.push(...datas);
   }
-  //
+
   const useHandleDateClick = (info: any) => {
     setDateStore(info.dateStr);
+    setTotalPage(0);
+    setCurrentPage(0);
     router.push(`/tasks?date=${info.dateStr}&page=0`);
   };
 

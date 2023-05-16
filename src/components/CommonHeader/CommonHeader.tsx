@@ -15,17 +15,13 @@ import { useOverViewState } from '@/store/overViewStore';
 function CommonHeader() {
   const router = useRouter();
   const { userInfo } = useUserInfo();
-
-  const overViewState = useOverViewState();
-
+  const { setCurrentPage, setTotalPage, setDisplayedData } = useOverViewState();
   const pathName = router.pathname;
-
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   function storeInit() {
-    overViewState.setDisplayedData(null);
-    overViewState.setCurrentPage(0);
-    overViewState.setTotalPage(0);
+    setDisplayedData(null);
+    setCurrentPage(0);
+    setTotalPage(0);
   }
 
   return (
