@@ -31,7 +31,7 @@ function CommonHeader() {
   return (
     <C.Container>
       <Menu>
-        <Image src={Logo} alt="Logo" width={50} height={50} />
+        <C.StyledImage src={Logo} alt="Logo" width={50} height={50} onClick={() => router.push('/')} />
         <C.Nav>
           <ul>
             <Link href={`/dashboard`}>
