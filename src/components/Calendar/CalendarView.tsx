@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { EventContentArg, EventInput,DatesSetArg } from '@fullcalendar/core';
+import { EventContentArg, EventInput, DatesSetArg } from '@fullcalendar/core';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -15,7 +15,7 @@ import { useCalendarState } from '@/store/calendarStore';
 
 function CalendarView() {
   const calendarRef = useRef<FullCalendar>(null);
-  const { setDateStore, getYearStore, getMonthStore , setYearStore, setMonthStore} = useCalendarState();
+  const { setDateStore, getYearStore, getMonthStore, setYearStore, setMonthStore } = useCalendarState();
   const router = useRouter();
   const headerToolbar = {
     left: 'dayGridMonth,timeGridWeek,timeGridDay',
@@ -25,7 +25,7 @@ function CalendarView() {
   const plugins = [dayGridPlugin, timeGridPlugin, interactionPlugin, bootstrap5Plugin];
   const allEvents: EventInput[] = [];
   const { data: events, isLoading } = useGetCalendarAPI(getYearStore(), getMonthStore());
- 
+
   const handleDatesSet = (eventInfo: DatesSetArg) => {
     const calendarApi = eventInfo.view.calendar;
     const currentDate = calendarApi.getDate();
@@ -52,7 +52,7 @@ function CalendarView() {
     });
     allEvents.push(...datas);
   }
-
+  //
   const useHandleDateClick = (info: any) => {
     setDateStore(info.dateStr);
     router.push(`/tasks?date=${info.dateStr}&page=0`);
@@ -76,11 +76,10 @@ function CalendarView() {
 
   return (
     <S.Container>
-      {isLoading ? (
+      {isLoading && !getYearStore() && !getMonthStore() ? (
         <S.SkeletonWrapper></S.SkeletonWrapper>
       ) : (
         <S.CalendarWrapper>
-          
           <FullCalendar
             height="1100px"
             ref={calendarRef}
