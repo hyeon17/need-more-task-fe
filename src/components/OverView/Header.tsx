@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import * as S from '@/styles/overview.styles';
 import { Tabs, TabList } from '@chakra-ui/react';
 import { useOverViewState } from '@/store/overViewStore';
@@ -37,12 +37,13 @@ function Header({ date, content, isLoading, totalCount, todoCount, inProgressCou
                     {progress}
                     <S.IndexCount>
                       {progress === 'All'
-                        ? totalCount
+                        ? totalCount || 0
                         : progress === 'TODO'
-                        ? todoCount
+                        ? todoCount || 0
                         : progress === 'IN_PROGRESS'
-                        ? inProgressCount
-                        : doneCount}
+                        ? inProgressCount || 0
+                        : doneCount || 0
+                      }
                     </S.IndexCount>
                   </S.OverViewTab>
                 ))}
