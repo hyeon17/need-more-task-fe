@@ -27,6 +27,16 @@ function Kanban() {
     onSuccess: async () => {
       await refetch();
     },
+    onError: (error: any) => {
+      if (error.response.data.status === 403) {
+        toast({
+          title: '수정할 권한이 없습니다.',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    },
   });
 
   useEffect(() => {
