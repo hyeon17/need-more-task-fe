@@ -7,8 +7,11 @@ import { TabSkeletons, DateSkeletons } from '@/components/Skeleton';
 
 function Header({ date, content, isLoading, totalCount, todoCount, inProgressCount, doneCount }: OverViewProps) {
   const { setDisplayedData } = useOverViewState();
+
+  // 기본 탭 필터링 설정
   const [selectedProgress, setSelectedProgress] = useState('All');
 
+  // 탭 클릭 시 필터링
   const handleTabClick = (progress: string) => {
     setSelectedProgress(progress);
     const filteredData =

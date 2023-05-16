@@ -16,6 +16,7 @@ function OverView({ api, store }: any) {
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading, isError, isSuccess, error } = api;
   const allEvents: TaskOverviewProps[] = [];
 
+  // 비로그인 시 로그인으로 이동
   const router = useRouter();
   const { getAccessToken } = useAccessTokenStore();
   const accessToken = getAccessToken();
@@ -33,6 +34,7 @@ function OverView({ api, store }: any) {
     }
   }, [accessToken]);
 
+  // 무한 스크롤 다음 페이지 호출
   const handleFetchNextPage = () => {
     if (hasNextPage && currentPage !== getTotalPage()) {
       setCurrentPage(currentPage + 1);
@@ -40,6 +42,7 @@ function OverView({ api, store }: any) {
     }
   };
 
+  // 일정 목록 데이터 가공
   if (data) {
     data.pages.forEach((page:any) => {
       const datas: TaskOverviewProps[] = page.data.tasks.map((event: TaskOverviewProps) => ({
