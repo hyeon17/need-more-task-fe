@@ -5,6 +5,7 @@ import { useOverViewState } from '@/store/overViewStore';
 import { useSideBarState } from '@/store/sideBarStore';
 import { useEffect } from 'react';
 
+
 export function useDailyTasks() {
   const { getDateStore } = useCalendarState();
   const { currentPage, setTotalPage, getTotalPage } = useOverViewState();
@@ -13,14 +14,17 @@ export function useDailyTasks() {
     ({ pageParam = 0 }) =>
       axiosWithToken.get(`/tasks?date=${getDateStore()}&page=${pageParam}`).then((response) => response.data),
     {
+      // 전체, 현재 페이지 비교
       getNextPageParam: (lastPage) => {
         const totalPages = Math.ceil(lastPage?.data?.totalCount / 10);
         return currentPage + 1 === totalPages ? undefined : currentPage + 1;
       },
+      // 캐시 데이터 없게 설정
       cacheTime: 0,
     },
   );
 
+  // 전체 페이지 수 설정
   useEffect(() => {
     if (!getTotalPage() && data && data.pages[0]?.data?.totalCount > 0) {
       setTotalPage(Math.ceil(data.pages[0]?.data?.totalCount / 10));
