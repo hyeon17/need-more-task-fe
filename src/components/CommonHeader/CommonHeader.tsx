@@ -49,6 +49,11 @@ function CommonHeader() {
                 Calendar
               </li>
             </Link>
+            <Link href={`/tasks`}>
+              <li className={pathName === '/tasks' ? 'selected' : ''} onClick={storeInit}>
+                Tasks
+              </li>
+            </Link>
             {userInfo?.userId === 1 && (
               <Link href={`/admin`}>
                 <li className={pathName === '/admin' ? 'selected' : ''} onClick={storeInit}>

@@ -165,10 +165,21 @@ export const NoneWrapper = styled.div`
   color: ${({ theme }) => theme.textColor};
 `;
 
+export const NoneTitle = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-size: 32px;
+  margin-bottom:20px;
+`;
+
+
 export const NoneButton = styled(Button)`
   width: 200px;
-  height: 40px;
+  height: 50px;
   margin-top: 30px;
+  font-size: 20px;
   background-color: ${({ theme }) => theme.primary};
   color: ${({ theme }) => theme.white};
   &:hover {
