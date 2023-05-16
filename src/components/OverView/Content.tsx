@@ -9,7 +9,7 @@ import { useModalState } from '@/store/modalStore';
 function Content({ content, isLoading, isFetching, fetchNextPage }: OverViewProps) {
   const { displayedData } = useOverViewState();
   const router = useRouter();
-  const tasks = displayedData? displayedData: content 
+  const tasks = displayedData ? displayedData : content;
   const { onSetModalId, onOpenOverView } = useModalState();
   // 무한 스크롤
   const bottom = useRef(null);
@@ -53,9 +53,9 @@ function Content({ content, isLoading, isFetching, fetchNextPage }: OverViewProp
         <CardSkeletons />
       ) : (
         <>
-          {tasks ? (
+          {tasks && tasks.length > 0 ? (
             tasks.map((event: TaskOverviewProps) => (
-              <S.Cards variant={'outline'} key={event.id} onClick={() => handleOpenTaskOverview(event.id.toString())}>
+              <S.Cards variant="outline" key={event.id} onClick={() => handleOpenTaskOverview(event.id.toString())}>
                 <S.CardWrapper>
                   <S.CardTitle>{event.title}</S.CardTitle>
                   <S.AvatarWrapper>

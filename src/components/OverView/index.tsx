@@ -12,7 +12,7 @@ import Sidebar from '@/components/Drawer';
 import * as S from '@/styles/overview.styles';
 
 function OverView({ api, store }: any) {
-  const { currentPage, setCurrentPage, getTotalPage, setTotalPage } = useOverViewState();
+  const { currentPage, setCurrentPage, getTotalPage } = useOverViewState();
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading, isError, isSuccess, error } = api;
   const allEvents: TaskOverviewProps[] = [];
 
@@ -39,22 +39,6 @@ function OverView({ api, store }: any) {
       fetchNextPage({ pageParam: currentPage + 1 });
     }
   };
-
-  const handleBack = () => {
-    setTotalPage(0);
-    setCurrentPage(0);
-  };
-  useEffect(() => {
-    const handleRouteChange = (shallow: any) => {
-      if (!shallow) {
-        handleBack();
-      }
-    };
-    router.events.on('routeChangeComplete', handleRouteChange);
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-    };
-  }, []);
 
   if (data) {
     data.pages.forEach((page:any) => {
