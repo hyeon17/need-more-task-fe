@@ -140,7 +140,7 @@ function TaskOverview() {
       value: priority as PriorityType,
     },
   };
-  if (userInfo?.userId === taskOwner.userId) {
+  if (userInfo?.userId === taskOwner.userId || userInfo?.role === 'ADMIN') {
     actionConstants.DELETE_TASK = {
       key: 'DELETE_TASK',
     };
