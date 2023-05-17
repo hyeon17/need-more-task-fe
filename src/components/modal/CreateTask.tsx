@@ -104,7 +104,7 @@ function CreateTask() {
     onError: (error: any) => {
       if (error.response.data.data.key === 'startAtBeforeEndAt') {
         toast({
-          title: '시작일이 종료일보다 빠릅니다.',
+          title: '종료일이 시작일 보다 빠릅니다.',
           status: 'error',
           duration: 3000,
           isClosable: true,
