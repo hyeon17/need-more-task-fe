@@ -12,10 +12,12 @@ import {
 import * as S from '@/styles/calendar.styles';
 import { useSideBarState } from '@/store/sideBarStore';
 import { useRouter } from 'next/router';
+import { useOverViewState } from '@/store/overViewStore';
 
 function Sidebar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { setStartAtStore, setEndAtStore } = useSideBarState();
+  const { setSelectedProgress, setDisplayedData, setTotalPage,setCurrentPage } = useOverViewState();
   const btnRef = useRef<HTMLElement>(null);
   const [startAt, setStartAt] = useState('');
   const [endAt, setEndAt] = useState('');
@@ -26,6 +28,10 @@ function Sidebar() {
       ? alert('시작일이 종료일보다 늦습니다.')
       : (setStartAtStore(startAt),
         setEndAtStore(endAt),
+        setSelectedProgress('All'),
+        setDisplayedData(null),
+        setCurrentPage(0),
+        setTotalPage(0),
         onClose(),
         router.push(`/tasks/period?startat=${startAt}&endat=${endAt}`));
   };

@@ -6,10 +6,7 @@ import { OverViewProps, TaskOverviewProps } from '@/type/componentProps';
 import { TabSkeletons, DateSkeletons } from '@/components/Skeleton';
 
 function Header({ date, content, isLoading, totalCount, todoCount, inProgressCount, doneCount }: OverViewProps) {
-  const { setDisplayedData } = useOverViewState();
-
-  // 기본 탭 필터링 설정
-  const [selectedProgress, setSelectedProgress] = useState('All');
+  const { setDisplayedData, setSelectedProgress, getSelectedProgress } = useOverViewState();
 
   // 탭 클릭 시 필터링
   const handleTabClick = (progress: string) => {
@@ -35,7 +32,7 @@ function Header({ date, content, isLoading, totalCount, todoCount, inProgressCou
                   <S.OverViewTab
                     key={progress}
                     onClick={() => handleTabClick(progress)}
-                    aria-selected={selectedProgress === progress}
+                    aria-selected={getSelectedProgress() === progress}
                   >
                     {progress}
                     <S.IndexCount>
@@ -45,8 +42,7 @@ function Header({ date, content, isLoading, totalCount, todoCount, inProgressCou
                         ? todoCount || 0
                         : progress === 'IN_PROGRESS'
                         ? inProgressCount || 0
-                        : doneCount || 0
-                      }
+                        : doneCount || 0}
                     </S.IndexCount>
                   </S.OverViewTab>
                 ))}

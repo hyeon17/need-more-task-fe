@@ -7,12 +7,12 @@ import { CardSkeletons } from '@/components/Skeleton';
 import { useModalState } from '@/store/modalStore';
 
 function Content({ content, isLoading, isFetching, fetchNextPage }: OverViewProps) {
-  const { displayedData } = useOverViewState();
+  const { displayedData, getDisplayedData } = useOverViewState();
   const router = useRouter();
   const { onSetModalId, onOpenOverView } = useModalState();
 
   // 일정 목록, 필터링 별 데이터
-  const tasks = displayedData ? displayedData : content;
+  const tasks = displayedData ? getDisplayedData() : content;
   
   // 무한 스크롤
   const bottom = useRef(null);
