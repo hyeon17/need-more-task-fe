@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as S from '@/styles/overview.styles';
 import { Tabs, TabList } from '@chakra-ui/react';
 import { useOverViewState } from '@/store/overViewStore';
 import { OverViewProps, TaskOverviewProps } from '@/type/componentProps';
 import { TabSkeletons, DateSkeletons } from '@/components/Skeleton';
-
 function Header({ date, content, isLoading, totalCount, todoCount, inProgressCount, doneCount }: OverViewProps) {
   const { setDisplayedData, setSelectedProgress, getSelectedProgress } = useOverViewState();
 
