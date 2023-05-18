@@ -38,7 +38,7 @@ function Sidebar() {
 
   return (
     <>
-      <S.PeriodButton ref={btnRef} onClick={onOpen}>
+      <S.PeriodButton ref={btnRef} onClick={onOpen} id="period" aria-label="periodBtn">
         <S.CalendarIcons />
       </S.PeriodButton>
       <Drawer isOpen={isOpen} placement="right" onClose={onClose} finalFocusRef={btnRef} size="sm">
