@@ -1,4 +1,3 @@
-import { Assignee } from '@/apis/kanban';
 import { IAssignee } from '@/components/CommonAvatar/CommonAvatar';
 
 export enum StatusType {

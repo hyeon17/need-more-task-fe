@@ -5,15 +5,12 @@ import Admin from '@/components/Admin/Admin';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useUserInfo } from '@/store/userInfoStore';
-import { useAccessTokenStore } from '@/store/acceessTokenStore';
 import { useToast } from '@chakra-ui/react';
 import * as AD from '@/styles/admin.styles';
 
 function AdminPage() {
   const router = useRouter();
   const { userInfo } = useUserInfo();
-  const { getAccessToken } = useAccessTokenStore();
-  const accessToken = getAccessToken();
   const toast = useToast();
 
   useEffect(() => {

@@ -1,14 +1,11 @@
 import React, { useEffect } from 'react';
-import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-
 import StepOne from '@/components/Auth/Join/StepOne';
 import StepThree from '@/components/Auth/Join/StepThree';
 import StepTwo from '@/components/Auth/Join/StepTwo';
 import Layout from '@/components/Layout';
 import JoinLayout from '@/components/Auth/Join/JoinLayout';
 import Head from 'next/head';
-import { useUserInfo } from '@/store/userInfoStore';
 import { useAccessTokenStore } from '@/store/acceessTokenStore';
 import { useToast } from '@chakra-ui/react';
 
