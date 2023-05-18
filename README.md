@@ -9,7 +9,7 @@
 |:--:|:--:|:--:|
 | <img src="https://avatars.githubusercontent.com/u/97926993?v=4" width="200"> | <img src="https://avatars.githubusercontent.com/u/83224463?v=4" width=200> | <img src="https://avatars.githubusercontent.com/u/108874515?v=4" width=200> |
 | [최환석](https://github.com/BeeMOre32) | [장현준](https://github.com/hyeon17)  | [이재하](https://github.com/jaehafe) |
-칸반 보드 <br/> 할일 모달창 <br/> 할일 생성모달  |  캘린더 페이지  </br> 상세 일정 보기 페이지</br> NotFound 페이지 </br> | 회원 가입 및 로그인 페이지 <br/> 마이페이지 <br/> 대시보드
+칸반 보드 <br/> 할일 모달창 <br/> 할일 생성모달  |  캘린더 페이지  </br> 일정 목록 페이지</br> NotFound 페이지 </br> | 회원 가입 및 로그인 페이지 <br/> 마이페이지 <br/> 대시보드
 
 ### 1.2 프로젝트 실행 방법
 ```
@@ -99,16 +99,17 @@
 - 프로젝트 캘린더 페이지
 
 ![img_2.png](exam/img_2.png)
-![img_3.png](exam/img_3.png)
 ![img_3-1](exam/img_3-1.png)
 
+- 프로젝트 일정 목록
+
+![img_3.png](exam/img_3.png)
 
 - 프로젝트 칸반보드 페이지
 
 ![img_4.png](exam/img_4.png)
 ![img_5.png](exam/img_5.png)
 ![img_6.png](exam/img_6.png)
-
 
 - 프로젝트 대시보드 페이지
 
