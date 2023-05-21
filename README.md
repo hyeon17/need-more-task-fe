@@ -19,11 +19,11 @@
 4. root 경로에 .env 파일 생성 후, 관련 정보 입력
 5. $ npm run dev
 ```
-### 1.3 프로젝트 링크
-[Demo]()
+### 1.3 프로젝트 영상 링크
+[YouTube](https://www.youtube.com/watch?v=e9pzpZ4raEI)
 
 ### 1.4 프로젝트 문서
-[Notion]()
+[Notion](https://oxidized-meteorite-e5d.notion.site/Need-More-Task-efad589c601948349d6f309bb62784d4)
 
 ## 2. 프로젝트 스택
  - 메인 라이브러리 및 프레임워크: Next.js
