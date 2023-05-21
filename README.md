@@ -25,6 +25,11 @@
 ### 1.4 프로젝트 문서
 [Notion](https://oxidized-meteorite-e5d.notion.site/Need-More-Task-efad589c601948349d6f309bb62784d4)
 
+### 1.5 프로젝트 링크
+현재 서버 종료로 인한 기능 사용 불가
+
+[DEMO](https://need-more-task.vercel.app)
+
 ## 2. 프로젝트 스택
  - 메인 라이브러리 및 프레임워크: Next.js
  - 상태 관리: Zustand
