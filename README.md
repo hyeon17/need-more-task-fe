@@ -9,7 +9,7 @@
 |:--:|:--:|:--:|
 | <img src="https://avatars.githubusercontent.com/u/97926993?v=4" width="200"> | <img src="https://avatars.githubusercontent.com/u/83224463?v=4" width=200> | <img src="https://avatars.githubusercontent.com/u/108874515?v=4" width=200> |
 | [최환석](https://github.com/BeeMOre32) | [장현준](https://github.com/hyeon17)  | [이재하](https://github.com/jaehafe) |
-칸반 보드 <br/> 할일 모달창 <br/> 할일 생성모달  |  캘린더 페이지  </br> 일정 목록 페이지</br> NotFound 페이지 </br> | 회원 가입 및 로그인 페이지 <br/> 마이페이지 <br/> 대시보드
+칸반 보드 <br/> 할일 모달창 <br/> 할일 생성모달  |  캘린더 </br> 무한스크롤 </br> 진행도 필터링 </br> 일정 선택 및 보기 </br> NotFound </br> | 회원 가입 및 로그인 페이지 <br/> 마이페이지 <br/> 대시보드
 
 ### 1.2 프로젝트 실행 방법
 ```
